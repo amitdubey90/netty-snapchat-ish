@@ -1,56 +1,70 @@
 package poke.server.managers.Raft;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import poke.core.Mgmt.AppendMessage;
 import poke.core.Mgmt.Management;
-import poke.core.Mgmt.RaftLeaderElection;
+import poke.core.Mgmt.RaftMessage;
+import poke.core.Mgmt.RequestVoteMessage;
 
 public class CandidateState implements RaftState {
 
 	RaftManager raftMgmt;
 	protected static Logger logger = LoggerFactory.getLogger("candidateState");
-	
-	public CandidateState(){
+	protected static AtomicReference<CandidateState> instance = new AtomicReference<CandidateState>();
+
+	public static RaftState init() {
+		instance.compareAndSet(null, new CandidateState());
+		return instance.get();
+	}
+
+	public CandidateState() {
 		raftMgmt = RaftManager.getInstance();
 	}
-	
+
 	@Override
 	public void processRequest(Management mgmt) {
 
-		RaftLeaderElection msg = mgmt.getRaftElection();
-		RaftLeaderElection.ElectionAction action = msg.getAction();
-		logger.info("my timeout "+ raftMgmt.electionTimeOut);
+		RaftMessage msg = mgmt.getRaftMessage();
+		RaftMessage.ElectionAction action = msg.getAction();
+		// logger.info("my timeout "+ raftMgmt.electionTimeOut);
+		/*
+		 * if (msg.getTerm() > raftMgmt.term) { raftMgmt.term = msg.getTerm();
+		 * raftMgmt.currentState = RaftManager.followerInstance; }
+		 */
+
 		switch (action) {
 		case APPEND:
 			if (msg.getTerm() >= raftMgmt.term) {
-				raftMgmt.term = msg.getTerm();
-				// might need to change this
-				raftMgmt.currentState = RaftManager.followerInstance.get();
+				AppendMessage am = msg.getAppendMessage();
+				raftMgmt.leaderID = am.getLeaderId();
+				raftMgmt.convertToFollower(msg);
+				if (am.getEntriesCount() > 0) {
+					// TODO append work
+				}
 			}
 			break;
 		case REQUESTVOTE:
-			logger.info("Candidate received vote request");
+
+			RequestVoteMessage rvm = msg.getRequestVote();
+			// logger.info("Vote response received"+ rvm.getVoteGranted());
+			if (rvm.hasVoteGranted()) {
+				if (rvm.getVoteGranted()) {
+					//logger.info("Vote received by vote granted");
+					raftMgmt.receiveVote();
+				} else {
+					raftMgmt.term = msg.getTerm();
+					raftMgmt.currentState = RaftManager.followerInstance;
+				}
+			}
 			// candidate ignores other vote requests
 			break;
-		case LEADER:
 
-			if (msg.getTerm() > raftMgmt.term) {
-				raftMgmt.term = msg.getTerm();
-				raftMgmt.lastKnownBeat = System.currentTimeMillis();
-				raftMgmt.currentState = RaftManager.followerInstance.get();
-				logger.info("Found a leader "
-						+ mgmt.getHeader().getOriginator());
-			}
-			break;
-		case VOTE:
-
-			logger.info("Vote received");
-			raftMgmt.receiveVote();
-			break;
 		default:
 		}
 
 	}
-
 }

@@ -46,7 +46,21 @@ message LeaderElection {
    }
 }
 
+message RaftLeaderElection {
+  
+  required int32 term = 1;
+  required ElectionAction action = 2;
+  optional int32 log_index = 3;
+  optional int32 prev_log_index = 4;
+  optional int32 prev_term = 5;
 
+  enum ElectionAction {
+    APPEND = 1;
+    REQUESTVOTE = 2;
+    LEADER = 3;
+    VOTE = 4;
+  }
+}
 
 // voting is a general feature used by the framework and external resources.
 message VotingBallot {
@@ -122,46 +136,6 @@ message MgmtHeader {
     optional int32 toNode = 8;
 }
 
-
-message RequestVoteMessage {
-
-  optional int32 candidate_id = 1;
-  optional int32 last_log_index = 2;
-  optional int32 last_log_term = 3;
-  
-  optional bool vote_granted = 5;
-
-}
-
-message AppendMessage {
-  optional int32 log_index = 1;
-  optional int32 prev_log_index = 2;
-  optional int32 prev_log_term = 3;
-  optional int32 leader_id = 4;
-  
-  optional bool success = 6;
-  optional int32 leader_commit = 7;
-  repeated LogEntries entries = 8;
-}
-
-message LogEntries {
-  
-}
-message RaftMessage {
-  
-  required int32 term = 1;
-  required ElectionAction action = 2;
-  optional RequestVoteMessage request_vote = 3;
-  optional AppendMessage append_message = 4;
-
-  enum ElectionAction {
-    APPEND = 1;
-    REQUESTVOTE = 2;
-    LEADER = 3;
-    VOTE = 4;
-  }
-}
-
 // internal communication payload
 message Management {
    required MgmtHeader header = 1;
@@ -181,5 +155,5 @@ message Management {
    optional VotingStatus vote_status = 9;
 
    //Raft
-   optional RaftMessage raft_message = 10;
+   optional RaftLeaderElection raftElection = 10;
 }	

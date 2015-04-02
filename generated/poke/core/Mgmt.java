@@ -2263,8 +2263,2099 @@ public final class Mgmt {
     // @@protoc_insertion_point(class_scope:LeaderElection)
   }
 
-  public interface RaftLeaderElectionOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:RaftLeaderElection)
+  public interface RequestVoteMessageOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:RequestVoteMessage)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional int32 candidate_id = 1;</code>
+     */
+    boolean hasCandidateId();
+    /**
+     * <code>optional int32 candidate_id = 1;</code>
+     */
+    int getCandidateId();
+
+    /**
+     * <code>optional int32 last_log_index = 2;</code>
+     */
+    boolean hasLastLogIndex();
+    /**
+     * <code>optional int32 last_log_index = 2;</code>
+     */
+    int getLastLogIndex();
+
+    /**
+     * <code>optional int32 last_log_term = 3;</code>
+     */
+    boolean hasLastLogTerm();
+    /**
+     * <code>optional int32 last_log_term = 3;</code>
+     */
+    int getLastLogTerm();
+
+    /**
+     * <code>optional bool vote_granted = 5;</code>
+     */
+    boolean hasVoteGranted();
+    /**
+     * <code>optional bool vote_granted = 5;</code>
+     */
+    boolean getVoteGranted();
+  }
+  /**
+   * Protobuf type {@code RequestVoteMessage}
+   */
+  public static final class RequestVoteMessage extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:RequestVoteMessage)
+      RequestVoteMessageOrBuilder {
+    // Use RequestVoteMessage.newBuilder() to construct.
+    private RequestVoteMessage(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private RequestVoteMessage(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final RequestVoteMessage defaultInstance;
+    public static RequestVoteMessage getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public RequestVoteMessage getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private RequestVoteMessage(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              candidateId_ = input.readInt32();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              lastLogIndex_ = input.readInt32();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              lastLogTerm_ = input.readInt32();
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000008;
+              voteGranted_ = input.readBool();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return poke.core.Mgmt.internal_static_RequestVoteMessage_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return poke.core.Mgmt.internal_static_RequestVoteMessage_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              poke.core.Mgmt.RequestVoteMessage.class, poke.core.Mgmt.RequestVoteMessage.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<RequestVoteMessage> PARSER =
+        new com.google.protobuf.AbstractParser<RequestVoteMessage>() {
+      public RequestVoteMessage parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new RequestVoteMessage(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<RequestVoteMessage> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int CANDIDATE_ID_FIELD_NUMBER = 1;
+    private int candidateId_;
+    /**
+     * <code>optional int32 candidate_id = 1;</code>
+     */
+    public boolean hasCandidateId() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional int32 candidate_id = 1;</code>
+     */
+    public int getCandidateId() {
+      return candidateId_;
+    }
+
+    public static final int LAST_LOG_INDEX_FIELD_NUMBER = 2;
+    private int lastLogIndex_;
+    /**
+     * <code>optional int32 last_log_index = 2;</code>
+     */
+    public boolean hasLastLogIndex() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional int32 last_log_index = 2;</code>
+     */
+    public int getLastLogIndex() {
+      return lastLogIndex_;
+    }
+
+    public static final int LAST_LOG_TERM_FIELD_NUMBER = 3;
+    private int lastLogTerm_;
+    /**
+     * <code>optional int32 last_log_term = 3;</code>
+     */
+    public boolean hasLastLogTerm() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional int32 last_log_term = 3;</code>
+     */
+    public int getLastLogTerm() {
+      return lastLogTerm_;
+    }
+
+    public static final int VOTE_GRANTED_FIELD_NUMBER = 5;
+    private boolean voteGranted_;
+    /**
+     * <code>optional bool vote_granted = 5;</code>
+     */
+    public boolean hasVoteGranted() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional bool vote_granted = 5;</code>
+     */
+    public boolean getVoteGranted() {
+      return voteGranted_;
+    }
+
+    private void initFields() {
+      candidateId_ = 0;
+      lastLogIndex_ = 0;
+      lastLogTerm_ = 0;
+      voteGranted_ = false;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeInt32(1, candidateId_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeInt32(2, lastLogIndex_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeInt32(3, lastLogTerm_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBool(5, voteGranted_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, candidateId_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, lastLogIndex_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(3, lastLogTerm_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(5, voteGranted_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static poke.core.Mgmt.RequestVoteMessage parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static poke.core.Mgmt.RequestVoteMessage parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static poke.core.Mgmt.RequestVoteMessage parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static poke.core.Mgmt.RequestVoteMessage parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static poke.core.Mgmt.RequestVoteMessage parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static poke.core.Mgmt.RequestVoteMessage parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static poke.core.Mgmt.RequestVoteMessage parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static poke.core.Mgmt.RequestVoteMessage parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static poke.core.Mgmt.RequestVoteMessage parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static poke.core.Mgmt.RequestVoteMessage parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(poke.core.Mgmt.RequestVoteMessage prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code RequestVoteMessage}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:RequestVoteMessage)
+        poke.core.Mgmt.RequestVoteMessageOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return poke.core.Mgmt.internal_static_RequestVoteMessage_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return poke.core.Mgmt.internal_static_RequestVoteMessage_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                poke.core.Mgmt.RequestVoteMessage.class, poke.core.Mgmt.RequestVoteMessage.Builder.class);
+      }
+
+      // Construct using poke.core.Mgmt.RequestVoteMessage.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        candidateId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        lastLogIndex_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        lastLogTerm_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        voteGranted_ = false;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return poke.core.Mgmt.internal_static_RequestVoteMessage_descriptor;
+      }
+
+      public poke.core.Mgmt.RequestVoteMessage getDefaultInstanceForType() {
+        return poke.core.Mgmt.RequestVoteMessage.getDefaultInstance();
+      }
+
+      public poke.core.Mgmt.RequestVoteMessage build() {
+        poke.core.Mgmt.RequestVoteMessage result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public poke.core.Mgmt.RequestVoteMessage buildPartial() {
+        poke.core.Mgmt.RequestVoteMessage result = new poke.core.Mgmt.RequestVoteMessage(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.candidateId_ = candidateId_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.lastLogIndex_ = lastLogIndex_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.lastLogTerm_ = lastLogTerm_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.voteGranted_ = voteGranted_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof poke.core.Mgmt.RequestVoteMessage) {
+          return mergeFrom((poke.core.Mgmt.RequestVoteMessage)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(poke.core.Mgmt.RequestVoteMessage other) {
+        if (other == poke.core.Mgmt.RequestVoteMessage.getDefaultInstance()) return this;
+        if (other.hasCandidateId()) {
+          setCandidateId(other.getCandidateId());
+        }
+        if (other.hasLastLogIndex()) {
+          setLastLogIndex(other.getLastLogIndex());
+        }
+        if (other.hasLastLogTerm()) {
+          setLastLogTerm(other.getLastLogTerm());
+        }
+        if (other.hasVoteGranted()) {
+          setVoteGranted(other.getVoteGranted());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        poke.core.Mgmt.RequestVoteMessage parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (poke.core.Mgmt.RequestVoteMessage) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int candidateId_ ;
+      /**
+       * <code>optional int32 candidate_id = 1;</code>
+       */
+      public boolean hasCandidateId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional int32 candidate_id = 1;</code>
+       */
+      public int getCandidateId() {
+        return candidateId_;
+      }
+      /**
+       * <code>optional int32 candidate_id = 1;</code>
+       */
+      public Builder setCandidateId(int value) {
+        bitField0_ |= 0x00000001;
+        candidateId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 candidate_id = 1;</code>
+       */
+      public Builder clearCandidateId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        candidateId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int lastLogIndex_ ;
+      /**
+       * <code>optional int32 last_log_index = 2;</code>
+       */
+      public boolean hasLastLogIndex() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional int32 last_log_index = 2;</code>
+       */
+      public int getLastLogIndex() {
+        return lastLogIndex_;
+      }
+      /**
+       * <code>optional int32 last_log_index = 2;</code>
+       */
+      public Builder setLastLogIndex(int value) {
+        bitField0_ |= 0x00000002;
+        lastLogIndex_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 last_log_index = 2;</code>
+       */
+      public Builder clearLastLogIndex() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        lastLogIndex_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int lastLogTerm_ ;
+      /**
+       * <code>optional int32 last_log_term = 3;</code>
+       */
+      public boolean hasLastLogTerm() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional int32 last_log_term = 3;</code>
+       */
+      public int getLastLogTerm() {
+        return lastLogTerm_;
+      }
+      /**
+       * <code>optional int32 last_log_term = 3;</code>
+       */
+      public Builder setLastLogTerm(int value) {
+        bitField0_ |= 0x00000004;
+        lastLogTerm_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 last_log_term = 3;</code>
+       */
+      public Builder clearLastLogTerm() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        lastLogTerm_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private boolean voteGranted_ ;
+      /**
+       * <code>optional bool vote_granted = 5;</code>
+       */
+      public boolean hasVoteGranted() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional bool vote_granted = 5;</code>
+       */
+      public boolean getVoteGranted() {
+        return voteGranted_;
+      }
+      /**
+       * <code>optional bool vote_granted = 5;</code>
+       */
+      public Builder setVoteGranted(boolean value) {
+        bitField0_ |= 0x00000008;
+        voteGranted_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool vote_granted = 5;</code>
+       */
+      public Builder clearVoteGranted() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        voteGranted_ = false;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:RequestVoteMessage)
+    }
+
+    static {
+      defaultInstance = new RequestVoteMessage(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:RequestVoteMessage)
+  }
+
+  public interface AppendMessageOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:AppendMessage)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional int32 log_index = 1;</code>
+     */
+    boolean hasLogIndex();
+    /**
+     * <code>optional int32 log_index = 1;</code>
+     */
+    int getLogIndex();
+
+    /**
+     * <code>optional int32 prev_log_index = 2;</code>
+     */
+    boolean hasPrevLogIndex();
+    /**
+     * <code>optional int32 prev_log_index = 2;</code>
+     */
+    int getPrevLogIndex();
+
+    /**
+     * <code>optional int32 prev_term = 3;</code>
+     */
+    boolean hasPrevTerm();
+    /**
+     * <code>optional int32 prev_term = 3;</code>
+     */
+    int getPrevTerm();
+
+    /**
+     * <code>optional int32 leader_id = 4;</code>
+     */
+    boolean hasLeaderId();
+    /**
+     * <code>optional int32 leader_id = 4;</code>
+     */
+    int getLeaderId();
+
+    /**
+     * <code>optional bool success = 6;</code>
+     */
+    boolean hasSuccess();
+    /**
+     * <code>optional bool success = 6;</code>
+     */
+    boolean getSuccess();
+
+    /**
+     * <code>optional int32 leader_commit = 7;</code>
+     */
+    boolean hasLeaderCommit();
+    /**
+     * <code>optional int32 leader_commit = 7;</code>
+     */
+    int getLeaderCommit();
+
+    /**
+     * <code>repeated .LogEntries entries = 8;</code>
+     */
+    java.util.List<poke.core.Mgmt.LogEntries> 
+        getEntriesList();
+    /**
+     * <code>repeated .LogEntries entries = 8;</code>
+     */
+    poke.core.Mgmt.LogEntries getEntries(int index);
+    /**
+     * <code>repeated .LogEntries entries = 8;</code>
+     */
+    int getEntriesCount();
+    /**
+     * <code>repeated .LogEntries entries = 8;</code>
+     */
+    java.util.List<? extends poke.core.Mgmt.LogEntriesOrBuilder> 
+        getEntriesOrBuilderList();
+    /**
+     * <code>repeated .LogEntries entries = 8;</code>
+     */
+    poke.core.Mgmt.LogEntriesOrBuilder getEntriesOrBuilder(
+        int index);
+  }
+  /**
+   * Protobuf type {@code AppendMessage}
+   */
+  public static final class AppendMessage extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:AppendMessage)
+      AppendMessageOrBuilder {
+    // Use AppendMessage.newBuilder() to construct.
+    private AppendMessage(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private AppendMessage(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final AppendMessage defaultInstance;
+    public static AppendMessage getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public AppendMessage getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private AppendMessage(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              logIndex_ = input.readInt32();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              prevLogIndex_ = input.readInt32();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              prevTerm_ = input.readInt32();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              leaderId_ = input.readInt32();
+              break;
+            }
+            case 48: {
+              bitField0_ |= 0x00000010;
+              success_ = input.readBool();
+              break;
+            }
+            case 56: {
+              bitField0_ |= 0x00000020;
+              leaderCommit_ = input.readInt32();
+              break;
+            }
+            case 66: {
+              if (!((mutable_bitField0_ & 0x00000040) == 0x00000040)) {
+                entries_ = new java.util.ArrayList<poke.core.Mgmt.LogEntries>();
+                mutable_bitField0_ |= 0x00000040;
+              }
+              entries_.add(input.readMessage(poke.core.Mgmt.LogEntries.PARSER, extensionRegistry));
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000040) == 0x00000040)) {
+          entries_ = java.util.Collections.unmodifiableList(entries_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return poke.core.Mgmt.internal_static_AppendMessage_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return poke.core.Mgmt.internal_static_AppendMessage_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              poke.core.Mgmt.AppendMessage.class, poke.core.Mgmt.AppendMessage.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<AppendMessage> PARSER =
+        new com.google.protobuf.AbstractParser<AppendMessage>() {
+      public AppendMessage parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new AppendMessage(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<AppendMessage> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int LOG_INDEX_FIELD_NUMBER = 1;
+    private int logIndex_;
+    /**
+     * <code>optional int32 log_index = 1;</code>
+     */
+    public boolean hasLogIndex() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional int32 log_index = 1;</code>
+     */
+    public int getLogIndex() {
+      return logIndex_;
+    }
+
+    public static final int PREV_LOG_INDEX_FIELD_NUMBER = 2;
+    private int prevLogIndex_;
+    /**
+     * <code>optional int32 prev_log_index = 2;</code>
+     */
+    public boolean hasPrevLogIndex() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional int32 prev_log_index = 2;</code>
+     */
+    public int getPrevLogIndex() {
+      return prevLogIndex_;
+    }
+
+    public static final int PREV_TERM_FIELD_NUMBER = 3;
+    private int prevTerm_;
+    /**
+     * <code>optional int32 prev_term = 3;</code>
+     */
+    public boolean hasPrevTerm() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional int32 prev_term = 3;</code>
+     */
+    public int getPrevTerm() {
+      return prevTerm_;
+    }
+
+    public static final int LEADER_ID_FIELD_NUMBER = 4;
+    private int leaderId_;
+    /**
+     * <code>optional int32 leader_id = 4;</code>
+     */
+    public boolean hasLeaderId() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional int32 leader_id = 4;</code>
+     */
+    public int getLeaderId() {
+      return leaderId_;
+    }
+
+    public static final int SUCCESS_FIELD_NUMBER = 6;
+    private boolean success_;
+    /**
+     * <code>optional bool success = 6;</code>
+     */
+    public boolean hasSuccess() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional bool success = 6;</code>
+     */
+    public boolean getSuccess() {
+      return success_;
+    }
+
+    public static final int LEADER_COMMIT_FIELD_NUMBER = 7;
+    private int leaderCommit_;
+    /**
+     * <code>optional int32 leader_commit = 7;</code>
+     */
+    public boolean hasLeaderCommit() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional int32 leader_commit = 7;</code>
+     */
+    public int getLeaderCommit() {
+      return leaderCommit_;
+    }
+
+    public static final int ENTRIES_FIELD_NUMBER = 8;
+    private java.util.List<poke.core.Mgmt.LogEntries> entries_;
+    /**
+     * <code>repeated .LogEntries entries = 8;</code>
+     */
+    public java.util.List<poke.core.Mgmt.LogEntries> getEntriesList() {
+      return entries_;
+    }
+    /**
+     * <code>repeated .LogEntries entries = 8;</code>
+     */
+    public java.util.List<? extends poke.core.Mgmt.LogEntriesOrBuilder> 
+        getEntriesOrBuilderList() {
+      return entries_;
+    }
+    /**
+     * <code>repeated .LogEntries entries = 8;</code>
+     */
+    public int getEntriesCount() {
+      return entries_.size();
+    }
+    /**
+     * <code>repeated .LogEntries entries = 8;</code>
+     */
+    public poke.core.Mgmt.LogEntries getEntries(int index) {
+      return entries_.get(index);
+    }
+    /**
+     * <code>repeated .LogEntries entries = 8;</code>
+     */
+    public poke.core.Mgmt.LogEntriesOrBuilder getEntriesOrBuilder(
+        int index) {
+      return entries_.get(index);
+    }
+
+    private void initFields() {
+      logIndex_ = 0;
+      prevLogIndex_ = 0;
+      prevTerm_ = 0;
+      leaderId_ = 0;
+      success_ = false;
+      leaderCommit_ = 0;
+      entries_ = java.util.Collections.emptyList();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeInt32(1, logIndex_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeInt32(2, prevLogIndex_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeInt32(3, prevTerm_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeInt32(4, leaderId_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeBool(6, success_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeInt32(7, leaderCommit_);
+      }
+      for (int i = 0; i < entries_.size(); i++) {
+        output.writeMessage(8, entries_.get(i));
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, logIndex_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, prevLogIndex_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(3, prevTerm_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(4, leaderId_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(6, success_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(7, leaderCommit_);
+      }
+      for (int i = 0; i < entries_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(8, entries_.get(i));
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static poke.core.Mgmt.AppendMessage parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static poke.core.Mgmt.AppendMessage parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static poke.core.Mgmt.AppendMessage parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static poke.core.Mgmt.AppendMessage parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static poke.core.Mgmt.AppendMessage parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static poke.core.Mgmt.AppendMessage parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static poke.core.Mgmt.AppendMessage parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static poke.core.Mgmt.AppendMessage parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static poke.core.Mgmt.AppendMessage parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static poke.core.Mgmt.AppendMessage parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(poke.core.Mgmt.AppendMessage prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code AppendMessage}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:AppendMessage)
+        poke.core.Mgmt.AppendMessageOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return poke.core.Mgmt.internal_static_AppendMessage_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return poke.core.Mgmt.internal_static_AppendMessage_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                poke.core.Mgmt.AppendMessage.class, poke.core.Mgmt.AppendMessage.Builder.class);
+      }
+
+      // Construct using poke.core.Mgmt.AppendMessage.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getEntriesFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        logIndex_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        prevLogIndex_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        prevTerm_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        leaderId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        success_ = false;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        leaderCommit_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000020);
+        if (entriesBuilder_ == null) {
+          entries_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000040);
+        } else {
+          entriesBuilder_.clear();
+        }
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return poke.core.Mgmt.internal_static_AppendMessage_descriptor;
+      }
+
+      public poke.core.Mgmt.AppendMessage getDefaultInstanceForType() {
+        return poke.core.Mgmt.AppendMessage.getDefaultInstance();
+      }
+
+      public poke.core.Mgmt.AppendMessage build() {
+        poke.core.Mgmt.AppendMessage result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public poke.core.Mgmt.AppendMessage buildPartial() {
+        poke.core.Mgmt.AppendMessage result = new poke.core.Mgmt.AppendMessage(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.logIndex_ = logIndex_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.prevLogIndex_ = prevLogIndex_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.prevTerm_ = prevTerm_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.leaderId_ = leaderId_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.success_ = success_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.leaderCommit_ = leaderCommit_;
+        if (entriesBuilder_ == null) {
+          if (((bitField0_ & 0x00000040) == 0x00000040)) {
+            entries_ = java.util.Collections.unmodifiableList(entries_);
+            bitField0_ = (bitField0_ & ~0x00000040);
+          }
+          result.entries_ = entries_;
+        } else {
+          result.entries_ = entriesBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof poke.core.Mgmt.AppendMessage) {
+          return mergeFrom((poke.core.Mgmt.AppendMessage)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(poke.core.Mgmt.AppendMessage other) {
+        if (other == poke.core.Mgmt.AppendMessage.getDefaultInstance()) return this;
+        if (other.hasLogIndex()) {
+          setLogIndex(other.getLogIndex());
+        }
+        if (other.hasPrevLogIndex()) {
+          setPrevLogIndex(other.getPrevLogIndex());
+        }
+        if (other.hasPrevTerm()) {
+          setPrevTerm(other.getPrevTerm());
+        }
+        if (other.hasLeaderId()) {
+          setLeaderId(other.getLeaderId());
+        }
+        if (other.hasSuccess()) {
+          setSuccess(other.getSuccess());
+        }
+        if (other.hasLeaderCommit()) {
+          setLeaderCommit(other.getLeaderCommit());
+        }
+        if (entriesBuilder_ == null) {
+          if (!other.entries_.isEmpty()) {
+            if (entries_.isEmpty()) {
+              entries_ = other.entries_;
+              bitField0_ = (bitField0_ & ~0x00000040);
+            } else {
+              ensureEntriesIsMutable();
+              entries_.addAll(other.entries_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.entries_.isEmpty()) {
+            if (entriesBuilder_.isEmpty()) {
+              entriesBuilder_.dispose();
+              entriesBuilder_ = null;
+              entries_ = other.entries_;
+              bitField0_ = (bitField0_ & ~0x00000040);
+              entriesBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getEntriesFieldBuilder() : null;
+            } else {
+              entriesBuilder_.addAllMessages(other.entries_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        poke.core.Mgmt.AppendMessage parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (poke.core.Mgmt.AppendMessage) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int logIndex_ ;
+      /**
+       * <code>optional int32 log_index = 1;</code>
+       */
+      public boolean hasLogIndex() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional int32 log_index = 1;</code>
+       */
+      public int getLogIndex() {
+        return logIndex_;
+      }
+      /**
+       * <code>optional int32 log_index = 1;</code>
+       */
+      public Builder setLogIndex(int value) {
+        bitField0_ |= 0x00000001;
+        logIndex_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 log_index = 1;</code>
+       */
+      public Builder clearLogIndex() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        logIndex_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int prevLogIndex_ ;
+      /**
+       * <code>optional int32 prev_log_index = 2;</code>
+       */
+      public boolean hasPrevLogIndex() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional int32 prev_log_index = 2;</code>
+       */
+      public int getPrevLogIndex() {
+        return prevLogIndex_;
+      }
+      /**
+       * <code>optional int32 prev_log_index = 2;</code>
+       */
+      public Builder setPrevLogIndex(int value) {
+        bitField0_ |= 0x00000002;
+        prevLogIndex_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 prev_log_index = 2;</code>
+       */
+      public Builder clearPrevLogIndex() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        prevLogIndex_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int prevTerm_ ;
+      /**
+       * <code>optional int32 prev_term = 3;</code>
+       */
+      public boolean hasPrevTerm() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional int32 prev_term = 3;</code>
+       */
+      public int getPrevTerm() {
+        return prevTerm_;
+      }
+      /**
+       * <code>optional int32 prev_term = 3;</code>
+       */
+      public Builder setPrevTerm(int value) {
+        bitField0_ |= 0x00000004;
+        prevTerm_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 prev_term = 3;</code>
+       */
+      public Builder clearPrevTerm() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        prevTerm_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int leaderId_ ;
+      /**
+       * <code>optional int32 leader_id = 4;</code>
+       */
+      public boolean hasLeaderId() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional int32 leader_id = 4;</code>
+       */
+      public int getLeaderId() {
+        return leaderId_;
+      }
+      /**
+       * <code>optional int32 leader_id = 4;</code>
+       */
+      public Builder setLeaderId(int value) {
+        bitField0_ |= 0x00000008;
+        leaderId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 leader_id = 4;</code>
+       */
+      public Builder clearLeaderId() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        leaderId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private boolean success_ ;
+      /**
+       * <code>optional bool success = 6;</code>
+       */
+      public boolean hasSuccess() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional bool success = 6;</code>
+       */
+      public boolean getSuccess() {
+        return success_;
+      }
+      /**
+       * <code>optional bool success = 6;</code>
+       */
+      public Builder setSuccess(boolean value) {
+        bitField0_ |= 0x00000010;
+        success_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool success = 6;</code>
+       */
+      public Builder clearSuccess() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        success_ = false;
+        onChanged();
+        return this;
+      }
+
+      private int leaderCommit_ ;
+      /**
+       * <code>optional int32 leader_commit = 7;</code>
+       */
+      public boolean hasLeaderCommit() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional int32 leader_commit = 7;</code>
+       */
+      public int getLeaderCommit() {
+        return leaderCommit_;
+      }
+      /**
+       * <code>optional int32 leader_commit = 7;</code>
+       */
+      public Builder setLeaderCommit(int value) {
+        bitField0_ |= 0x00000020;
+        leaderCommit_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 leader_commit = 7;</code>
+       */
+      public Builder clearLeaderCommit() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        leaderCommit_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<poke.core.Mgmt.LogEntries> entries_ =
+        java.util.Collections.emptyList();
+      private void ensureEntriesIsMutable() {
+        if (!((bitField0_ & 0x00000040) == 0x00000040)) {
+          entries_ = new java.util.ArrayList<poke.core.Mgmt.LogEntries>(entries_);
+          bitField0_ |= 0x00000040;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          poke.core.Mgmt.LogEntries, poke.core.Mgmt.LogEntries.Builder, poke.core.Mgmt.LogEntriesOrBuilder> entriesBuilder_;
+
+      /**
+       * <code>repeated .LogEntries entries = 8;</code>
+       */
+      public java.util.List<poke.core.Mgmt.LogEntries> getEntriesList() {
+        if (entriesBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(entries_);
+        } else {
+          return entriesBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .LogEntries entries = 8;</code>
+       */
+      public int getEntriesCount() {
+        if (entriesBuilder_ == null) {
+          return entries_.size();
+        } else {
+          return entriesBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .LogEntries entries = 8;</code>
+       */
+      public poke.core.Mgmt.LogEntries getEntries(int index) {
+        if (entriesBuilder_ == null) {
+          return entries_.get(index);
+        } else {
+          return entriesBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .LogEntries entries = 8;</code>
+       */
+      public Builder setEntries(
+          int index, poke.core.Mgmt.LogEntries value) {
+        if (entriesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureEntriesIsMutable();
+          entries_.set(index, value);
+          onChanged();
+        } else {
+          entriesBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .LogEntries entries = 8;</code>
+       */
+      public Builder setEntries(
+          int index, poke.core.Mgmt.LogEntries.Builder builderForValue) {
+        if (entriesBuilder_ == null) {
+          ensureEntriesIsMutable();
+          entries_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          entriesBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .LogEntries entries = 8;</code>
+       */
+      public Builder addEntries(poke.core.Mgmt.LogEntries value) {
+        if (entriesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureEntriesIsMutable();
+          entries_.add(value);
+          onChanged();
+        } else {
+          entriesBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .LogEntries entries = 8;</code>
+       */
+      public Builder addEntries(
+          int index, poke.core.Mgmt.LogEntries value) {
+        if (entriesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureEntriesIsMutable();
+          entries_.add(index, value);
+          onChanged();
+        } else {
+          entriesBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .LogEntries entries = 8;</code>
+       */
+      public Builder addEntries(
+          poke.core.Mgmt.LogEntries.Builder builderForValue) {
+        if (entriesBuilder_ == null) {
+          ensureEntriesIsMutable();
+          entries_.add(builderForValue.build());
+          onChanged();
+        } else {
+          entriesBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .LogEntries entries = 8;</code>
+       */
+      public Builder addEntries(
+          int index, poke.core.Mgmt.LogEntries.Builder builderForValue) {
+        if (entriesBuilder_ == null) {
+          ensureEntriesIsMutable();
+          entries_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          entriesBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .LogEntries entries = 8;</code>
+       */
+      public Builder addAllEntries(
+          java.lang.Iterable<? extends poke.core.Mgmt.LogEntries> values) {
+        if (entriesBuilder_ == null) {
+          ensureEntriesIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, entries_);
+          onChanged();
+        } else {
+          entriesBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .LogEntries entries = 8;</code>
+       */
+      public Builder clearEntries() {
+        if (entriesBuilder_ == null) {
+          entries_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000040);
+          onChanged();
+        } else {
+          entriesBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .LogEntries entries = 8;</code>
+       */
+      public Builder removeEntries(int index) {
+        if (entriesBuilder_ == null) {
+          ensureEntriesIsMutable();
+          entries_.remove(index);
+          onChanged();
+        } else {
+          entriesBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .LogEntries entries = 8;</code>
+       */
+      public poke.core.Mgmt.LogEntries.Builder getEntriesBuilder(
+          int index) {
+        return getEntriesFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .LogEntries entries = 8;</code>
+       */
+      public poke.core.Mgmt.LogEntriesOrBuilder getEntriesOrBuilder(
+          int index) {
+        if (entriesBuilder_ == null) {
+          return entries_.get(index);  } else {
+          return entriesBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .LogEntries entries = 8;</code>
+       */
+      public java.util.List<? extends poke.core.Mgmt.LogEntriesOrBuilder> 
+           getEntriesOrBuilderList() {
+        if (entriesBuilder_ != null) {
+          return entriesBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(entries_);
+        }
+      }
+      /**
+       * <code>repeated .LogEntries entries = 8;</code>
+       */
+      public poke.core.Mgmt.LogEntries.Builder addEntriesBuilder() {
+        return getEntriesFieldBuilder().addBuilder(
+            poke.core.Mgmt.LogEntries.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .LogEntries entries = 8;</code>
+       */
+      public poke.core.Mgmt.LogEntries.Builder addEntriesBuilder(
+          int index) {
+        return getEntriesFieldBuilder().addBuilder(
+            index, poke.core.Mgmt.LogEntries.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .LogEntries entries = 8;</code>
+       */
+      public java.util.List<poke.core.Mgmt.LogEntries.Builder> 
+           getEntriesBuilderList() {
+        return getEntriesFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          poke.core.Mgmt.LogEntries, poke.core.Mgmt.LogEntries.Builder, poke.core.Mgmt.LogEntriesOrBuilder> 
+          getEntriesFieldBuilder() {
+        if (entriesBuilder_ == null) {
+          entriesBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              poke.core.Mgmt.LogEntries, poke.core.Mgmt.LogEntries.Builder, poke.core.Mgmt.LogEntriesOrBuilder>(
+                  entries_,
+                  ((bitField0_ & 0x00000040) == 0x00000040),
+                  getParentForChildren(),
+                  isClean());
+          entries_ = null;
+        }
+        return entriesBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:AppendMessage)
+    }
+
+    static {
+      defaultInstance = new AppendMessage(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:AppendMessage)
+  }
+
+  public interface LogEntriesOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:LogEntries)
+      com.google.protobuf.MessageOrBuilder {
+  }
+  /**
+   * Protobuf type {@code LogEntries}
+   */
+  public static final class LogEntries extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:LogEntries)
+      LogEntriesOrBuilder {
+    // Use LogEntries.newBuilder() to construct.
+    private LogEntries(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private LogEntries(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final LogEntries defaultInstance;
+    public static LogEntries getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public LogEntries getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private LogEntries(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return poke.core.Mgmt.internal_static_LogEntries_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return poke.core.Mgmt.internal_static_LogEntries_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              poke.core.Mgmt.LogEntries.class, poke.core.Mgmt.LogEntries.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<LogEntries> PARSER =
+        new com.google.protobuf.AbstractParser<LogEntries>() {
+      public LogEntries parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new LogEntries(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<LogEntries> getParserForType() {
+      return PARSER;
+    }
+
+    private void initFields() {
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static poke.core.Mgmt.LogEntries parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static poke.core.Mgmt.LogEntries parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static poke.core.Mgmt.LogEntries parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static poke.core.Mgmt.LogEntries parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static poke.core.Mgmt.LogEntries parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static poke.core.Mgmt.LogEntries parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static poke.core.Mgmt.LogEntries parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static poke.core.Mgmt.LogEntries parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static poke.core.Mgmt.LogEntries parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static poke.core.Mgmt.LogEntries parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(poke.core.Mgmt.LogEntries prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code LogEntries}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:LogEntries)
+        poke.core.Mgmt.LogEntriesOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return poke.core.Mgmt.internal_static_LogEntries_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return poke.core.Mgmt.internal_static_LogEntries_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                poke.core.Mgmt.LogEntries.class, poke.core.Mgmt.LogEntries.Builder.class);
+      }
+
+      // Construct using poke.core.Mgmt.LogEntries.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return poke.core.Mgmt.internal_static_LogEntries_descriptor;
+      }
+
+      public poke.core.Mgmt.LogEntries getDefaultInstanceForType() {
+        return poke.core.Mgmt.LogEntries.getDefaultInstance();
+      }
+
+      public poke.core.Mgmt.LogEntries build() {
+        poke.core.Mgmt.LogEntries result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public poke.core.Mgmt.LogEntries buildPartial() {
+        poke.core.Mgmt.LogEntries result = new poke.core.Mgmt.LogEntries(this);
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof poke.core.Mgmt.LogEntries) {
+          return mergeFrom((poke.core.Mgmt.LogEntries)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(poke.core.Mgmt.LogEntries other) {
+        if (other == poke.core.Mgmt.LogEntries.getDefaultInstance()) return this;
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        poke.core.Mgmt.LogEntries parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (poke.core.Mgmt.LogEntries) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:LogEntries)
+    }
+
+    static {
+      defaultInstance = new LogEntries(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:LogEntries)
+  }
+
+  public interface RaftMessageOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:RaftMessage)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -2277,61 +4368,60 @@ public final class Mgmt {
     int getTerm();
 
     /**
-     * <code>required .RaftLeaderElection.ElectionAction action = 2;</code>
+     * <code>required .RaftMessage.ElectionAction action = 2;</code>
      */
     boolean hasAction();
     /**
-     * <code>required .RaftLeaderElection.ElectionAction action = 2;</code>
+     * <code>required .RaftMessage.ElectionAction action = 2;</code>
      */
-    poke.core.Mgmt.RaftLeaderElection.ElectionAction getAction();
+    poke.core.Mgmt.RaftMessage.ElectionAction getAction();
 
     /**
-     * <code>optional int32 log_index = 3;</code>
+     * <code>optional .RequestVoteMessage request_vote = 3;</code>
      */
-    boolean hasLogIndex();
+    boolean hasRequestVote();
     /**
-     * <code>optional int32 log_index = 3;</code>
+     * <code>optional .RequestVoteMessage request_vote = 3;</code>
      */
-    int getLogIndex();
+    poke.core.Mgmt.RequestVoteMessage getRequestVote();
+    /**
+     * <code>optional .RequestVoteMessage request_vote = 3;</code>
+     */
+    poke.core.Mgmt.RequestVoteMessageOrBuilder getRequestVoteOrBuilder();
 
     /**
-     * <code>optional int32 prev_log_index = 4;</code>
+     * <code>optional .AppendMessage append_message = 4;</code>
      */
-    boolean hasPrevLogIndex();
+    boolean hasAppendMessage();
     /**
-     * <code>optional int32 prev_log_index = 4;</code>
+     * <code>optional .AppendMessage append_message = 4;</code>
      */
-    int getPrevLogIndex();
-
+    poke.core.Mgmt.AppendMessage getAppendMessage();
     /**
-     * <code>optional int32 prev_term = 5;</code>
+     * <code>optional .AppendMessage append_message = 4;</code>
      */
-    boolean hasPrevTerm();
-    /**
-     * <code>optional int32 prev_term = 5;</code>
-     */
-    int getPrevTerm();
+    poke.core.Mgmt.AppendMessageOrBuilder getAppendMessageOrBuilder();
   }
   /**
-   * Protobuf type {@code RaftLeaderElection}
+   * Protobuf type {@code RaftMessage}
    */
-  public static final class RaftLeaderElection extends
+  public static final class RaftMessage extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:RaftLeaderElection)
-      RaftLeaderElectionOrBuilder {
-    // Use RaftLeaderElection.newBuilder() to construct.
-    private RaftLeaderElection(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      // @@protoc_insertion_point(message_implements:RaftMessage)
+      RaftMessageOrBuilder {
+    // Use RaftMessage.newBuilder() to construct.
+    private RaftMessage(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
       this.unknownFields = builder.getUnknownFields();
     }
-    private RaftLeaderElection(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+    private RaftMessage(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
 
-    private static final RaftLeaderElection defaultInstance;
-    public static RaftLeaderElection getDefaultInstance() {
+    private static final RaftMessage defaultInstance;
+    public static RaftMessage getDefaultInstance() {
       return defaultInstance;
     }
 
-    public RaftLeaderElection getDefaultInstanceForType() {
+    public RaftMessage getDefaultInstanceForType() {
       return defaultInstance;
     }
 
@@ -2341,7 +4431,7 @@ public final class Mgmt {
         getUnknownFields() {
       return this.unknownFields;
     }
-    private RaftLeaderElection(
+    private RaftMessage(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -2371,7 +4461,7 @@ public final class Mgmt {
             }
             case 16: {
               int rawValue = input.readEnum();
-              poke.core.Mgmt.RaftLeaderElection.ElectionAction value = poke.core.Mgmt.RaftLeaderElection.ElectionAction.valueOf(rawValue);
+              poke.core.Mgmt.RaftMessage.ElectionAction value = poke.core.Mgmt.RaftMessage.ElectionAction.valueOf(rawValue);
               if (value == null) {
                 unknownFields.mergeVarintField(2, rawValue);
               } else {
@@ -2380,19 +4470,30 @@ public final class Mgmt {
               }
               break;
             }
-            case 24: {
+            case 26: {
+              poke.core.Mgmt.RequestVoteMessage.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                subBuilder = requestVote_.toBuilder();
+              }
+              requestVote_ = input.readMessage(poke.core.Mgmt.RequestVoteMessage.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(requestVote_);
+                requestVote_ = subBuilder.buildPartial();
+              }
               bitField0_ |= 0x00000004;
-              logIndex_ = input.readInt32();
               break;
             }
-            case 32: {
+            case 34: {
+              poke.core.Mgmt.AppendMessage.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000008) == 0x00000008)) {
+                subBuilder = appendMessage_.toBuilder();
+              }
+              appendMessage_ = input.readMessage(poke.core.Mgmt.AppendMessage.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(appendMessage_);
+                appendMessage_ = subBuilder.buildPartial();
+              }
               bitField0_ |= 0x00000008;
-              prevLogIndex_ = input.readInt32();
-              break;
-            }
-            case 40: {
-              bitField0_ |= 0x00000010;
-              prevTerm_ = input.readInt32();
               break;
             }
           }
@@ -2409,33 +4510,33 @@ public final class Mgmt {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return poke.core.Mgmt.internal_static_RaftLeaderElection_descriptor;
+      return poke.core.Mgmt.internal_static_RaftMessage_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return poke.core.Mgmt.internal_static_RaftLeaderElection_fieldAccessorTable
+      return poke.core.Mgmt.internal_static_RaftMessage_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              poke.core.Mgmt.RaftLeaderElection.class, poke.core.Mgmt.RaftLeaderElection.Builder.class);
+              poke.core.Mgmt.RaftMessage.class, poke.core.Mgmt.RaftMessage.Builder.class);
     }
 
-    public static com.google.protobuf.Parser<RaftLeaderElection> PARSER =
-        new com.google.protobuf.AbstractParser<RaftLeaderElection>() {
-      public RaftLeaderElection parsePartialFrom(
+    public static com.google.protobuf.Parser<RaftMessage> PARSER =
+        new com.google.protobuf.AbstractParser<RaftMessage>() {
+      public RaftMessage parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new RaftLeaderElection(input, extensionRegistry);
+        return new RaftMessage(input, extensionRegistry);
       }
     };
 
     @java.lang.Override
-    public com.google.protobuf.Parser<RaftLeaderElection> getParserForType() {
+    public com.google.protobuf.Parser<RaftMessage> getParserForType() {
       return PARSER;
     }
 
     /**
-     * Protobuf enum {@code RaftLeaderElection.ElectionAction}
+     * Protobuf enum {@code RaftMessage.ElectionAction}
      */
     public enum ElectionAction
         implements com.google.protobuf.ProtocolMessageEnum {
@@ -2509,7 +4610,7 @@ public final class Mgmt {
       }
       public static final com.google.protobuf.Descriptors.EnumDescriptor
           getDescriptor() {
-        return poke.core.Mgmt.RaftLeaderElection.getDescriptor().getEnumTypes().get(0);
+        return poke.core.Mgmt.RaftMessage.getDescriptor().getEnumTypes().get(0);
       }
 
       private static final ElectionAction[] VALUES = values();
@@ -2531,7 +4632,7 @@ public final class Mgmt {
         this.value = value;
       }
 
-      // @@protoc_insertion_point(enum_scope:RaftLeaderElection.ElectionAction)
+      // @@protoc_insertion_point(enum_scope:RaftMessage.ElectionAction)
     }
 
     private int bitField0_;
@@ -2551,71 +4652,67 @@ public final class Mgmt {
     }
 
     public static final int ACTION_FIELD_NUMBER = 2;
-    private poke.core.Mgmt.RaftLeaderElection.ElectionAction action_;
+    private poke.core.Mgmt.RaftMessage.ElectionAction action_;
     /**
-     * <code>required .RaftLeaderElection.ElectionAction action = 2;</code>
+     * <code>required .RaftMessage.ElectionAction action = 2;</code>
      */
     public boolean hasAction() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>required .RaftLeaderElection.ElectionAction action = 2;</code>
+     * <code>required .RaftMessage.ElectionAction action = 2;</code>
      */
-    public poke.core.Mgmt.RaftLeaderElection.ElectionAction getAction() {
+    public poke.core.Mgmt.RaftMessage.ElectionAction getAction() {
       return action_;
     }
 
-    public static final int LOG_INDEX_FIELD_NUMBER = 3;
-    private int logIndex_;
+    public static final int REQUEST_VOTE_FIELD_NUMBER = 3;
+    private poke.core.Mgmt.RequestVoteMessage requestVote_;
     /**
-     * <code>optional int32 log_index = 3;</code>
+     * <code>optional .RequestVoteMessage request_vote = 3;</code>
      */
-    public boolean hasLogIndex() {
+    public boolean hasRequestVote() {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <code>optional int32 log_index = 3;</code>
+     * <code>optional .RequestVoteMessage request_vote = 3;</code>
      */
-    public int getLogIndex() {
-      return logIndex_;
+    public poke.core.Mgmt.RequestVoteMessage getRequestVote() {
+      return requestVote_;
+    }
+    /**
+     * <code>optional .RequestVoteMessage request_vote = 3;</code>
+     */
+    public poke.core.Mgmt.RequestVoteMessageOrBuilder getRequestVoteOrBuilder() {
+      return requestVote_;
     }
 
-    public static final int PREV_LOG_INDEX_FIELD_NUMBER = 4;
-    private int prevLogIndex_;
+    public static final int APPEND_MESSAGE_FIELD_NUMBER = 4;
+    private poke.core.Mgmt.AppendMessage appendMessage_;
     /**
-     * <code>optional int32 prev_log_index = 4;</code>
+     * <code>optional .AppendMessage append_message = 4;</code>
      */
-    public boolean hasPrevLogIndex() {
+    public boolean hasAppendMessage() {
       return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     /**
-     * <code>optional int32 prev_log_index = 4;</code>
+     * <code>optional .AppendMessage append_message = 4;</code>
      */
-    public int getPrevLogIndex() {
-      return prevLogIndex_;
-    }
-
-    public static final int PREV_TERM_FIELD_NUMBER = 5;
-    private int prevTerm_;
-    /**
-     * <code>optional int32 prev_term = 5;</code>
-     */
-    public boolean hasPrevTerm() {
-      return ((bitField0_ & 0x00000010) == 0x00000010);
+    public poke.core.Mgmt.AppendMessage getAppendMessage() {
+      return appendMessage_;
     }
     /**
-     * <code>optional int32 prev_term = 5;</code>
+     * <code>optional .AppendMessage append_message = 4;</code>
      */
-    public int getPrevTerm() {
-      return prevTerm_;
+    public poke.core.Mgmt.AppendMessageOrBuilder getAppendMessageOrBuilder() {
+      return appendMessage_;
     }
 
     private void initFields() {
       term_ = 0;
-      action_ = poke.core.Mgmt.RaftLeaderElection.ElectionAction.APPEND;
-      logIndex_ = 0;
-      prevLogIndex_ = 0;
-      prevTerm_ = 0;
+      action_ = poke.core.Mgmt.RaftMessage.ElectionAction.APPEND;
+      requestVote_ = poke.core.Mgmt.RequestVoteMessage.getDefaultInstance();
+      appendMessage_ = poke.core.Mgmt.AppendMessage.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -2645,13 +4742,10 @@ public final class Mgmt {
         output.writeEnum(2, action_.getNumber());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeInt32(3, logIndex_);
+        output.writeMessage(3, requestVote_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeInt32(4, prevLogIndex_);
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeInt32(5, prevTerm_);
+        output.writeMessage(4, appendMessage_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -2672,15 +4766,11 @@ public final class Mgmt {
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(3, logIndex_);
+          .computeMessageSize(3, requestVote_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(4, prevLogIndex_);
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(5, prevTerm_);
+          .computeMessageSize(4, appendMessage_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -2694,53 +4784,53 @@ public final class Mgmt {
       return super.writeReplace();
     }
 
-    public static poke.core.Mgmt.RaftLeaderElection parseFrom(
+    public static poke.core.Mgmt.RaftMessage parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static poke.core.Mgmt.RaftLeaderElection parseFrom(
+    public static poke.core.Mgmt.RaftMessage parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static poke.core.Mgmt.RaftLeaderElection parseFrom(byte[] data)
+    public static poke.core.Mgmt.RaftMessage parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static poke.core.Mgmt.RaftLeaderElection parseFrom(
+    public static poke.core.Mgmt.RaftMessage parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static poke.core.Mgmt.RaftLeaderElection parseFrom(java.io.InputStream input)
+    public static poke.core.Mgmt.RaftMessage parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static poke.core.Mgmt.RaftLeaderElection parseFrom(
+    public static poke.core.Mgmt.RaftMessage parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static poke.core.Mgmt.RaftLeaderElection parseDelimitedFrom(java.io.InputStream input)
+    public static poke.core.Mgmt.RaftMessage parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static poke.core.Mgmt.RaftLeaderElection parseDelimitedFrom(
+    public static poke.core.Mgmt.RaftMessage parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static poke.core.Mgmt.RaftLeaderElection parseFrom(
+    public static poke.core.Mgmt.RaftMessage parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static poke.core.Mgmt.RaftLeaderElection parseFrom(
+    public static poke.core.Mgmt.RaftMessage parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -2749,7 +4839,7 @@ public final class Mgmt {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(poke.core.Mgmt.RaftLeaderElection prototype) {
+    public static Builder newBuilder(poke.core.Mgmt.RaftMessage prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -2761,25 +4851,25 @@ public final class Mgmt {
       return builder;
     }
     /**
-     * Protobuf type {@code RaftLeaderElection}
+     * Protobuf type {@code RaftMessage}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:RaftLeaderElection)
-        poke.core.Mgmt.RaftLeaderElectionOrBuilder {
+        // @@protoc_insertion_point(builder_implements:RaftMessage)
+        poke.core.Mgmt.RaftMessageOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return poke.core.Mgmt.internal_static_RaftLeaderElection_descriptor;
+        return poke.core.Mgmt.internal_static_RaftMessage_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return poke.core.Mgmt.internal_static_RaftLeaderElection_fieldAccessorTable
+        return poke.core.Mgmt.internal_static_RaftMessage_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                poke.core.Mgmt.RaftLeaderElection.class, poke.core.Mgmt.RaftLeaderElection.Builder.class);
+                poke.core.Mgmt.RaftMessage.class, poke.core.Mgmt.RaftMessage.Builder.class);
       }
 
-      // Construct using poke.core.Mgmt.RaftLeaderElection.newBuilder()
+      // Construct using poke.core.Mgmt.RaftMessage.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -2791,6 +4881,8 @@ public final class Mgmt {
       }
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getRequestVoteFieldBuilder();
+          getAppendMessageFieldBuilder();
         }
       }
       private static Builder create() {
@@ -2801,14 +4893,20 @@ public final class Mgmt {
         super.clear();
         term_ = 0;
         bitField0_ = (bitField0_ & ~0x00000001);
-        action_ = poke.core.Mgmt.RaftLeaderElection.ElectionAction.APPEND;
+        action_ = poke.core.Mgmt.RaftMessage.ElectionAction.APPEND;
         bitField0_ = (bitField0_ & ~0x00000002);
-        logIndex_ = 0;
+        if (requestVoteBuilder_ == null) {
+          requestVote_ = poke.core.Mgmt.RequestVoteMessage.getDefaultInstance();
+        } else {
+          requestVoteBuilder_.clear();
+        }
         bitField0_ = (bitField0_ & ~0x00000004);
-        prevLogIndex_ = 0;
+        if (appendMessageBuilder_ == null) {
+          appendMessage_ = poke.core.Mgmt.AppendMessage.getDefaultInstance();
+        } else {
+          appendMessageBuilder_.clear();
+        }
         bitField0_ = (bitField0_ & ~0x00000008);
-        prevTerm_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -2818,23 +4916,23 @@ public final class Mgmt {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return poke.core.Mgmt.internal_static_RaftLeaderElection_descriptor;
+        return poke.core.Mgmt.internal_static_RaftMessage_descriptor;
       }
 
-      public poke.core.Mgmt.RaftLeaderElection getDefaultInstanceForType() {
-        return poke.core.Mgmt.RaftLeaderElection.getDefaultInstance();
+      public poke.core.Mgmt.RaftMessage getDefaultInstanceForType() {
+        return poke.core.Mgmt.RaftMessage.getDefaultInstance();
       }
 
-      public poke.core.Mgmt.RaftLeaderElection build() {
-        poke.core.Mgmt.RaftLeaderElection result = buildPartial();
+      public poke.core.Mgmt.RaftMessage build() {
+        poke.core.Mgmt.RaftMessage result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public poke.core.Mgmt.RaftLeaderElection buildPartial() {
-        poke.core.Mgmt.RaftLeaderElection result = new poke.core.Mgmt.RaftLeaderElection(this);
+      public poke.core.Mgmt.RaftMessage buildPartial() {
+        poke.core.Mgmt.RaftMessage result = new poke.core.Mgmt.RaftMessage(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -2848,45 +4946,46 @@ public final class Mgmt {
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
         }
-        result.logIndex_ = logIndex_;
+        if (requestVoteBuilder_ == null) {
+          result.requestVote_ = requestVote_;
+        } else {
+          result.requestVote_ = requestVoteBuilder_.build();
+        }
         if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
           to_bitField0_ |= 0x00000008;
         }
-        result.prevLogIndex_ = prevLogIndex_;
-        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
-          to_bitField0_ |= 0x00000010;
+        if (appendMessageBuilder_ == null) {
+          result.appendMessage_ = appendMessage_;
+        } else {
+          result.appendMessage_ = appendMessageBuilder_.build();
         }
-        result.prevTerm_ = prevTerm_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof poke.core.Mgmt.RaftLeaderElection) {
-          return mergeFrom((poke.core.Mgmt.RaftLeaderElection)other);
+        if (other instanceof poke.core.Mgmt.RaftMessage) {
+          return mergeFrom((poke.core.Mgmt.RaftMessage)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(poke.core.Mgmt.RaftLeaderElection other) {
-        if (other == poke.core.Mgmt.RaftLeaderElection.getDefaultInstance()) return this;
+      public Builder mergeFrom(poke.core.Mgmt.RaftMessage other) {
+        if (other == poke.core.Mgmt.RaftMessage.getDefaultInstance()) return this;
         if (other.hasTerm()) {
           setTerm(other.getTerm());
         }
         if (other.hasAction()) {
           setAction(other.getAction());
         }
-        if (other.hasLogIndex()) {
-          setLogIndex(other.getLogIndex());
+        if (other.hasRequestVote()) {
+          mergeRequestVote(other.getRequestVote());
         }
-        if (other.hasPrevLogIndex()) {
-          setPrevLogIndex(other.getPrevLogIndex());
-        }
-        if (other.hasPrevTerm()) {
-          setPrevTerm(other.getPrevTerm());
+        if (other.hasAppendMessage()) {
+          mergeAppendMessage(other.getAppendMessage());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -2908,11 +5007,11 @@ public final class Mgmt {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        poke.core.Mgmt.RaftLeaderElection parsedMessage = null;
+        poke.core.Mgmt.RaftMessage parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (poke.core.Mgmt.RaftLeaderElection) e.getUnfinishedMessage();
+          parsedMessage = (poke.core.Mgmt.RaftMessage) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -2955,23 +5054,23 @@ public final class Mgmt {
         return this;
       }
 
-      private poke.core.Mgmt.RaftLeaderElection.ElectionAction action_ = poke.core.Mgmt.RaftLeaderElection.ElectionAction.APPEND;
+      private poke.core.Mgmt.RaftMessage.ElectionAction action_ = poke.core.Mgmt.RaftMessage.ElectionAction.APPEND;
       /**
-       * <code>required .RaftLeaderElection.ElectionAction action = 2;</code>
+       * <code>required .RaftMessage.ElectionAction action = 2;</code>
        */
       public boolean hasAction() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>required .RaftLeaderElection.ElectionAction action = 2;</code>
+       * <code>required .RaftMessage.ElectionAction action = 2;</code>
        */
-      public poke.core.Mgmt.RaftLeaderElection.ElectionAction getAction() {
+      public poke.core.Mgmt.RaftMessage.ElectionAction getAction() {
         return action_;
       }
       /**
-       * <code>required .RaftLeaderElection.ElectionAction action = 2;</code>
+       * <code>required .RaftMessage.ElectionAction action = 2;</code>
        */
-      public Builder setAction(poke.core.Mgmt.RaftLeaderElection.ElectionAction value) {
+      public Builder setAction(poke.core.Mgmt.RaftMessage.ElectionAction value) {
         if (value == null) {
           throw new NullPointerException();
         }
@@ -2981,120 +5080,256 @@ public final class Mgmt {
         return this;
       }
       /**
-       * <code>required .RaftLeaderElection.ElectionAction action = 2;</code>
+       * <code>required .RaftMessage.ElectionAction action = 2;</code>
        */
       public Builder clearAction() {
         bitField0_ = (bitField0_ & ~0x00000002);
-        action_ = poke.core.Mgmt.RaftLeaderElection.ElectionAction.APPEND;
+        action_ = poke.core.Mgmt.RaftMessage.ElectionAction.APPEND;
         onChanged();
         return this;
       }
 
-      private int logIndex_ ;
+      private poke.core.Mgmt.RequestVoteMessage requestVote_ = poke.core.Mgmt.RequestVoteMessage.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          poke.core.Mgmt.RequestVoteMessage, poke.core.Mgmt.RequestVoteMessage.Builder, poke.core.Mgmt.RequestVoteMessageOrBuilder> requestVoteBuilder_;
       /**
-       * <code>optional int32 log_index = 3;</code>
+       * <code>optional .RequestVoteMessage request_vote = 3;</code>
        */
-      public boolean hasLogIndex() {
+      public boolean hasRequestVote() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <code>optional int32 log_index = 3;</code>
+       * <code>optional .RequestVoteMessage request_vote = 3;</code>
        */
-      public int getLogIndex() {
-        return logIndex_;
+      public poke.core.Mgmt.RequestVoteMessage getRequestVote() {
+        if (requestVoteBuilder_ == null) {
+          return requestVote_;
+        } else {
+          return requestVoteBuilder_.getMessage();
+        }
       }
       /**
-       * <code>optional int32 log_index = 3;</code>
+       * <code>optional .RequestVoteMessage request_vote = 3;</code>
        */
-      public Builder setLogIndex(int value) {
+      public Builder setRequestVote(poke.core.Mgmt.RequestVoteMessage value) {
+        if (requestVoteBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          requestVote_ = value;
+          onChanged();
+        } else {
+          requestVoteBuilder_.setMessage(value);
+        }
         bitField0_ |= 0x00000004;
-        logIndex_ = value;
-        onChanged();
         return this;
       }
       /**
-       * <code>optional int32 log_index = 3;</code>
+       * <code>optional .RequestVoteMessage request_vote = 3;</code>
        */
-      public Builder clearLogIndex() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        logIndex_ = 0;
-        onChanged();
+      public Builder setRequestVote(
+          poke.core.Mgmt.RequestVoteMessage.Builder builderForValue) {
+        if (requestVoteBuilder_ == null) {
+          requestVote_ = builderForValue.build();
+          onChanged();
+        } else {
+          requestVoteBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000004;
         return this;
+      }
+      /**
+       * <code>optional .RequestVoteMessage request_vote = 3;</code>
+       */
+      public Builder mergeRequestVote(poke.core.Mgmt.RequestVoteMessage value) {
+        if (requestVoteBuilder_ == null) {
+          if (((bitField0_ & 0x00000004) == 0x00000004) &&
+              requestVote_ != poke.core.Mgmt.RequestVoteMessage.getDefaultInstance()) {
+            requestVote_ =
+              poke.core.Mgmt.RequestVoteMessage.newBuilder(requestVote_).mergeFrom(value).buildPartial();
+          } else {
+            requestVote_ = value;
+          }
+          onChanged();
+        } else {
+          requestVoteBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>optional .RequestVoteMessage request_vote = 3;</code>
+       */
+      public Builder clearRequestVote() {
+        if (requestVoteBuilder_ == null) {
+          requestVote_ = poke.core.Mgmt.RequestVoteMessage.getDefaultInstance();
+          onChanged();
+        } else {
+          requestVoteBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+      /**
+       * <code>optional .RequestVoteMessage request_vote = 3;</code>
+       */
+      public poke.core.Mgmt.RequestVoteMessage.Builder getRequestVoteBuilder() {
+        bitField0_ |= 0x00000004;
+        onChanged();
+        return getRequestVoteFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .RequestVoteMessage request_vote = 3;</code>
+       */
+      public poke.core.Mgmt.RequestVoteMessageOrBuilder getRequestVoteOrBuilder() {
+        if (requestVoteBuilder_ != null) {
+          return requestVoteBuilder_.getMessageOrBuilder();
+        } else {
+          return requestVote_;
+        }
+      }
+      /**
+       * <code>optional .RequestVoteMessage request_vote = 3;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          poke.core.Mgmt.RequestVoteMessage, poke.core.Mgmt.RequestVoteMessage.Builder, poke.core.Mgmt.RequestVoteMessageOrBuilder> 
+          getRequestVoteFieldBuilder() {
+        if (requestVoteBuilder_ == null) {
+          requestVoteBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              poke.core.Mgmt.RequestVoteMessage, poke.core.Mgmt.RequestVoteMessage.Builder, poke.core.Mgmt.RequestVoteMessageOrBuilder>(
+                  getRequestVote(),
+                  getParentForChildren(),
+                  isClean());
+          requestVote_ = null;
+        }
+        return requestVoteBuilder_;
       }
 
-      private int prevLogIndex_ ;
+      private poke.core.Mgmt.AppendMessage appendMessage_ = poke.core.Mgmt.AppendMessage.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          poke.core.Mgmt.AppendMessage, poke.core.Mgmt.AppendMessage.Builder, poke.core.Mgmt.AppendMessageOrBuilder> appendMessageBuilder_;
       /**
-       * <code>optional int32 prev_log_index = 4;</code>
+       * <code>optional .AppendMessage append_message = 4;</code>
        */
-      public boolean hasPrevLogIndex() {
+      public boolean hasAppendMessage() {
         return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
-       * <code>optional int32 prev_log_index = 4;</code>
+       * <code>optional .AppendMessage append_message = 4;</code>
        */
-      public int getPrevLogIndex() {
-        return prevLogIndex_;
+      public poke.core.Mgmt.AppendMessage getAppendMessage() {
+        if (appendMessageBuilder_ == null) {
+          return appendMessage_;
+        } else {
+          return appendMessageBuilder_.getMessage();
+        }
       }
       /**
-       * <code>optional int32 prev_log_index = 4;</code>
+       * <code>optional .AppendMessage append_message = 4;</code>
        */
-      public Builder setPrevLogIndex(int value) {
+      public Builder setAppendMessage(poke.core.Mgmt.AppendMessage value) {
+        if (appendMessageBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          appendMessage_ = value;
+          onChanged();
+        } else {
+          appendMessageBuilder_.setMessage(value);
+        }
         bitField0_ |= 0x00000008;
-        prevLogIndex_ = value;
-        onChanged();
         return this;
       }
       /**
-       * <code>optional int32 prev_log_index = 4;</code>
+       * <code>optional .AppendMessage append_message = 4;</code>
        */
-      public Builder clearPrevLogIndex() {
+      public Builder setAppendMessage(
+          poke.core.Mgmt.AppendMessage.Builder builderForValue) {
+        if (appendMessageBuilder_ == null) {
+          appendMessage_ = builderForValue.build();
+          onChanged();
+        } else {
+          appendMessageBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000008;
+        return this;
+      }
+      /**
+       * <code>optional .AppendMessage append_message = 4;</code>
+       */
+      public Builder mergeAppendMessage(poke.core.Mgmt.AppendMessage value) {
+        if (appendMessageBuilder_ == null) {
+          if (((bitField0_ & 0x00000008) == 0x00000008) &&
+              appendMessage_ != poke.core.Mgmt.AppendMessage.getDefaultInstance()) {
+            appendMessage_ =
+              poke.core.Mgmt.AppendMessage.newBuilder(appendMessage_).mergeFrom(value).buildPartial();
+          } else {
+            appendMessage_ = value;
+          }
+          onChanged();
+        } else {
+          appendMessageBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000008;
+        return this;
+      }
+      /**
+       * <code>optional .AppendMessage append_message = 4;</code>
+       */
+      public Builder clearAppendMessage() {
+        if (appendMessageBuilder_ == null) {
+          appendMessage_ = poke.core.Mgmt.AppendMessage.getDefaultInstance();
+          onChanged();
+        } else {
+          appendMessageBuilder_.clear();
+        }
         bitField0_ = (bitField0_ & ~0x00000008);
-        prevLogIndex_ = 0;
-        onChanged();
         return this;
+      }
+      /**
+       * <code>optional .AppendMessage append_message = 4;</code>
+       */
+      public poke.core.Mgmt.AppendMessage.Builder getAppendMessageBuilder() {
+        bitField0_ |= 0x00000008;
+        onChanged();
+        return getAppendMessageFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .AppendMessage append_message = 4;</code>
+       */
+      public poke.core.Mgmt.AppendMessageOrBuilder getAppendMessageOrBuilder() {
+        if (appendMessageBuilder_ != null) {
+          return appendMessageBuilder_.getMessageOrBuilder();
+        } else {
+          return appendMessage_;
+        }
+      }
+      /**
+       * <code>optional .AppendMessage append_message = 4;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          poke.core.Mgmt.AppendMessage, poke.core.Mgmt.AppendMessage.Builder, poke.core.Mgmt.AppendMessageOrBuilder> 
+          getAppendMessageFieldBuilder() {
+        if (appendMessageBuilder_ == null) {
+          appendMessageBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              poke.core.Mgmt.AppendMessage, poke.core.Mgmt.AppendMessage.Builder, poke.core.Mgmt.AppendMessageOrBuilder>(
+                  getAppendMessage(),
+                  getParentForChildren(),
+                  isClean());
+          appendMessage_ = null;
+        }
+        return appendMessageBuilder_;
       }
 
-      private int prevTerm_ ;
-      /**
-       * <code>optional int32 prev_term = 5;</code>
-       */
-      public boolean hasPrevTerm() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
-      }
-      /**
-       * <code>optional int32 prev_term = 5;</code>
-       */
-      public int getPrevTerm() {
-        return prevTerm_;
-      }
-      /**
-       * <code>optional int32 prev_term = 5;</code>
-       */
-      public Builder setPrevTerm(int value) {
-        bitField0_ |= 0x00000010;
-        prevTerm_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional int32 prev_term = 5;</code>
-       */
-      public Builder clearPrevTerm() {
-        bitField0_ = (bitField0_ & ~0x00000010);
-        prevTerm_ = 0;
-        onChanged();
-        return this;
-      }
-
-      // @@protoc_insertion_point(builder_scope:RaftLeaderElection)
+      // @@protoc_insertion_point(builder_scope:RaftMessage)
     }
 
     static {
-      defaultInstance = new RaftLeaderElection(true);
+      defaultInstance = new RaftMessage(true);
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:RaftLeaderElection)
+    // @@protoc_insertion_point(class_scope:RaftMessage)
   }
 
   public interface VotingBallotOrBuilder extends
@@ -7827,29 +10062,29 @@ public final class Mgmt {
     poke.core.Mgmt.VotingStatusOrBuilder getVoteStatusOrBuilder();
 
     /**
-     * <code>optional .RaftLeaderElection raftElection = 10;</code>
+     * <code>optional .RaftMessage raft_message = 10;</code>
      *
      * <pre>
      *Raft
      * </pre>
      */
-    boolean hasRaftElection();
+    boolean hasRaftMessage();
     /**
-     * <code>optional .RaftLeaderElection raftElection = 10;</code>
+     * <code>optional .RaftMessage raft_message = 10;</code>
      *
      * <pre>
      *Raft
      * </pre>
      */
-    poke.core.Mgmt.RaftLeaderElection getRaftElection();
+    poke.core.Mgmt.RaftMessage getRaftMessage();
     /**
-     * <code>optional .RaftLeaderElection raftElection = 10;</code>
+     * <code>optional .RaftMessage raft_message = 10;</code>
      *
      * <pre>
      *Raft
      * </pre>
      */
-    poke.core.Mgmt.RaftLeaderElectionOrBuilder getRaftElectionOrBuilder();
+    poke.core.Mgmt.RaftMessageOrBuilder getRaftMessageOrBuilder();
   }
   /**
    * Protobuf type {@code Management}
@@ -7999,14 +10234,14 @@ public final class Mgmt {
               break;
             }
             case 82: {
-              poke.core.Mgmt.RaftLeaderElection.Builder subBuilder = null;
+              poke.core.Mgmt.RaftMessage.Builder subBuilder = null;
               if (((bitField0_ & 0x00000080) == 0x00000080)) {
-                subBuilder = raftElection_.toBuilder();
+                subBuilder = raftMessage_.toBuilder();
               }
-              raftElection_ = input.readMessage(poke.core.Mgmt.RaftLeaderElection.PARSER, extensionRegistry);
+              raftMessage_ = input.readMessage(poke.core.Mgmt.RaftMessage.PARSER, extensionRegistry);
               if (subBuilder != null) {
-                subBuilder.mergeFrom(raftElection_);
-                raftElection_ = subBuilder.buildPartial();
+                subBuilder.mergeFrom(raftMessage_);
+                raftMessage_ = subBuilder.buildPartial();
               }
               bitField0_ |= 0x00000080;
               break;
@@ -8246,37 +10481,37 @@ public final class Mgmt {
       return voteStatus_;
     }
 
-    public static final int RAFTELECTION_FIELD_NUMBER = 10;
-    private poke.core.Mgmt.RaftLeaderElection raftElection_;
+    public static final int RAFT_MESSAGE_FIELD_NUMBER = 10;
+    private poke.core.Mgmt.RaftMessage raftMessage_;
     /**
-     * <code>optional .RaftLeaderElection raftElection = 10;</code>
+     * <code>optional .RaftMessage raft_message = 10;</code>
      *
      * <pre>
      *Raft
      * </pre>
      */
-    public boolean hasRaftElection() {
+    public boolean hasRaftMessage() {
       return ((bitField0_ & 0x00000080) == 0x00000080);
     }
     /**
-     * <code>optional .RaftLeaderElection raftElection = 10;</code>
+     * <code>optional .RaftMessage raft_message = 10;</code>
      *
      * <pre>
      *Raft
      * </pre>
      */
-    public poke.core.Mgmt.RaftLeaderElection getRaftElection() {
-      return raftElection_;
+    public poke.core.Mgmt.RaftMessage getRaftMessage() {
+      return raftMessage_;
     }
     /**
-     * <code>optional .RaftLeaderElection raftElection = 10;</code>
+     * <code>optional .RaftMessage raft_message = 10;</code>
      *
      * <pre>
      *Raft
      * </pre>
      */
-    public poke.core.Mgmt.RaftLeaderElectionOrBuilder getRaftElectionOrBuilder() {
-      return raftElection_;
+    public poke.core.Mgmt.RaftMessageOrBuilder getRaftMessageOrBuilder() {
+      return raftMessage_;
     }
 
     private void initFields() {
@@ -8287,7 +10522,7 @@ public final class Mgmt {
       voteDeclare_ = poke.core.Mgmt.VotingBallot.getDefaultInstance();
       voteCast_ = poke.core.Mgmt.VotingCast.getDefaultInstance();
       voteStatus_ = poke.core.Mgmt.VotingStatus.getDefaultInstance();
-      raftElection_ = poke.core.Mgmt.RaftLeaderElection.getDefaultInstance();
+      raftMessage_ = poke.core.Mgmt.RaftMessage.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -8339,8 +10574,8 @@ public final class Mgmt {
           return false;
         }
       }
-      if (hasRaftElection()) {
-        if (!getRaftElection().isInitialized()) {
+      if (hasRaftMessage()) {
+        if (!getRaftMessage().isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -8374,7 +10609,7 @@ public final class Mgmt {
         output.writeMessage(9, voteStatus_);
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        output.writeMessage(10, raftElection_);
+        output.writeMessage(10, raftMessage_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -8415,7 +10650,7 @@ public final class Mgmt {
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(10, raftElection_);
+          .computeMessageSize(10, raftMessage_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -8537,7 +10772,7 @@ public final class Mgmt {
           getVoteDeclareFieldBuilder();
           getVoteCastFieldBuilder();
           getVoteStatusFieldBuilder();
-          getRaftElectionFieldBuilder();
+          getRaftMessageFieldBuilder();
         }
       }
       private static Builder create() {
@@ -8588,10 +10823,10 @@ public final class Mgmt {
           voteStatusBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000040);
-        if (raftElectionBuilder_ == null) {
-          raftElection_ = poke.core.Mgmt.RaftLeaderElection.getDefaultInstance();
+        if (raftMessageBuilder_ == null) {
+          raftMessage_ = poke.core.Mgmt.RaftMessage.getDefaultInstance();
         } else {
-          raftElectionBuilder_.clear();
+          raftMessageBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000080);
         return this;
@@ -8681,10 +10916,10 @@ public final class Mgmt {
         if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
           to_bitField0_ |= 0x00000080;
         }
-        if (raftElectionBuilder_ == null) {
-          result.raftElection_ = raftElection_;
+        if (raftMessageBuilder_ == null) {
+          result.raftMessage_ = raftMessage_;
         } else {
-          result.raftElection_ = raftElectionBuilder_.build();
+          result.raftMessage_ = raftMessageBuilder_.build();
         }
         result.bitField0_ = to_bitField0_;
         onBuilt();
@@ -8723,8 +10958,8 @@ public final class Mgmt {
         if (other.hasVoteStatus()) {
           mergeVoteStatus(other.getVoteStatus());
         }
-        if (other.hasRaftElection()) {
-          mergeRaftElection(other.getRaftElection());
+        if (other.hasRaftMessage()) {
+          mergeRaftMessage(other.getRaftMessage());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -8775,8 +11010,8 @@ public final class Mgmt {
             return false;
           }
         }
-        if (hasRaftElection()) {
-          if (!getRaftElection().isInitialized()) {
+        if (hasRaftMessage()) {
+          if (!getRaftMessage().isInitialized()) {
             
             return false;
           }
@@ -9759,156 +11994,156 @@ public final class Mgmt {
         return voteStatusBuilder_;
       }
 
-      private poke.core.Mgmt.RaftLeaderElection raftElection_ = poke.core.Mgmt.RaftLeaderElection.getDefaultInstance();
+      private poke.core.Mgmt.RaftMessage raftMessage_ = poke.core.Mgmt.RaftMessage.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
-          poke.core.Mgmt.RaftLeaderElection, poke.core.Mgmt.RaftLeaderElection.Builder, poke.core.Mgmt.RaftLeaderElectionOrBuilder> raftElectionBuilder_;
+          poke.core.Mgmt.RaftMessage, poke.core.Mgmt.RaftMessage.Builder, poke.core.Mgmt.RaftMessageOrBuilder> raftMessageBuilder_;
       /**
-       * <code>optional .RaftLeaderElection raftElection = 10;</code>
+       * <code>optional .RaftMessage raft_message = 10;</code>
        *
        * <pre>
        *Raft
        * </pre>
        */
-      public boolean hasRaftElection() {
+      public boolean hasRaftMessage() {
         return ((bitField0_ & 0x00000080) == 0x00000080);
       }
       /**
-       * <code>optional .RaftLeaderElection raftElection = 10;</code>
+       * <code>optional .RaftMessage raft_message = 10;</code>
        *
        * <pre>
        *Raft
        * </pre>
        */
-      public poke.core.Mgmt.RaftLeaderElection getRaftElection() {
-        if (raftElectionBuilder_ == null) {
-          return raftElection_;
+      public poke.core.Mgmt.RaftMessage getRaftMessage() {
+        if (raftMessageBuilder_ == null) {
+          return raftMessage_;
         } else {
-          return raftElectionBuilder_.getMessage();
+          return raftMessageBuilder_.getMessage();
         }
       }
       /**
-       * <code>optional .RaftLeaderElection raftElection = 10;</code>
+       * <code>optional .RaftMessage raft_message = 10;</code>
        *
        * <pre>
        *Raft
        * </pre>
        */
-      public Builder setRaftElection(poke.core.Mgmt.RaftLeaderElection value) {
-        if (raftElectionBuilder_ == null) {
+      public Builder setRaftMessage(poke.core.Mgmt.RaftMessage value) {
+        if (raftMessageBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          raftElection_ = value;
+          raftMessage_ = value;
           onChanged();
         } else {
-          raftElectionBuilder_.setMessage(value);
+          raftMessageBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000080;
         return this;
       }
       /**
-       * <code>optional .RaftLeaderElection raftElection = 10;</code>
+       * <code>optional .RaftMessage raft_message = 10;</code>
        *
        * <pre>
        *Raft
        * </pre>
        */
-      public Builder setRaftElection(
-          poke.core.Mgmt.RaftLeaderElection.Builder builderForValue) {
-        if (raftElectionBuilder_ == null) {
-          raftElection_ = builderForValue.build();
+      public Builder setRaftMessage(
+          poke.core.Mgmt.RaftMessage.Builder builderForValue) {
+        if (raftMessageBuilder_ == null) {
+          raftMessage_ = builderForValue.build();
           onChanged();
         } else {
-          raftElectionBuilder_.setMessage(builderForValue.build());
+          raftMessageBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000080;
         return this;
       }
       /**
-       * <code>optional .RaftLeaderElection raftElection = 10;</code>
+       * <code>optional .RaftMessage raft_message = 10;</code>
        *
        * <pre>
        *Raft
        * </pre>
        */
-      public Builder mergeRaftElection(poke.core.Mgmt.RaftLeaderElection value) {
-        if (raftElectionBuilder_ == null) {
+      public Builder mergeRaftMessage(poke.core.Mgmt.RaftMessage value) {
+        if (raftMessageBuilder_ == null) {
           if (((bitField0_ & 0x00000080) == 0x00000080) &&
-              raftElection_ != poke.core.Mgmt.RaftLeaderElection.getDefaultInstance()) {
-            raftElection_ =
-              poke.core.Mgmt.RaftLeaderElection.newBuilder(raftElection_).mergeFrom(value).buildPartial();
+              raftMessage_ != poke.core.Mgmt.RaftMessage.getDefaultInstance()) {
+            raftMessage_ =
+              poke.core.Mgmt.RaftMessage.newBuilder(raftMessage_).mergeFrom(value).buildPartial();
           } else {
-            raftElection_ = value;
+            raftMessage_ = value;
           }
           onChanged();
         } else {
-          raftElectionBuilder_.mergeFrom(value);
+          raftMessageBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000080;
         return this;
       }
       /**
-       * <code>optional .RaftLeaderElection raftElection = 10;</code>
+       * <code>optional .RaftMessage raft_message = 10;</code>
        *
        * <pre>
        *Raft
        * </pre>
        */
-      public Builder clearRaftElection() {
-        if (raftElectionBuilder_ == null) {
-          raftElection_ = poke.core.Mgmt.RaftLeaderElection.getDefaultInstance();
+      public Builder clearRaftMessage() {
+        if (raftMessageBuilder_ == null) {
+          raftMessage_ = poke.core.Mgmt.RaftMessage.getDefaultInstance();
           onChanged();
         } else {
-          raftElectionBuilder_.clear();
+          raftMessageBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000080);
         return this;
       }
       /**
-       * <code>optional .RaftLeaderElection raftElection = 10;</code>
+       * <code>optional .RaftMessage raft_message = 10;</code>
        *
        * <pre>
        *Raft
        * </pre>
        */
-      public poke.core.Mgmt.RaftLeaderElection.Builder getRaftElectionBuilder() {
+      public poke.core.Mgmt.RaftMessage.Builder getRaftMessageBuilder() {
         bitField0_ |= 0x00000080;
         onChanged();
-        return getRaftElectionFieldBuilder().getBuilder();
+        return getRaftMessageFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .RaftLeaderElection raftElection = 10;</code>
+       * <code>optional .RaftMessage raft_message = 10;</code>
        *
        * <pre>
        *Raft
        * </pre>
        */
-      public poke.core.Mgmt.RaftLeaderElectionOrBuilder getRaftElectionOrBuilder() {
-        if (raftElectionBuilder_ != null) {
-          return raftElectionBuilder_.getMessageOrBuilder();
+      public poke.core.Mgmt.RaftMessageOrBuilder getRaftMessageOrBuilder() {
+        if (raftMessageBuilder_ != null) {
+          return raftMessageBuilder_.getMessageOrBuilder();
         } else {
-          return raftElection_;
+          return raftMessage_;
         }
       }
       /**
-       * <code>optional .RaftLeaderElection raftElection = 10;</code>
+       * <code>optional .RaftMessage raft_message = 10;</code>
        *
        * <pre>
        *Raft
        * </pre>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          poke.core.Mgmt.RaftLeaderElection, poke.core.Mgmt.RaftLeaderElection.Builder, poke.core.Mgmt.RaftLeaderElectionOrBuilder> 
-          getRaftElectionFieldBuilder() {
-        if (raftElectionBuilder_ == null) {
-          raftElectionBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              poke.core.Mgmt.RaftLeaderElection, poke.core.Mgmt.RaftLeaderElection.Builder, poke.core.Mgmt.RaftLeaderElectionOrBuilder>(
-                  getRaftElection(),
+          poke.core.Mgmt.RaftMessage, poke.core.Mgmt.RaftMessage.Builder, poke.core.Mgmt.RaftMessageOrBuilder> 
+          getRaftMessageFieldBuilder() {
+        if (raftMessageBuilder_ == null) {
+          raftMessageBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              poke.core.Mgmt.RaftMessage, poke.core.Mgmt.RaftMessage.Builder, poke.core.Mgmt.RaftMessageOrBuilder>(
+                  getRaftMessage(),
                   getParentForChildren(),
                   isClean());
-          raftElection_ = null;
+          raftMessage_ = null;
         }
-        return raftElectionBuilder_;
+        return raftMessageBuilder_;
       }
 
       // @@protoc_insertion_point(builder_scope:Management)
@@ -9938,10 +12173,25 @@ public final class Mgmt {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_LeaderElection_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_RaftLeaderElection_descriptor;
+    internal_static_RequestVoteMessage_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_RaftLeaderElection_fieldAccessorTable;
+      internal_static_RequestVoteMessage_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_AppendMessage_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_AppendMessage_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_LogEntries_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_LogEntries_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_RaftMessage_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_RaftMessage_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_VotingBallot_descriptor;
   private static
@@ -9994,36 +12244,44 @@ public final class Mgmt {
       "\001\n\013ElectAction\022\023\n\017DECLAREELECTION\020\001\022\014\n\010N" +
       "OMINATE\020\002\022\013\n\007ABSTAIN\020\003\022\021\n\rDECLAREWINNER\020" +
       "\004\022\017\n\013DECLAREVOID\020\005\022\022\n\016WHOISTHELEADER\020\006\022\017" +
-      "\n\013THELEADERIS\020\007\"\331\001\n\022RaftLeaderElection\022\014" +
-      "\n\004term\030\001 \002(\005\0222\n\006action\030\002 \002(\0162\".RaftLeade" +
-      "rElection.ElectionAction\022\021\n\tlog_index\030\003 " +
-      "\001(\005\022\026\n\016prev_log_index\030\004 \001(\005\022\021\n\tprev_term" +
-      "\030\005 \001(\005\"C\n\016ElectionAction\022\n\n\006APPEND\020\001\022\017\n\013" +
-      "REQUESTVOTE\020\002\022\n\n\006LEADER\020\003\022\010\n\004VOTE\020\004\"\200\002\n\014" +
-      "VotingBallot\022\021\n\tballot_id\030\001 \002(\t\022\014\n\004desc\030",
-      "\002 \002(\t\022/\n\rballot_format\030\003 \002(\0162\030.VotingBal" +
-      "lot.BallotType\022\023\n\013expires_sec\030\006 \001(\003\022\025\n\rm" +
-      "argin_to_win\030\007 \001(\005\022\024\n\010max_hops\030\010 \001(\005:\002-1" +
-      "\"\\\n\nBallotType\022\022\n\016SIMPLEMAJORITY\020\001\022\033\n\027TI" +
-      "MECONSTRAINEDMAJORITY\020\002\022\n\n\006RANKED\020\003\022\021\n\rI" +
-      "NSTANTRUNOFF\020\004\"O\n\nVotingCast\022\r\n\005voter\030\001 " +
-      "\002(\t\022\021\n\tballot_id\030\002 \002(\t\022\021\n\tcandidate\030\n \001(" +
-      "\005\022\014\n\004rank\030\013 \001(\005\"\220\001\n\014VotingStatus\022\021\n\tball" +
-      "ot_id\030\001 \002(\t\022(\n\006status\030\002 \002(\0162\030.VotingStat" +
-      "us.VoteStatus\022\016\n\006winner\030\003 \001(\005\"3\n\nVoteSta",
-      "tus\022\023\n\017BALLOTABANDONED\020\001\022\020\n\014BALLOTWINNER" +
-      "\020\002\"=\n\013VectorClock\022\017\n\007node_id\030\001 \002(\005\022\017\n\007ve" +
-      "rsion\030\002 \002(\005\022\014\n\004time\030\003 \002(\003\"p\n\nMgmtHeader\022" +
-      "\022\n\noriginator\030\002 \002(\005\022\024\n\014securityCode\030\003 \002(" +
-      "\005\022\014\n\004time\030\004 \002(\003\022\032\n\004path\030\007 \003(\0132\014.VectorCl" +
-      "ock\022\016\n\006toNode\030\010 \001(\005\"\223\002\n\nManagement\022\033\n\006he" +
-      "ader\030\001 \002(\0132\013.MgmtHeader\022\027\n\005graph\030\002 \001(\0132\010" +
-      ".Network\022\030\n\004beat\030\003 \001(\0132\n.Heartbeat\022!\n\010el" +
-      "ection\030\004 \001(\0132\017.LeaderElection\022#\n\014vote_de" +
-      "clare\030\007 \001(\0132\r.VotingBallot\022\036\n\tvote_cast\030",
-      "\010 \001(\0132\013.VotingCast\022\"\n\013vote_status\030\t \001(\0132" +
-      "\r.VotingStatus\022)\n\014raftElection\030\n \001(\0132\023.R" +
-      "aftLeaderElectionB\r\n\tpoke.coreH\001"
+      "\n\013THELEADERIS\020\007\"o\n\022RequestVoteMessage\022\024\n" +
+      "\014candidate_id\030\001 \001(\005\022\026\n\016last_log_index\030\002 " +
+      "\001(\005\022\025\n\rlast_log_term\030\003 \001(\005\022\024\n\014vote_grant" +
+      "ed\030\005 \001(\010\"\246\001\n\rAppendMessage\022\021\n\tlog_index\030" +
+      "\001 \001(\005\022\026\n\016prev_log_index\030\002 \001(\005\022\021\n\tprev_te" +
+      "rm\030\003 \001(\005\022\021\n\tleader_id\030\004 \001(\005\022\017\n\007success\030\006" +
+      " \001(\010\022\025\n\rleader_commit\030\007 \001(\005\022\034\n\007entries\030\010",
+      " \003(\0132\013.LogEntries\"\014\n\nLogEntries\"\340\001\n\013Raft" +
+      "Message\022\014\n\004term\030\001 \002(\005\022+\n\006action\030\002 \002(\0162\033." +
+      "RaftMessage.ElectionAction\022)\n\014request_vo" +
+      "te\030\003 \001(\0132\023.RequestVoteMessage\022&\n\016append_" +
+      "message\030\004 \001(\0132\016.AppendMessage\"C\n\016Electio" +
+      "nAction\022\n\n\006APPEND\020\001\022\017\n\013REQUESTVOTE\020\002\022\n\n\006" +
+      "LEADER\020\003\022\010\n\004VOTE\020\004\"\200\002\n\014VotingBallot\022\021\n\tb" +
+      "allot_id\030\001 \002(\t\022\014\n\004desc\030\002 \002(\t\022/\n\rballot_f" +
+      "ormat\030\003 \002(\0162\030.VotingBallot.BallotType\022\023\n" +
+      "\013expires_sec\030\006 \001(\003\022\025\n\rmargin_to_win\030\007 \001(",
+      "\005\022\024\n\010max_hops\030\010 \001(\005:\002-1\"\\\n\nBallotType\022\022\n" +
+      "\016SIMPLEMAJORITY\020\001\022\033\n\027TIMECONSTRAINEDMAJO" +
+      "RITY\020\002\022\n\n\006RANKED\020\003\022\021\n\rINSTANTRUNOFF\020\004\"O\n" +
+      "\nVotingCast\022\r\n\005voter\030\001 \002(\t\022\021\n\tballot_id\030" +
+      "\002 \002(\t\022\021\n\tcandidate\030\n \001(\005\022\014\n\004rank\030\013 \001(\005\"\220" +
+      "\001\n\014VotingStatus\022\021\n\tballot_id\030\001 \002(\t\022(\n\006st" +
+      "atus\030\002 \002(\0162\030.VotingStatus.VoteStatus\022\016\n\006" +
+      "winner\030\003 \001(\005\"3\n\nVoteStatus\022\023\n\017BALLOTABAN" +
+      "DONED\020\001\022\020\n\014BALLOTWINNER\020\002\"=\n\013VectorClock" +
+      "\022\017\n\007node_id\030\001 \002(\005\022\017\n\007version\030\002 \002(\005\022\014\n\004ti",
+      "me\030\003 \002(\003\"p\n\nMgmtHeader\022\022\n\noriginator\030\002 \002" +
+      "(\005\022\024\n\014securityCode\030\003 \002(\005\022\014\n\004time\030\004 \002(\003\022\032" +
+      "\n\004path\030\007 \003(\0132\014.VectorClock\022\016\n\006toNode\030\010 \001" +
+      "(\005\"\214\002\n\nManagement\022\033\n\006header\030\001 \002(\0132\013.Mgmt" +
+      "Header\022\027\n\005graph\030\002 \001(\0132\010.Network\022\030\n\004beat\030" +
+      "\003 \001(\0132\n.Heartbeat\022!\n\010election\030\004 \001(\0132\017.Le" +
+      "aderElection\022#\n\014vote_declare\030\007 \001(\0132\r.Vot" +
+      "ingBallot\022\036\n\tvote_cast\030\010 \001(\0132\013.VotingCas" +
+      "t\022\"\n\013vote_status\030\t \001(\0132\r.VotingStatus\022\"\n" +
+      "\014raft_message\030\n \001(\0132\014.RaftMessageB\r\n\tpok",
+      "e.coreH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -10055,48 +12313,66 @@ public final class Mgmt {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_LeaderElection_descriptor,
         new java.lang.String[] { "ElectId", "CandidateId", "Desc", "Action", "Expires", "Hops", });
-    internal_static_RaftLeaderElection_descriptor =
+    internal_static_RequestVoteMessage_descriptor =
       getDescriptor().getMessageTypes().get(3);
-    internal_static_RaftLeaderElection_fieldAccessorTable = new
+    internal_static_RequestVoteMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_RaftLeaderElection_descriptor,
-        new java.lang.String[] { "Term", "Action", "LogIndex", "PrevLogIndex", "PrevTerm", });
-    internal_static_VotingBallot_descriptor =
+        internal_static_RequestVoteMessage_descriptor,
+        new java.lang.String[] { "CandidateId", "LastLogIndex", "LastLogTerm", "VoteGranted", });
+    internal_static_AppendMessage_descriptor =
       getDescriptor().getMessageTypes().get(4);
+    internal_static_AppendMessage_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_AppendMessage_descriptor,
+        new java.lang.String[] { "LogIndex", "PrevLogIndex", "PrevTerm", "LeaderId", "Success", "LeaderCommit", "Entries", });
+    internal_static_LogEntries_descriptor =
+      getDescriptor().getMessageTypes().get(5);
+    internal_static_LogEntries_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_LogEntries_descriptor,
+        new java.lang.String[] { });
+    internal_static_RaftMessage_descriptor =
+      getDescriptor().getMessageTypes().get(6);
+    internal_static_RaftMessage_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_RaftMessage_descriptor,
+        new java.lang.String[] { "Term", "Action", "RequestVote", "AppendMessage", });
+    internal_static_VotingBallot_descriptor =
+      getDescriptor().getMessageTypes().get(7);
     internal_static_VotingBallot_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_VotingBallot_descriptor,
         new java.lang.String[] { "BallotId", "Desc", "BallotFormat", "ExpiresSec", "MarginToWin", "MaxHops", });
     internal_static_VotingCast_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(8);
     internal_static_VotingCast_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_VotingCast_descriptor,
         new java.lang.String[] { "Voter", "BallotId", "Candidate", "Rank", });
     internal_static_VotingStatus_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(9);
     internal_static_VotingStatus_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_VotingStatus_descriptor,
         new java.lang.String[] { "BallotId", "Status", "Winner", });
     internal_static_VectorClock_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(10);
     internal_static_VectorClock_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_VectorClock_descriptor,
         new java.lang.String[] { "NodeId", "Version", "Time", });
     internal_static_MgmtHeader_descriptor =
-      getDescriptor().getMessageTypes().get(8);
+      getDescriptor().getMessageTypes().get(11);
     internal_static_MgmtHeader_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_MgmtHeader_descriptor,
         new java.lang.String[] { "Originator", "SecurityCode", "Time", "Path", "ToNode", });
     internal_static_Management_descriptor =
-      getDescriptor().getMessageTypes().get(9);
+      getDescriptor().getMessageTypes().get(12);
     internal_static_Management_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_Management_descriptor,
-        new java.lang.String[] { "Header", "Graph", "Beat", "Election", "VoteDeclare", "VoteCast", "VoteStatus", "RaftElection", });
+        new java.lang.String[] { "Header", "Graph", "Beat", "Election", "VoteDeclare", "VoteCast", "VoteStatus", "RaftMessage", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

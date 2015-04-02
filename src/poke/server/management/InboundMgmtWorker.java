@@ -78,7 +78,7 @@ public class InboundMgmtWorker extends Thread {
 
 				Management mgmt = (Management) msg.req;
 				
-				if (mgmt.hasRaftElection()) {
+				if (mgmt.hasRaftMessage()) {
 					//logger.info("Raft message");
 					RaftManager.getInstance().processRequest(mgmt);
 				} else if (mgmt.hasGraph()) {

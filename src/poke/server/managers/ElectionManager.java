@@ -23,8 +23,8 @@ import org.slf4j.LoggerFactory;
 
 import poke.core.Mgmt.Management;
 import poke.core.Mgmt.MgmtHeader;
-import poke.core.Mgmt.RaftLeaderElection;
-import poke.core.Mgmt.RaftLeaderElection.ElectionAction;
+import poke.core.Mgmt.RaftMessage;
+import poke.core.Mgmt.RaftMessage.ElectionAction;
 import poke.core.Mgmt.VectorClock;
 import poke.server.conf.ServerConf;
 import poke.server.election.Election;
@@ -134,7 +134,7 @@ public class ElectionManager implements ElectionListener {
 
 		// TODO use voting int votes = conf.getNumberOfElectionVotes();
 		logger.info("Timeout! Starting election");
-		RaftLeaderElection.Builder rlf = RaftLeaderElection.newBuilder();
+		RaftMessage.Builder rlf = RaftMessage.newBuilder();
 		rlf.setAction(ElectionAction.REQUESTVOTE);
 		rlf.setTerm(electionCycle);
 
@@ -151,7 +151,7 @@ public class ElectionManager implements ElectionListener {
 
 		Management.Builder mb = Management.newBuilder();
 		mb.setHeader(mhb.build());
-		mb.setRaftElection(rlf.build());
+		mb.setRaftMessage(rlf.build());
 
 		// now send it out to all my edges
 		logger.info("Election started by node " + conf.getNodeId());
