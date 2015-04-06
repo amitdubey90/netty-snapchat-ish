@@ -34,25 +34,46 @@ public final class LogManager implements Runnable {
 		LogManager.currentLogIndex = currentLogIndex;
 	}
 
-	public static void createEntry(int term, String logData){
-		currentLogIndex += 1;
-		LogEntry entry = new LogEntry(term, currentLogIndex, logData);
-		logs.put(currentLogIndex, entry);
+	public static int createEntry(int term, String logData, int nextIndex){
+		
+		if(++currentLogIndex == nextIndex)
+		{
+			LogEntry entry = new LogEntry(term, currentLogIndex, logData);
+			logs.put(currentLogIndex, entry);
+			return -1;
+		}
+			
+		else{
+			
+			return getCurrentLogIndex();
+			
+		}
+		
 	}
 	
 	public static LogEntry getLogEntry(Integer index){
 		return logs.get(index);
 	}
 	
-	public static boolean appendLogs(LogEntry leaderLog){
+	
+	public static boolean appendLogs(LogEntry[] leaderLog, int matchIndex, int nextIndex){
 		
-		if(currentLogIndex == (leaderLog.logIndex-1) && logs.get(currentLogIndex).term == leaderLog.term ){
-			logs.put(currentLogIndex+1,leaderLog);
-			return true;
+		currentLogIndex = matchIndex;
+		int i = 0;
+		
+		while(currentLogIndex <= nextIndex && i < leaderLog.length ){
+			logs.put(currentLogIndex+1,leaderLog[i]);
+			i++;
 		}
 		
-			return false;
+		if(i == leaderLog.length){
+			return true;
+		}
+		else{
+			return false;			
+		}
 	}
+	
 	
 	public void commit(int leaderCommitIndex){
 		while(commitIndex <= leaderCommitIndex && commitIndex <= currentLogIndex){
