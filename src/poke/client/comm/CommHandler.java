@@ -37,7 +37,9 @@ public class CommHandler extends SimpleChannelInboundHandler<Request> {
 
 	public CommHandler() {
 	}
-
+	public void setChannel(Channel channel ){
+		this.channel = channel;
+	}
 	/**
 	 * messages pass through this method. We use a blackbox design as much as
 	 * possible to ensure we can replace the underlining communication without
@@ -49,9 +51,9 @@ public class CommHandler extends SimpleChannelInboundHandler<Request> {
 	public boolean send(GeneratedMessage msg) {
 		// TODO a queue is needed to prevent overloading of the socket
 		// connection. For the demonstration, we don't need it
-		ChannelFuture cf = channel.write(msg);
+		ChannelFuture cf = channel.writeAndFlush(msg);
 		if (cf.isDone() && !cf.isSuccess()) {
-			logger.error("failed to poke!");
+			System.out.println("failed to poke!");
 			return false;
 		}
 
@@ -87,6 +89,7 @@ public class CommHandler extends SimpleChannelInboundHandler<Request> {
 	 */
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, Request msg) throws Exception {
+		System.out.println("Response received on client");
 		for (String id : listeners.keySet()) {
 			CommListener cl = listeners.get(id);
 

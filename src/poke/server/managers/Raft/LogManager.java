@@ -77,4 +77,19 @@ public final class LogManager implements Runnable {
 		}
 	
 	}
+
+	public static LogEntry getLastLogEntry() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static int getPrevLogIndex() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public static int getPrevLogTerm() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

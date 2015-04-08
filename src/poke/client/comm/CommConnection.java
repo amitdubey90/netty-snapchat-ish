@@ -20,9 +20,14 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelOption;
+import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.handler.codec.LengthFieldPrepender;
+import io.netty.handler.codec.protobuf.ProtobufDecoder;
+import io.netty.handler.codec.protobuf.ProtobufEncoder;
 
 import java.util.concurrent.LinkedBlockingDeque;
 
@@ -124,12 +129,19 @@ public class CommConnection {
 
 			// Make the connection attempt.
 			channel = b.connect(host, port).syncUninterruptibly();
+			ChannelPipeline pipeline = channel.channel().pipeline();
+			pipeline.addLast("frameDecoder", new LengthFieldBasedFrameDecoder(67108864, 0, 4, 0, 4));
 
+			pipeline.addLast("protobufDecoder", new ProtobufDecoder(poke.comm.App.Request.getDefaultInstance()));
+			pipeline.addLast("frameEncoder", new LengthFieldPrepender(4));
+			pipeline.addLast("protobufEncoder", new ProtobufEncoder());
+			System.out.println("channel initialized");
+			handler.setChannel(channel.channel());
 			// want to monitor the connection to the server s.t. if we loose the
 			// connection, we can try to re-establish it.
 			ClientClosedListener ccl = new ClientClosedListener(this);
 			channel.channel().closeFuture().addListener(ccl);
-
+			
 		} catch (Exception ex) {
 			logger.error("failed to initialize the client connection", ex);
 
@@ -190,6 +202,7 @@ public class CommConnection {
 				try {
 					// block until a message is enqueued
 					GeneratedMessage msg = conn.outbound.take();
+					System.out.println("Got a message to send");
 					if (ch.isWritable()) {
 						CommHandler handler = conn.connect().pipeline().get(CommHandler.class);
 

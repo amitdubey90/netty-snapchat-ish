@@ -92,9 +92,17 @@ public class ClientCommand {
 		Request req = r.build();
 
 		try {
+			System.out.println("sending");
 			comm.sendMessage(req);
 		} catch (Exception e) {
 			logger.warn("Unable to deliver message, queuing");
 		}
+	}
+	
+	public static void main(String[] args) {
+		ClientCommand client = new ClientCommand("localhost", 5570);
+		client.addListener(new ClientPrintListener("1"));
+		client.poke("haha", 0);
+		
 	}
 }
