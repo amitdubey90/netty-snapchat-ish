@@ -25,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import poke.comm.App.Request;
+import poke.server.managers.ConnectionManager;
 import poke.server.queue.ChannelQueue;
 import poke.server.queue.QueueFactory;
 
@@ -57,7 +58,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<Request> {
 	@Override
 	public void channelRead0(ChannelHandlerContext ctx, Request req) throws Exception {
 		// processing is deferred to the worker threads
-		if (logger.isDebugEnabled())
+		//if (logger.isDebugEnabled())
 			logger.debug("---> server got a message from " + req.getHeader().getOriginator());
 		queueInstance(ctx.channel()).enqueueRequest(req, ctx.channel());
 	}
@@ -116,5 +117,27 @@ public class ServerHandler extends SimpleChannelInboundHandler<Request> {
 			sq = null;
 		}
 
+	}
+	
+	
+	
+	@Override
+	public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
+		super.handlerAdded(ctx);
+		System.out.println("conection added on server");
+		String remoteAdd = String.valueOf(ctx.channel().remoteAddress());
+		String port = remoteAdd.split(":")[1];
+		System.out.println("Client port "+port);
+		ConnectionManager.addConnection(Integer.parseInt(port), ctx.channel(), false);
+	}
+	
+	@Override
+	public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
+		super.handlerRemoved(ctx);
+		// TODO change id here. port number is not safe
+		String remoteAddr = String.valueOf(ctx.channel().remoteAddress());
+		String port = remoteAddr.split(":")[1];
+		System.out.println("Client port "+port);
+		ConnectionManager.removeConnection(Integer.parseInt(port), false);
 	}
 }

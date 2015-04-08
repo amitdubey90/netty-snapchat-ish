@@ -54,14 +54,16 @@ public class OutboundAppWorker extends Thread {
 			try {
 				// block until a message is enqueued
 				GeneratedMessage msg = sq.outbound.take();
+				logger.info("<<<<<<Sending response>>>>>>>>>>");
 				if (conn.isWritable()) {
 					boolean rtn = false;
 					if (sq.channel != null && sq.channel.isOpen() && sq.channel.isWritable()) {
-						ChannelFuture cf = sq.channel.write(msg);
+						ChannelFuture cf = sq.channel.writeAndFlush(msg);
 
 						// blocks on write - use listener to be async
 						cf.awaitUninterruptibly();
 						rtn = cf.isSuccess();
+						logger.info("<<response sent!>>"+rtn);
 						if (!rtn)
 							sq.outbound.putFirst(msg);
 					}

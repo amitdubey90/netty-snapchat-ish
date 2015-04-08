@@ -90,6 +90,7 @@ public class RaftManager {
 			voteCount = 0;
 			sendLeaderNotice();
 			currentState = leaderInstance;
+			((LeaderState) currentState).setIsNewLeader(true);
 			leaderID = conf.getNodeId();
 			logger.info("I am the leader " + conf.getNodeId());
 		}
@@ -206,7 +207,13 @@ public class RaftManager {
 		ConnectionManager.flushBroadcast(mb.build());
 	}
 
-	public void sendAppendNotice() {
+	public void sendAppendNotice(int toNode, Management mgmt) {
+		// now send it out to all my edges
+		logger.info(mgmt.toString());
+		ConnectionManager.sendToNode(mgmt, toNode);
+	}
+	
+	public Management.Builder buildAppendMessage(){
 		RaftMessage.Builder rlf = RaftMessage.newBuilder();
 		rlf.setAction(ElectionAction.APPEND);
 		rlf.setTerm(term);
@@ -216,20 +223,11 @@ public class RaftManager {
 		mhb.setTime(System.currentTimeMillis());
 		mhb.setSecurityCode(-999);
 
-		AppendMessage.Builder am = AppendMessage.newBuilder();
-		am.setLeaderId(leaderID);
-		// am.setPrevLogIndex(value); TODO
-		// am.setPrevLogTerm(value);
-
-		// am.setEntries(index, value);
-		// am.setLeaderCommit(value);
-
 		Management.Builder mb = Management.newBuilder();
 		mb.setHeader(mhb.build());
 		mb.setRaftMessage(rlf.build());
-
-		// now send it out to all my edges
-		ConnectionManager.flushBroadcast(mb.build());
+		
+		return mb;
 	}
 
 	public class RaftTimer extends Thread {
@@ -248,7 +246,7 @@ public class RaftManager {
 						if (now - lastKnownBeat > electionTimeOut / 4) {
 							//TODO remove createLogEntry() when done testing
 							// createLogEntry(); 
-							/* ((LeaderState)currentState). */sendAppendNotice();
+							((LeaderState)currentState).sendAppendNotice();
 							lastKnownBeat = System.currentTimeMillis();
 						}
 					}

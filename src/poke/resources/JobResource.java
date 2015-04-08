@@ -23,7 +23,8 @@ public class JobResource implements Resource {
 	@Override
 	public Request process(Request request) {
 		// TODO Auto-generated method stub
-		return null;
+		System.out.println("processing job");
+		return request;
 	}
 
 }

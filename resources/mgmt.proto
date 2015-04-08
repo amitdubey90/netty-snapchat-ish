@@ -145,8 +145,10 @@ message AppendMessage {
 }
 
 message LogEntries {
-  
+  optional int32 log_index = 1;
+  optional string logData = 2;
 }
+
 message RaftMessage {
   
   required int32 term = 1;

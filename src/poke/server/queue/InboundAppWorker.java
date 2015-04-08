@@ -37,11 +37,13 @@ public class InboundAppWorker extends Thread {
 
 	public InboundAppWorker(ThreadGroup tgrp, int workerId, PerChannelQueue sq) {
 		super(tgrp, "inbound-" + workerId);
+		logger.info("<<<<<<<<<<<Starting up inbound app worker>>>>>>>>>>>>");
 		this.workerId = workerId;
 		this.sq = sq;
 
 		if (sq.inbound == null)
-			throw new RuntimeException("connection worker detected null inbound queue");
+			throw new RuntimeException(
+					"connection worker detected null inbound queue");
 	}
 
 	@Override
@@ -57,11 +59,13 @@ public class InboundAppWorker extends Thread {
 				break;
 
 			try {
+				logger.info("waiting for a message on server");
 				// block until a message is enqueued
 				GeneratedMessage msg = sq.inbound.take();
-
+				logger.info("Received message on server");
 				// process request and enqueue response
 				if (msg instanceof Request) {
+					logger.info("Got an incoming message");
 					Request req = ((Request) msg);
 
 					// HEY! if you find yourself here and are tempted to add
@@ -75,13 +79,14 @@ public class InboundAppWorker extends Thread {
 					// creates creation burdens on the server. If
 					// we use a pool instead, we can gain some relief.
 
-					Resource rsc = ResourceFactory.getInstance().resourceInstance(req.getHeader());
+					Resource rsc = ResourceFactory.getInstance()
+							.resourceInstance(req.getHeader());
 
 					Request reply = null;
 					if (rsc == null) {
 						logger.error("failed to obtain resource for " + req);
-						reply = ResourceUtil
-								.buildError(req.getHeader(), PokeStatus.NORESOURCE, "Request not processed");
+						reply = ResourceUtil.buildError(req.getHeader(),
+								PokeStatus.NORESOURCE, "Request not processed");
 					} else {
 						// message communication can be two-way or one-way.
 						// One-way communication will not produce a response

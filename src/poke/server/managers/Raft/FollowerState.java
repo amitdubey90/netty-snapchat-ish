@@ -51,7 +51,7 @@ public class FollowerState implements RaftState {
 				if (am.getEntriesCount() > 0) {
 					// TODO append work
 				}
-				logger.info("appending");
+				//logger.info("appending");
 			}
 
 			// TODO append work

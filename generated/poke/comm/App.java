@@ -14303,6 +14303,34 @@ public final class App {
      * <code>optional .NameSpaceStatus space_status = 12;</code>
      */
     poke.comm.App.NameSpaceStatusOrBuilder getSpaceStatusOrBuilder();
+
+    /**
+     * <code>optional .ClusterMessage cluster_message = 4;</code>
+     *
+     * <pre>
+     * TBD
+     * reports
+     * </pre>
+     */
+    boolean hasClusterMessage();
+    /**
+     * <code>optional .ClusterMessage cluster_message = 4;</code>
+     *
+     * <pre>
+     * TBD
+     * reports
+     * </pre>
+     */
+    poke.comm.App.ClusterMessage getClusterMessage();
+    /**
+     * <code>optional .ClusterMessage cluster_message = 4;</code>
+     *
+     * <pre>
+     * TBD
+     * reports
+     * </pre>
+     */
+    poke.comm.App.ClusterMessageOrBuilder getClusterMessageOrBuilder();
   }
   /**
    * Protobuf type {@code Payload}
@@ -14398,6 +14426,19 @@ public final class App {
                 jobOp_ = subBuilder.buildPartial();
               }
               bitField0_ |= 0x00000004;
+              break;
+            }
+            case 34: {
+              poke.comm.App.ClusterMessage.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000020) == 0x00000020)) {
+                subBuilder = clusterMessage_.toBuilder();
+              }
+              clusterMessage_ = input.readMessage(poke.comm.App.ClusterMessage.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(clusterMessage_);
+                clusterMessage_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000020;
               break;
             }
             case 98: {
@@ -14607,12 +14648,49 @@ public final class App {
       return spaceStatus_;
     }
 
+    public static final int CLUSTER_MESSAGE_FIELD_NUMBER = 4;
+    private poke.comm.App.ClusterMessage clusterMessage_;
+    /**
+     * <code>optional .ClusterMessage cluster_message = 4;</code>
+     *
+     * <pre>
+     * TBD
+     * reports
+     * </pre>
+     */
+    public boolean hasClusterMessage() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional .ClusterMessage cluster_message = 4;</code>
+     *
+     * <pre>
+     * TBD
+     * reports
+     * </pre>
+     */
+    public poke.comm.App.ClusterMessage getClusterMessage() {
+      return clusterMessage_;
+    }
+    /**
+     * <code>optional .ClusterMessage cluster_message = 4;</code>
+     *
+     * <pre>
+     * TBD
+     * reports
+     * </pre>
+     */
+    public poke.comm.App.ClusterMessageOrBuilder getClusterMessageOrBuilder() {
+      return clusterMessage_;
+    }
+
     private void initFields() {
       ping_ = poke.comm.App.Ping.getDefaultInstance();
       spaceOp_ = poke.comm.App.NameSpaceOperation.getDefaultInstance();
       jobOp_ = poke.comm.App.JobOperation.getDefaultInstance();
       jobStatus_ = poke.comm.App.JobStatus.getDefaultInstance();
       spaceStatus_ = poke.comm.App.NameSpaceStatus.getDefaultInstance();
+      clusterMessage_ = poke.comm.App.ClusterMessage.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -14650,6 +14728,12 @@ public final class App {
           return false;
         }
       }
+      if (hasClusterMessage()) {
+        if (!getClusterMessage().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -14665,6 +14749,9 @@ public final class App {
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeMessage(3, jobOp_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeMessage(4, clusterMessage_);
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         output.writeMessage(12, spaceStatus_);
@@ -14692,6 +14779,10 @@ public final class App {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(3, jobOp_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(4, clusterMessage_);
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
@@ -14820,6 +14911,7 @@ public final class App {
           getJobOpFieldBuilder();
           getJobStatusFieldBuilder();
           getSpaceStatusFieldBuilder();
+          getClusterMessageFieldBuilder();
         }
       }
       private static Builder create() {
@@ -14858,6 +14950,12 @@ public final class App {
           spaceStatusBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000010);
+        if (clusterMessageBuilder_ == null) {
+          clusterMessage_ = poke.comm.App.ClusterMessage.getDefaultInstance();
+        } else {
+          clusterMessageBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
 
@@ -14926,6 +15024,14 @@ public final class App {
         } else {
           result.spaceStatus_ = spaceStatusBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        if (clusterMessageBuilder_ == null) {
+          result.clusterMessage_ = clusterMessage_;
+        } else {
+          result.clusterMessage_ = clusterMessageBuilder_.build();
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -14956,6 +15062,9 @@ public final class App {
         }
         if (other.hasSpaceStatus()) {
           mergeSpaceStatus(other.getSpaceStatus());
+        }
+        if (other.hasClusterMessage()) {
+          mergeClusterMessage(other.getClusterMessage());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -14988,6 +15097,12 @@ public final class App {
         }
         if (hasSpaceStatus()) {
           if (!getSpaceStatus().isInitialized()) {
+            
+            return false;
+          }
+        }
+        if (hasClusterMessage()) {
+          if (!getClusterMessage().isInitialized()) {
             
             return false;
           }
@@ -15700,6 +15815,167 @@ public final class App {
           spaceStatus_ = null;
         }
         return spaceStatusBuilder_;
+      }
+
+      private poke.comm.App.ClusterMessage clusterMessage_ = poke.comm.App.ClusterMessage.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          poke.comm.App.ClusterMessage, poke.comm.App.ClusterMessage.Builder, poke.comm.App.ClusterMessageOrBuilder> clusterMessageBuilder_;
+      /**
+       * <code>optional .ClusterMessage cluster_message = 4;</code>
+       *
+       * <pre>
+       * TBD
+       * reports
+       * </pre>
+       */
+      public boolean hasClusterMessage() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional .ClusterMessage cluster_message = 4;</code>
+       *
+       * <pre>
+       * TBD
+       * reports
+       * </pre>
+       */
+      public poke.comm.App.ClusterMessage getClusterMessage() {
+        if (clusterMessageBuilder_ == null) {
+          return clusterMessage_;
+        } else {
+          return clusterMessageBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .ClusterMessage cluster_message = 4;</code>
+       *
+       * <pre>
+       * TBD
+       * reports
+       * </pre>
+       */
+      public Builder setClusterMessage(poke.comm.App.ClusterMessage value) {
+        if (clusterMessageBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          clusterMessage_ = value;
+          onChanged();
+        } else {
+          clusterMessageBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000020;
+        return this;
+      }
+      /**
+       * <code>optional .ClusterMessage cluster_message = 4;</code>
+       *
+       * <pre>
+       * TBD
+       * reports
+       * </pre>
+       */
+      public Builder setClusterMessage(
+          poke.comm.App.ClusterMessage.Builder builderForValue) {
+        if (clusterMessageBuilder_ == null) {
+          clusterMessage_ = builderForValue.build();
+          onChanged();
+        } else {
+          clusterMessageBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000020;
+        return this;
+      }
+      /**
+       * <code>optional .ClusterMessage cluster_message = 4;</code>
+       *
+       * <pre>
+       * TBD
+       * reports
+       * </pre>
+       */
+      public Builder mergeClusterMessage(poke.comm.App.ClusterMessage value) {
+        if (clusterMessageBuilder_ == null) {
+          if (((bitField0_ & 0x00000020) == 0x00000020) &&
+              clusterMessage_ != poke.comm.App.ClusterMessage.getDefaultInstance()) {
+            clusterMessage_ =
+              poke.comm.App.ClusterMessage.newBuilder(clusterMessage_).mergeFrom(value).buildPartial();
+          } else {
+            clusterMessage_ = value;
+          }
+          onChanged();
+        } else {
+          clusterMessageBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000020;
+        return this;
+      }
+      /**
+       * <code>optional .ClusterMessage cluster_message = 4;</code>
+       *
+       * <pre>
+       * TBD
+       * reports
+       * </pre>
+       */
+      public Builder clearClusterMessage() {
+        if (clusterMessageBuilder_ == null) {
+          clusterMessage_ = poke.comm.App.ClusterMessage.getDefaultInstance();
+          onChanged();
+        } else {
+          clusterMessageBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000020);
+        return this;
+      }
+      /**
+       * <code>optional .ClusterMessage cluster_message = 4;</code>
+       *
+       * <pre>
+       * TBD
+       * reports
+       * </pre>
+       */
+      public poke.comm.App.ClusterMessage.Builder getClusterMessageBuilder() {
+        bitField0_ |= 0x00000020;
+        onChanged();
+        return getClusterMessageFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .ClusterMessage cluster_message = 4;</code>
+       *
+       * <pre>
+       * TBD
+       * reports
+       * </pre>
+       */
+      public poke.comm.App.ClusterMessageOrBuilder getClusterMessageOrBuilder() {
+        if (clusterMessageBuilder_ != null) {
+          return clusterMessageBuilder_.getMessageOrBuilder();
+        } else {
+          return clusterMessage_;
+        }
+      }
+      /**
+       * <code>optional .ClusterMessage cluster_message = 4;</code>
+       *
+       * <pre>
+       * TBD
+       * reports
+       * </pre>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          poke.comm.App.ClusterMessage, poke.comm.App.ClusterMessage.Builder, poke.comm.App.ClusterMessageOrBuilder> 
+          getClusterMessageFieldBuilder() {
+        if (clusterMessageBuilder_ == null) {
+          clusterMessageBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              poke.comm.App.ClusterMessage, poke.comm.App.ClusterMessage.Builder, poke.comm.App.ClusterMessageOrBuilder>(
+                  getClusterMessage(),
+                  getParentForChildren(),
+                  isClean());
+          clusterMessage_ = null;
+        }
+        return clusterMessageBuilder_;
       }
 
       // @@protoc_insertion_point(builder_scope:Payload)
@@ -16442,6 +16718,1376 @@ public final class App {
     // @@protoc_insertion_point(class_scope:Request)
   }
 
+  public interface ClusterMessageOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ClusterMessage)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional string msgId = 1;</code>
+     */
+    boolean hasMsgId();
+    /**
+     * <code>optional string msgId = 1;</code>
+     */
+    java.lang.String getMsgId();
+    /**
+     * <code>optional string msgId = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getMsgIdBytes();
+
+    /**
+     * <code>required string senderUserName = 2;</code>
+     */
+    boolean hasSenderUserName();
+    /**
+     * <code>required string senderUserName = 2;</code>
+     */
+    java.lang.String getSenderUserName();
+    /**
+     * <code>required string senderUserName = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getSenderUserNameBytes();
+
+    /**
+     * <code>required string receiverUserName = 3;</code>
+     */
+    boolean hasReceiverUserName();
+    /**
+     * <code>required string receiverUserName = 3;</code>
+     */
+    java.lang.String getReceiverUserName();
+    /**
+     * <code>required string receiverUserName = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getReceiverUserNameBytes();
+
+    /**
+     * <code>optional string msgText = 4;</code>
+     */
+    boolean hasMsgText();
+    /**
+     * <code>optional string msgText = 4;</code>
+     */
+    java.lang.String getMsgText();
+    /**
+     * <code>optional string msgText = 4;</code>
+     */
+    com.google.protobuf.ByteString
+        getMsgTextBytes();
+
+    /**
+     * <code>optional string msgImageName = 5;</code>
+     */
+    boolean hasMsgImageName();
+    /**
+     * <code>optional string msgImageName = 5;</code>
+     */
+    java.lang.String getMsgImageName();
+    /**
+     * <code>optional string msgImageName = 5;</code>
+     */
+    com.google.protobuf.ByteString
+        getMsgImageNameBytes();
+
+    /**
+     * <code>optional bytes msgImageBits = 6;</code>
+     */
+    boolean hasMsgImageBits();
+    /**
+     * <code>optional bytes msgImageBits = 6;</code>
+     */
+    com.google.protobuf.ByteString getMsgImageBits();
+
+    /**
+     * <code>optional .ClusterMessage.MessageType messageType = 7 [default = SUCCESS];</code>
+     */
+    boolean hasMessageType();
+    /**
+     * <code>optional .ClusterMessage.MessageType messageType = 7 [default = SUCCESS];</code>
+     */
+    poke.comm.App.ClusterMessage.MessageType getMessageType();
+  }
+  /**
+   * Protobuf type {@code ClusterMessage}
+   */
+  public static final class ClusterMessage extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ClusterMessage)
+      ClusterMessageOrBuilder {
+    // Use ClusterMessage.newBuilder() to construct.
+    private ClusterMessage(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private ClusterMessage(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final ClusterMessage defaultInstance;
+    public static ClusterMessage getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public ClusterMessage getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ClusterMessage(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              msgId_ = bs;
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              senderUserName_ = bs;
+              break;
+            }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000004;
+              receiverUserName_ = bs;
+              break;
+            }
+            case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000008;
+              msgText_ = bs;
+              break;
+            }
+            case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000010;
+              msgImageName_ = bs;
+              break;
+            }
+            case 50: {
+              bitField0_ |= 0x00000020;
+              msgImageBits_ = input.readBytes();
+              break;
+            }
+            case 56: {
+              int rawValue = input.readEnum();
+              poke.comm.App.ClusterMessage.MessageType value = poke.comm.App.ClusterMessage.MessageType.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(7, rawValue);
+              } else {
+                bitField0_ |= 0x00000040;
+                messageType_ = value;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return poke.comm.App.internal_static_ClusterMessage_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return poke.comm.App.internal_static_ClusterMessage_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              poke.comm.App.ClusterMessage.class, poke.comm.App.ClusterMessage.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<ClusterMessage> PARSER =
+        new com.google.protobuf.AbstractParser<ClusterMessage>() {
+      public ClusterMessage parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ClusterMessage(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ClusterMessage> getParserForType() {
+      return PARSER;
+    }
+
+    /**
+     * Protobuf enum {@code ClusterMessage.MessageType}
+     */
+    public enum MessageType
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>REQUEST = 0;</code>
+       */
+      REQUEST(0, 0),
+      /**
+       * <code>SUCCESS = 1;</code>
+       */
+      SUCCESS(1, 1),
+      ;
+
+      /**
+       * <code>REQUEST = 0;</code>
+       */
+      public static final int REQUEST_VALUE = 0;
+      /**
+       * <code>SUCCESS = 1;</code>
+       */
+      public static final int SUCCESS_VALUE = 1;
+
+
+      public final int getNumber() { return value; }
+
+      public static MessageType valueOf(int value) {
+        switch (value) {
+          case 0: return REQUEST;
+          case 1: return SUCCESS;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<MessageType>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static com.google.protobuf.Internal.EnumLiteMap<MessageType>
+          internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<MessageType>() {
+              public MessageType findValueByNumber(int number) {
+                return MessageType.valueOf(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(index);
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return poke.comm.App.ClusterMessage.getDescriptor().getEnumTypes().get(0);
+      }
+
+      private static final MessageType[] VALUES = values();
+
+      public static MessageType valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int index;
+      private final int value;
+
+      private MessageType(int index, int value) {
+        this.index = index;
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:ClusterMessage.MessageType)
+    }
+
+    private int bitField0_;
+    public static final int MSGID_FIELD_NUMBER = 1;
+    private java.lang.Object msgId_;
+    /**
+     * <code>optional string msgId = 1;</code>
+     */
+    public boolean hasMsgId() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional string msgId = 1;</code>
+     */
+    public java.lang.String getMsgId() {
+      java.lang.Object ref = msgId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          msgId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string msgId = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getMsgIdBytes() {
+      java.lang.Object ref = msgId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        msgId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int SENDERUSERNAME_FIELD_NUMBER = 2;
+    private java.lang.Object senderUserName_;
+    /**
+     * <code>required string senderUserName = 2;</code>
+     */
+    public boolean hasSenderUserName() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required string senderUserName = 2;</code>
+     */
+    public java.lang.String getSenderUserName() {
+      java.lang.Object ref = senderUserName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          senderUserName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string senderUserName = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getSenderUserNameBytes() {
+      java.lang.Object ref = senderUserName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        senderUserName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int RECEIVERUSERNAME_FIELD_NUMBER = 3;
+    private java.lang.Object receiverUserName_;
+    /**
+     * <code>required string receiverUserName = 3;</code>
+     */
+    public boolean hasReceiverUserName() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required string receiverUserName = 3;</code>
+     */
+    public java.lang.String getReceiverUserName() {
+      java.lang.Object ref = receiverUserName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          receiverUserName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string receiverUserName = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getReceiverUserNameBytes() {
+      java.lang.Object ref = receiverUserName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        receiverUserName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int MSGTEXT_FIELD_NUMBER = 4;
+    private java.lang.Object msgText_;
+    /**
+     * <code>optional string msgText = 4;</code>
+     */
+    public boolean hasMsgText() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional string msgText = 4;</code>
+     */
+    public java.lang.String getMsgText() {
+      java.lang.Object ref = msgText_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          msgText_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string msgText = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+        getMsgTextBytes() {
+      java.lang.Object ref = msgText_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        msgText_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int MSGIMAGENAME_FIELD_NUMBER = 5;
+    private java.lang.Object msgImageName_;
+    /**
+     * <code>optional string msgImageName = 5;</code>
+     */
+    public boolean hasMsgImageName() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional string msgImageName = 5;</code>
+     */
+    public java.lang.String getMsgImageName() {
+      java.lang.Object ref = msgImageName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          msgImageName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string msgImageName = 5;</code>
+     */
+    public com.google.protobuf.ByteString
+        getMsgImageNameBytes() {
+      java.lang.Object ref = msgImageName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        msgImageName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int MSGIMAGEBITS_FIELD_NUMBER = 6;
+    private com.google.protobuf.ByteString msgImageBits_;
+    /**
+     * <code>optional bytes msgImageBits = 6;</code>
+     */
+    public boolean hasMsgImageBits() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional bytes msgImageBits = 6;</code>
+     */
+    public com.google.protobuf.ByteString getMsgImageBits() {
+      return msgImageBits_;
+    }
+
+    public static final int MESSAGETYPE_FIELD_NUMBER = 7;
+    private poke.comm.App.ClusterMessage.MessageType messageType_;
+    /**
+     * <code>optional .ClusterMessage.MessageType messageType = 7 [default = SUCCESS];</code>
+     */
+    public boolean hasMessageType() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional .ClusterMessage.MessageType messageType = 7 [default = SUCCESS];</code>
+     */
+    public poke.comm.App.ClusterMessage.MessageType getMessageType() {
+      return messageType_;
+    }
+
+    private void initFields() {
+      msgId_ = "";
+      senderUserName_ = "";
+      receiverUserName_ = "";
+      msgText_ = "";
+      msgImageName_ = "";
+      msgImageBits_ = com.google.protobuf.ByteString.EMPTY;
+      messageType_ = poke.comm.App.ClusterMessage.MessageType.SUCCESS;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasSenderUserName()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasReceiverUserName()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getMsgIdBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getSenderUserNameBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getReceiverUserNameBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBytes(4, getMsgTextBytes());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeBytes(5, getMsgImageNameBytes());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeBytes(6, msgImageBits_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeEnum(7, messageType_.getNumber());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getMsgIdBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getSenderUserNameBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getReceiverUserNameBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, getMsgTextBytes());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(5, getMsgImageNameBytes());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(6, msgImageBits_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(7, messageType_.getNumber());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static poke.comm.App.ClusterMessage parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static poke.comm.App.ClusterMessage parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static poke.comm.App.ClusterMessage parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static poke.comm.App.ClusterMessage parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static poke.comm.App.ClusterMessage parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static poke.comm.App.ClusterMessage parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static poke.comm.App.ClusterMessage parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static poke.comm.App.ClusterMessage parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static poke.comm.App.ClusterMessage parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static poke.comm.App.ClusterMessage parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(poke.comm.App.ClusterMessage prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code ClusterMessage}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ClusterMessage)
+        poke.comm.App.ClusterMessageOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return poke.comm.App.internal_static_ClusterMessage_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return poke.comm.App.internal_static_ClusterMessage_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                poke.comm.App.ClusterMessage.class, poke.comm.App.ClusterMessage.Builder.class);
+      }
+
+      // Construct using poke.comm.App.ClusterMessage.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        msgId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        senderUserName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        receiverUserName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        msgText_ = "";
+        bitField0_ = (bitField0_ & ~0x00000008);
+        msgImageName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000010);
+        msgImageBits_ = com.google.protobuf.ByteString.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000020);
+        messageType_ = poke.comm.App.ClusterMessage.MessageType.SUCCESS;
+        bitField0_ = (bitField0_ & ~0x00000040);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return poke.comm.App.internal_static_ClusterMessage_descriptor;
+      }
+
+      public poke.comm.App.ClusterMessage getDefaultInstanceForType() {
+        return poke.comm.App.ClusterMessage.getDefaultInstance();
+      }
+
+      public poke.comm.App.ClusterMessage build() {
+        poke.comm.App.ClusterMessage result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public poke.comm.App.ClusterMessage buildPartial() {
+        poke.comm.App.ClusterMessage result = new poke.comm.App.ClusterMessage(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.msgId_ = msgId_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.senderUserName_ = senderUserName_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.receiverUserName_ = receiverUserName_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.msgText_ = msgText_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.msgImageName_ = msgImageName_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.msgImageBits_ = msgImageBits_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.messageType_ = messageType_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof poke.comm.App.ClusterMessage) {
+          return mergeFrom((poke.comm.App.ClusterMessage)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(poke.comm.App.ClusterMessage other) {
+        if (other == poke.comm.App.ClusterMessage.getDefaultInstance()) return this;
+        if (other.hasMsgId()) {
+          bitField0_ |= 0x00000001;
+          msgId_ = other.msgId_;
+          onChanged();
+        }
+        if (other.hasSenderUserName()) {
+          bitField0_ |= 0x00000002;
+          senderUserName_ = other.senderUserName_;
+          onChanged();
+        }
+        if (other.hasReceiverUserName()) {
+          bitField0_ |= 0x00000004;
+          receiverUserName_ = other.receiverUserName_;
+          onChanged();
+        }
+        if (other.hasMsgText()) {
+          bitField0_ |= 0x00000008;
+          msgText_ = other.msgText_;
+          onChanged();
+        }
+        if (other.hasMsgImageName()) {
+          bitField0_ |= 0x00000010;
+          msgImageName_ = other.msgImageName_;
+          onChanged();
+        }
+        if (other.hasMsgImageBits()) {
+          setMsgImageBits(other.getMsgImageBits());
+        }
+        if (other.hasMessageType()) {
+          setMessageType(other.getMessageType());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasSenderUserName()) {
+          
+          return false;
+        }
+        if (!hasReceiverUserName()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        poke.comm.App.ClusterMessage parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (poke.comm.App.ClusterMessage) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object msgId_ = "";
+      /**
+       * <code>optional string msgId = 1;</code>
+       */
+      public boolean hasMsgId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional string msgId = 1;</code>
+       */
+      public java.lang.String getMsgId() {
+        java.lang.Object ref = msgId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            msgId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string msgId = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getMsgIdBytes() {
+        java.lang.Object ref = msgId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          msgId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string msgId = 1;</code>
+       */
+      public Builder setMsgId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        msgId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string msgId = 1;</code>
+       */
+      public Builder clearMsgId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        msgId_ = getDefaultInstance().getMsgId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string msgId = 1;</code>
+       */
+      public Builder setMsgIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        msgId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object senderUserName_ = "";
+      /**
+       * <code>required string senderUserName = 2;</code>
+       */
+      public boolean hasSenderUserName() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required string senderUserName = 2;</code>
+       */
+      public java.lang.String getSenderUserName() {
+        java.lang.Object ref = senderUserName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            senderUserName_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string senderUserName = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getSenderUserNameBytes() {
+        java.lang.Object ref = senderUserName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          senderUserName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string senderUserName = 2;</code>
+       */
+      public Builder setSenderUserName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        senderUserName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string senderUserName = 2;</code>
+       */
+      public Builder clearSenderUserName() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        senderUserName_ = getDefaultInstance().getSenderUserName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string senderUserName = 2;</code>
+       */
+      public Builder setSenderUserNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        senderUserName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object receiverUserName_ = "";
+      /**
+       * <code>required string receiverUserName = 3;</code>
+       */
+      public boolean hasReceiverUserName() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required string receiverUserName = 3;</code>
+       */
+      public java.lang.String getReceiverUserName() {
+        java.lang.Object ref = receiverUserName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            receiverUserName_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string receiverUserName = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getReceiverUserNameBytes() {
+        java.lang.Object ref = receiverUserName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          receiverUserName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string receiverUserName = 3;</code>
+       */
+      public Builder setReceiverUserName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        receiverUserName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string receiverUserName = 3;</code>
+       */
+      public Builder clearReceiverUserName() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        receiverUserName_ = getDefaultInstance().getReceiverUserName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string receiverUserName = 3;</code>
+       */
+      public Builder setReceiverUserNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        receiverUserName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object msgText_ = "";
+      /**
+       * <code>optional string msgText = 4;</code>
+       */
+      public boolean hasMsgText() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional string msgText = 4;</code>
+       */
+      public java.lang.String getMsgText() {
+        java.lang.Object ref = msgText_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            msgText_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string msgText = 4;</code>
+       */
+      public com.google.protobuf.ByteString
+          getMsgTextBytes() {
+        java.lang.Object ref = msgText_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          msgText_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string msgText = 4;</code>
+       */
+      public Builder setMsgText(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        msgText_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string msgText = 4;</code>
+       */
+      public Builder clearMsgText() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        msgText_ = getDefaultInstance().getMsgText();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string msgText = 4;</code>
+       */
+      public Builder setMsgTextBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        msgText_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object msgImageName_ = "";
+      /**
+       * <code>optional string msgImageName = 5;</code>
+       */
+      public boolean hasMsgImageName() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional string msgImageName = 5;</code>
+       */
+      public java.lang.String getMsgImageName() {
+        java.lang.Object ref = msgImageName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            msgImageName_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string msgImageName = 5;</code>
+       */
+      public com.google.protobuf.ByteString
+          getMsgImageNameBytes() {
+        java.lang.Object ref = msgImageName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          msgImageName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string msgImageName = 5;</code>
+       */
+      public Builder setMsgImageName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        msgImageName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string msgImageName = 5;</code>
+       */
+      public Builder clearMsgImageName() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        msgImageName_ = getDefaultInstance().getMsgImageName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string msgImageName = 5;</code>
+       */
+      public Builder setMsgImageNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        msgImageName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString msgImageBits_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>optional bytes msgImageBits = 6;</code>
+       */
+      public boolean hasMsgImageBits() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional bytes msgImageBits = 6;</code>
+       */
+      public com.google.protobuf.ByteString getMsgImageBits() {
+        return msgImageBits_;
+      }
+      /**
+       * <code>optional bytes msgImageBits = 6;</code>
+       */
+      public Builder setMsgImageBits(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        msgImageBits_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bytes msgImageBits = 6;</code>
+       */
+      public Builder clearMsgImageBits() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        msgImageBits_ = getDefaultInstance().getMsgImageBits();
+        onChanged();
+        return this;
+      }
+
+      private poke.comm.App.ClusterMessage.MessageType messageType_ = poke.comm.App.ClusterMessage.MessageType.SUCCESS;
+      /**
+       * <code>optional .ClusterMessage.MessageType messageType = 7 [default = SUCCESS];</code>
+       */
+      public boolean hasMessageType() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional .ClusterMessage.MessageType messageType = 7 [default = SUCCESS];</code>
+       */
+      public poke.comm.App.ClusterMessage.MessageType getMessageType() {
+        return messageType_;
+      }
+      /**
+       * <code>optional .ClusterMessage.MessageType messageType = 7 [default = SUCCESS];</code>
+       */
+      public Builder setMessageType(poke.comm.App.ClusterMessage.MessageType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000040;
+        messageType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional .ClusterMessage.MessageType messageType = 7 [default = SUCCESS];</code>
+       */
+      public Builder clearMessageType() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        messageType_ = poke.comm.App.ClusterMessage.MessageType.SUCCESS;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:ClusterMessage)
+    }
+
+    static {
+      defaultInstance = new ClusterMessage(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:ClusterMessage)
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_NameValueSet_descriptor;
   private static
@@ -16512,6 +18158,11 @@ public final class App {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_Request_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_ClusterMessage_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_ClusterMessage_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -16567,17 +18218,24 @@ public final class App {
       "\030\007 \003(\0132\014.RoutingPath\022\016\n\006toNode\030\010 \001(\005\022\036\n\007" +
       "options\030\t \003(\0132\r.NameValueSet\"F\n\007Routing\022" +
       "\010\n\004PING\020\002\022\016\n\nNAMESPACES\020\003\022\010\n\004JOBS\020\004\022\013\n\007R" +
-      "EPORTS\020\n\022\n\n\006MANAGE\020d\"\254\001\n\007Payload\022\023\n\004ping" +
+      "EPORTS\020\n\022\n\n\006MANAGE\020d\"\326\001\n\007Payload\022\023\n\004ping" +
       "\030\001 \001(\0132\005.Ping\022%\n\010space_op\030\002 \001(\0132\023.NameSp" +
       "aceOperation\022\035\n\006job_op\030\003 \001(\0132\r.JobOperat" +
       "ion\022\036\n\njob_status\030\r \001(\0132\n.JobStatus\022&\n\014s",
-      "pace_status\030\014 \001(\0132\020.NameSpaceStatus\":\n\007R" +
-      "equest\022\027\n\006header\030\001 \002(\0132\007.Header\022\026\n\004body\030" +
-      "\002 \002(\0132\010.Payload*\221\001\n\nPokeStatus\022\n\n\006UKNOWN" +
-      "\020\001\022\013\n\007SUCCESS\020\002\022\013\n\007NOFOUND\020d\022\020\n\014NOINCOMP" +
-      "LETE\020e\022\n\n\006NOAUTH\020f\022\020\n\014NOCONNECTION\020g\022\017\n\013" +
-      "NOREACHABLE\020h\022\016\n\nNORESOURCE\020i\022\014\n\007FAILURE" +
-      "\020\307\001B\r\n\tpoke.commH\001"
+      "pace_status\030\014 \001(\0132\020.NameSpaceStatus\022(\n\017c" +
+      "luster_message\030\004 \001(\0132\017.ClusterMessage\":\n" +
+      "\007Request\022\027\n\006header\030\001 \002(\0132\007.Header\022\026\n\004bod" +
+      "y\030\002 \002(\0132\010.Payload\"\362\001\n\016ClusterMessage\022\r\n\005" +
+      "msgId\030\001 \001(\t\022\026\n\016senderUserName\030\002 \002(\t\022\030\n\020r" +
+      "eceiverUserName\030\003 \002(\t\022\017\n\007msgText\030\004 \001(\t\022\024" +
+      "\n\014msgImageName\030\005 \001(\t\022\024\n\014msgImageBits\030\006 \001" +
+      "(\014\0229\n\013messageType\030\007 \001(\0162\033.ClusterMessage" +
+      ".MessageType:\007SUCCESS\"\'\n\013MessageType\022\013\n\007" +
+      "REQUEST\020\000\022\013\n\007SUCCESS\020\001*\221\001\n\nPokeStatus\022\n\n",
+      "\006UKNOWN\020\001\022\013\n\007SUCCESS\020\002\022\013\n\007NOFOUND\020d\022\020\n\014N" +
+      "OINCOMPLETE\020e\022\n\n\006NOAUTH\020f\022\020\n\014NOCONNECTIO" +
+      "N\020g\022\017\n\013NOREACHABLE\020h\022\016\n\nNORESOURCE\020i\022\014\n\007" +
+      "FAILURE\020\307\001B\r\n\tpoke.commH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -16668,13 +18326,19 @@ public final class App {
     internal_static_Payload_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_Payload_descriptor,
-        new java.lang.String[] { "Ping", "SpaceOp", "JobOp", "JobStatus", "SpaceStatus", });
+        new java.lang.String[] { "Ping", "SpaceOp", "JobOp", "JobStatus", "SpaceStatus", "ClusterMessage", });
     internal_static_Request_descriptor =
       getDescriptor().getMessageTypes().get(13);
     internal_static_Request_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_Request_descriptor,
         new java.lang.String[] { "Header", "Body", });
+    internal_static_ClusterMessage_descriptor =
+      getDescriptor().getMessageTypes().get(14);
+    internal_static_ClusterMessage_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ClusterMessage_descriptor,
+        new java.lang.String[] { "MsgId", "SenderUserName", "ReceiverUserName", "MsgText", "MsgImageName", "MsgImageBits", "MessageType", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

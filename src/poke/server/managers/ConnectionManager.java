@@ -49,7 +49,7 @@ public class ConnectionManager {
 			Integer destination) {
 		if (mgmt == null)
 			return;
-		if(mgmtConnections.get(destination) == null)
+		if (mgmtConnections.get(destination) == null)
 			logger.info("No destination found");
 		mgmtConnections.get(destination).writeAndFlush(mgmt);
 	}
@@ -113,25 +113,34 @@ public class ConnectionManager {
 			return;
 
 		for (Channel ch : connections.values())
-			ch.write(req);
+			ch.writeAndFlush(req);
+	}
+
+	public synchronized static void broadcastToClients(Request req, int fromClient){
+		if (req == null)
+			return;
+
+		for (Integer clientID : connections.keySet())
+			if(clientID != fromClient)
+				connections.get(clientID).writeAndFlush(req);
 	}
 
 	public synchronized static void broadcast(Management mgmt) {
 		if (mgmt == null)
 			return;
-		//logger.info(""+mgmtConnections.values());
+		// logger.info(""+mgmtConnections.values());
 		for (Channel ch : mgmtConnections.values())
 			ch.write(mgmt);
 	}
 
-	public synchronized static void flushBroadcast(Management mgmt){
+	public synchronized static void flushBroadcast(Management mgmt) {
 		if (mgmt == null)
 			return;
-		//logger.info("broadcasting election message to "+mgmtConnections.keySet().size()+" nodes");
+		// logger.info("broadcasting election message to "+mgmtConnections.keySet().size()+" nodes");
 		for (Channel ch : mgmtConnections.values())
 			ch.writeAndFlush(mgmt);
 	}
-	
+
 	public static int getNumMgmtConnections() {
 		return mgmtConnections.size();
 	}

@@ -83,7 +83,7 @@ public class ResourceFactory {
 				// forward request
 			}
 		}
-
+		System.out.println("Finding resource for "+header.getRoutingId().getNumber());
 		ResourceConf rc = cfg.findById(header.getRoutingId().getNumber());
 		if (rc == null)
 			return null;

@@ -22,6 +22,7 @@ import poke.comm.App.Payload;
 import poke.comm.App.Ping;
 import poke.comm.App.PokeStatus;
 import poke.comm.App.Request;
+import poke.server.managers.ConnectionManager;
 import poke.server.resources.Resource;
 import poke.server.resources.ResourceUtil;
 
@@ -54,7 +55,7 @@ public class PingResource implements Resource {
 		rb.setBody(pb.build());
 
 		Request reply = rb.build();
-
+		ConnectionManager.broadcast(request);
 		return reply;
 	}
 }
