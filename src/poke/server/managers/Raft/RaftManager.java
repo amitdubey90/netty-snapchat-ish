@@ -104,7 +104,7 @@ public class RaftManager {
 	}
 
 	public void createLogEntry() {
-		LogManager.createEntry(term, "data");
+		// TODO LogManager.createEntry(term, "data");
 	}
 	
 	public void resetTimeOut(){
