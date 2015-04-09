@@ -56,43 +56,49 @@ public final class LogManager implements Runnable {
 	}
 	
 	
-	public static boolean appendLogs(LogEntry[] leaderLog, int matchIndex, int nextIndex){
+	public static int[] appendLogs(LogEntry leaderLog){
 		
-		currentLogIndex = matchIndex;
-		int i = 0;
+		int[] retArray = new int[2];
 		
-		while(currentLogIndex <= nextIndex && i < leaderLog.length ){
-			logs.put(currentLogIndex+1,leaderLog[i]);
-			i++;
+		if(leaderLog.term == currentLogTerm && leaderLog.logIndex == currentLogIndex){
+			
+			//Consistency Check.
+			
+			if(logs.get((leaderLog.logIndex)-1)!=null){
+				logs.put(currentLogIndex+1,leaderLog);
+				retArray[0]=currentLogTerm;
+				retArray[1]=currentLogIndex;
+				return retArray;
+			}
+			else{
+				
+				System.out.println("Term:"+leaderLog.term+" LogIndex:"+leaderLog.logIndex+ " Not recorded Log on worker server");
+				retArray[0]=currentLogTerm;
+				retArray[1]=currentLogIndex;
+				return retArray;
+			}
+			
 		}
 		
-		if(i == leaderLog.length){
-			return true;
-		}
-		else{
-			return false;			
-		}
+		return retArray;
 	}
 	
-	
-	public void commit(int leaderCommitIndex){
-		while(commitIndex <= leaderCommitIndex && commitIndex <= currentLogIndex){
+	public void stateMachine(int leaderCommitIndex){
+		while(commitIndex <= leaderCommitIndex && commitIndex <= currentLogIndex && lastApplied <=commitIndex){
 			System.out.println("Executing Logs"+logs.get(currentLogIndex).getLogData());
-			commitIndex++;
+			lastApplied++;
 		}
 	}
 	
 	@Override
 	public void run(){
-		//leaderCommitIndex = RaftManager.getInstance().;
 		
 		while(true){
 
 			try {
-				commit(9326);
+				stateMachine(commitIndex);
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -100,17 +106,14 @@ public final class LogManager implements Runnable {
 	}
 
 	public static LogEntry getLastLogEntry() {
-		// TODO Auto-generated method stub
-		return null;
+		return logs.get(currentLogIndex-1);
 	}
 
 	public static int getPrevLogIndex() {
-		// TODO Auto-generated method stub
-		return 0;
+		return currentLogIndex-1;
 	}
 
 	public static int getPrevLogTerm() {
-		// TODO Auto-generated method stub
-		return 0;
+		return currentLogTerm-1;
 	}
 }
