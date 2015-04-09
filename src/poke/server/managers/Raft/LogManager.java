@@ -34,31 +34,26 @@ public final class LogManager implements Runnable {
 		LogManager.currentLogIndex = currentLogIndex;
 	}
 
-	public static int createEntry(int term, String logData, int nextIndex){
+	//called by leader.
+	public static LogEntry createEntry(int term, String logData, int nextIndex){
 		
-		if(++currentLogIndex == nextIndex)
-		{
 			LogEntry entry = new LogEntry(term, currentLogIndex, logData);
-			logs.put(currentLogIndex, entry);
-			return -1;
-		}
-			
-		else{
-			
-			return getCurrentLogIndex();
-			
-		}
-		
+			return entry;
 	}
 	
 	public static LogEntry getLogEntry(Integer index){
 		return logs.get(index);
 	}
 	
+	public static void setCurrentLogTerm(int term){
+		currentLogTerm = term;
+	}
 	
-	public static int[] appendLogs(LogEntry leaderLog){
+	public static int[] appendLogs(LogEntry leaderLog, int leaderCommitIndex){
 		
 		int[] retArray = new int[2];
+		
+		
 		
 		if(leaderLog.term == currentLogTerm && leaderLog.logIndex == currentLogIndex){
 			
@@ -66,6 +61,14 @@ public final class LogManager implements Runnable {
 			
 			if(logs.get((leaderLog.logIndex)-1)!=null){
 				logs.put(currentLogIndex+1,leaderLog);
+				currentLogTerm = leaderLog.term;
+				currentLogIndex = leaderLog.logIndex;
+				
+				
+				if(commitIndex < leaderCommitIndex){
+					commitIndex = Math.min(leaderCommitIndex, currentLogIndex-1);
+				}
+				
 				retArray[0]=currentLogTerm;
 				retArray[1]=currentLogIndex;
 				return retArray;
@@ -78,6 +81,21 @@ public final class LogManager implements Runnable {
 				return retArray;
 			}
 			
+		}
+		else if(leaderLog.term != currentLogTerm && leaderLog.logIndex == currentLogIndex){
+			
+			logs.put(leaderLog.logIndex,leaderLog);
+			currentLogTerm = leaderLog.term;
+			currentLogIndex = leaderLog.logIndex;
+			
+			
+			if(commitIndex < leaderCommitIndex){
+				commitIndex = Math.min(leaderCommitIndex, currentLogIndex-1);
+			}
+			
+			retArray[0]=currentLogTerm;
+			retArray[1]=currentLogIndex;
+			return retArray;
 		}
 		
 		return retArray;
@@ -106,14 +124,14 @@ public final class LogManager implements Runnable {
 	}
 
 	public static LogEntry getLastLogEntry() {
-		return logs.get(currentLogIndex-1);
+		return logs.get(currentLogIndex);
 	}
 
 	public static int getPrevLogIndex() {
-		return currentLogIndex-1;
+		return currentLogIndex;
 	}
 
 	public static int getPrevLogTerm() {
-		return currentLogTerm-1;
+		return currentLogTerm;
 	}
 }
