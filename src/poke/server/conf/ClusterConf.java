@@ -6,9 +6,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import poke.server.conf.ServerConf.AdjacentConf;
-
-@XmlRootElement(name = "conf")
+@XmlRootElement(name = "clusterConf")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ClusterConf {
 	private int clusterId = -1;

@@ -15,6 +15,7 @@
  */
 package poke.resources;
 
+import poke.comm.App.ClusterMessage;
 import poke.comm.App.Request;
 import poke.server.resources.Resource;
 
@@ -24,6 +25,9 @@ public class JobResource implements Resource {
 	public Request process(Request request) {
 		// TODO Auto-generated method stub
 		System.out.println("processing job");
+		ClusterMessage cm = request.getBody().getClusterMessage();
+		
+		
 		return request;
 	}
 

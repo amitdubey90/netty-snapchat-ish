@@ -28,7 +28,7 @@ public class SnapchatClientCommand {
 	}
 
 	public void poke(String tag, int num) {
-		// init start
+		
 		Ping.Builder f = Ping.newBuilder();
 		f.setTag(tag);
 		f.setNumber(num);
@@ -67,6 +67,7 @@ public class SnapchatClientCommand {
 			f.setSenderUserName("sender");
 			f.setReceiverUserName("receiver");
 			f.setMsgText("hello");
+			f.setMessageType(poke.comm.App.ClusterMessage.MessageType.REQUEST);
 			// FileInputStream fs = new FileInputStream(file);
 			byte[] bytes = Files.readAllBytes(Paths.get(filePath));
 			System.out.println("Sending file of length" + bytes.length);

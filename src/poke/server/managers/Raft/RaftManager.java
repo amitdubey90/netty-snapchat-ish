@@ -211,6 +211,7 @@ public class RaftManager {
 		// now send it out to all my edges
 		logger.info(mgmt.toString());
 		ConnectionManager.sendToNode(mgmt, toNode);
+		//ConnectionManager.flushBroadcast(mgmt);
 	}
 	
 	public Management.Builder buildAppendMessage(){
@@ -247,6 +248,7 @@ public class RaftManager {
 							//TODO remove createLogEntry() when done testing
 							// createLogEntry(); 
 							((LeaderState)currentState).sendAppendNotice();
+							
 							lastKnownBeat = System.currentTimeMillis();
 						}
 					}

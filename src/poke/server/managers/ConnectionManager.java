@@ -49,9 +49,11 @@ public class ConnectionManager {
 			Integer destination) {
 		if (mgmt == null)
 			return;
-		if (mgmtConnections.get(destination) == null)
-			logger.info("No destination found");
-		mgmtConnections.get(destination).writeAndFlush(mgmt);
+		if (mgmtConnections.get(destination) != null){
+			mgmtConnections.get(destination).writeAndFlush(mgmt);
+		} else
+			System.out.println("No destination found");
+		
 	}
 
 	public static void addConnection(Integer nodeId, Channel channel,
