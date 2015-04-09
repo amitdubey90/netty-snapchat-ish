@@ -34,11 +34,13 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import poke.server.conf.ClusterConf;
 import poke.server.conf.JsonUtil;
 import poke.server.conf.NodeDesc;
 import poke.server.conf.ServerConf;
 import poke.server.management.ManagementInitializer;
 import poke.server.management.ManagementQueue;
+import poke.server.managers.ClusterManager;
 import poke.server.managers.ElectionManager;
 import poke.server.managers.HeartbeatData;
 import poke.server.managers.HeartbeatManager;
@@ -66,9 +68,10 @@ public class Server {
 	protected static ChannelGroup allChannels;
 	protected static HashMap<Integer, ServerBootstrap> bootstrap = new HashMap<Integer, ServerBootstrap>();
 	protected ServerConf conf;
-
+	protected ClusterConf clusterConf;
 	protected JobManager jobMgr;
 	protected NetworkManager networkMgr;
+	protected ClusterManager clusterMgr;
 	protected HeartbeatManager heartbeatMgr;
 	protected ElectionManager electionMgr;
 	protected RaftManager raftMgr;
@@ -95,8 +98,37 @@ public class Server {
 	 * 
 	 * @param cfg
 	 */
-	public Server(File cfg) {
+	public Server(File cfg, File clusterCfg) {
 		init(cfg);
+		initCluster(clusterCfg);
+	}
+
+	private void initCluster(File clusterCfg) {
+		// TODO Auto-generated method stub
+
+		if (!clusterCfg.exists())
+			throw new RuntimeException(clusterCfg.getAbsolutePath() + " not found");
+		// resource initialization - how message are processed
+		BufferedInputStream br = null;
+		try {
+			byte[] raw = new byte[(int) clusterCfg.length()];
+			br = new BufferedInputStream(new FileInputStream(clusterCfg));
+			br.read(raw);
+			clusterConf = JsonUtil.decode(new String(raw), ClusterConf.class);
+			logger.info("ClusterConf: "+clusterConf.getClusterId());
+			ResourceFactory.initializeCluster(clusterConf);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
 	}
 
 	private void init(File cfg) {
@@ -282,6 +314,9 @@ public class Server {
 		// create manager for accepting jobs
 		jobMgr = JobManager.initManager(conf);
 
+		// create manager for adding cluster connections
+		clusterMgr = ClusterManager.initManager(clusterConf);
+		clusterMgr.registerConnections();
 		System.out.println("---> Server.startManagers() expecting " + conf.getAdjacent().getAdjacentNodes().size()
 				+ " connections");
 		// establish nearest nodes and start sending heartbeats
@@ -306,10 +341,15 @@ public class Server {
 	 * (management)
 	 */
 	public void run() {
-		if (conf == null) {
-			logger.error("Missing configuration file");
+		if (conf == null ) {
+			logger.error("Missing server configuration file");
 			return;
 		}
+		else if (clusterConf == null ) {
+			logger.error("Missing cluster configuration file");
+			return;
+		}
+		
 
 		logger.info("Initializing server " + conf.getNodeId());
 
@@ -335,7 +375,8 @@ public class Server {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		if (args.length != 1) {
+		System.out.println("args.length: "+args.length);
+		if (args.length!=2) {
 			System.err.println("Usage: java " + Server.class.getClass().getName() + " conf-file");
 			System.exit(1);
 		}
@@ -345,8 +386,15 @@ public class Server {
 			Server.logger.error("configuration file does not exist: " + cfg);
 			System.exit(2);
 		}
+		
+		File clusterCfg = new File(args[1]);
+		if (!clusterCfg.exists()) {
+			Server.logger.error("cluster configuration file does not exist: " + cfg);
+			System.exit(2);
+		}
 
-		Server svr = new Server(cfg);
+		
+		Server svr = new Server(cfg,clusterCfg);
 		svr.run();
 	}
 }
