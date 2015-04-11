@@ -6881,13 +6881,13 @@ public final class Mgmt {
     int getLastLogTerm();
 
     /**
-     * <code>optional int32 candidate_term = 4;</code>
+     * <code>optional int32 term = 4;</code>
      */
-    boolean hasCandidateTerm();
+    boolean hasTerm();
     /**
-     * <code>optional int32 candidate_term = 4;</code>
+     * <code>optional int32 term = 4;</code>
      */
-    int getCandidateTerm();
+    int getTerm();
 
     /**
      * <code>optional bool vote_granted = 5;</code>
@@ -6967,7 +6967,7 @@ public final class Mgmt {
             }
             case 32: {
               bitField0_ |= 0x00000008;
-              candidateTerm_ = input.readInt32();
+              term_ = input.readInt32();
               break;
             }
             case 40: {
@@ -7060,19 +7060,19 @@ public final class Mgmt {
       return lastLogTerm_;
     }
 
-    public static final int CANDIDATE_TERM_FIELD_NUMBER = 4;
-    private int candidateTerm_;
+    public static final int TERM_FIELD_NUMBER = 4;
+    private int term_;
     /**
-     * <code>optional int32 candidate_term = 4;</code>
+     * <code>optional int32 term = 4;</code>
      */
-    public boolean hasCandidateTerm() {
+    public boolean hasTerm() {
       return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     /**
-     * <code>optional int32 candidate_term = 4;</code>
+     * <code>optional int32 term = 4;</code>
      */
-    public int getCandidateTerm() {
-      return candidateTerm_;
+    public int getTerm() {
+      return term_;
     }
 
     public static final int VOTE_GRANTED_FIELD_NUMBER = 5;
@@ -7094,7 +7094,7 @@ public final class Mgmt {
       candidateId_ = 0;
       lastLogIndex_ = 0;
       lastLogTerm_ = 0;
-      candidateTerm_ = 0;
+      term_ = 0;
       voteGranted_ = false;
     }
     private byte memoizedIsInitialized = -1;
@@ -7120,7 +7120,7 @@ public final class Mgmt {
         output.writeInt32(3, lastLogTerm_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeInt32(4, candidateTerm_);
+        output.writeInt32(4, term_);
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         output.writeBool(5, voteGranted_);
@@ -7148,7 +7148,7 @@ public final class Mgmt {
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(4, candidateTerm_);
+          .computeInt32Size(4, term_);
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
@@ -7277,7 +7277,7 @@ public final class Mgmt {
         bitField0_ = (bitField0_ & ~0x00000002);
         lastLogTerm_ = 0;
         bitField0_ = (bitField0_ & ~0x00000004);
-        candidateTerm_ = 0;
+        term_ = 0;
         bitField0_ = (bitField0_ & ~0x00000008);
         voteGranted_ = false;
         bitField0_ = (bitField0_ & ~0x00000010);
@@ -7324,7 +7324,7 @@ public final class Mgmt {
         if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
           to_bitField0_ |= 0x00000008;
         }
-        result.candidateTerm_ = candidateTerm_;
+        result.term_ = term_;
         if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
           to_bitField0_ |= 0x00000010;
         }
@@ -7354,8 +7354,8 @@ public final class Mgmt {
         if (other.hasLastLogTerm()) {
           setLastLogTerm(other.getLastLogTerm());
         }
-        if (other.hasCandidateTerm()) {
-          setCandidateTerm(other.getCandidateTerm());
+        if (other.hasTerm()) {
+          setTerm(other.getTerm());
         }
         if (other.hasVoteGranted()) {
           setVoteGranted(other.getVoteGranted());
@@ -7483,34 +7483,34 @@ public final class Mgmt {
         return this;
       }
 
-      private int candidateTerm_ ;
+      private int term_ ;
       /**
-       * <code>optional int32 candidate_term = 4;</code>
+       * <code>optional int32 term = 4;</code>
        */
-      public boolean hasCandidateTerm() {
+      public boolean hasTerm() {
         return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
-       * <code>optional int32 candidate_term = 4;</code>
+       * <code>optional int32 term = 4;</code>
        */
-      public int getCandidateTerm() {
-        return candidateTerm_;
+      public int getTerm() {
+        return term_;
       }
       /**
-       * <code>optional int32 candidate_term = 4;</code>
+       * <code>optional int32 term = 4;</code>
        */
-      public Builder setCandidateTerm(int value) {
+      public Builder setTerm(int value) {
         bitField0_ |= 0x00000008;
-        candidateTerm_ = value;
+        term_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 candidate_term = 4;</code>
+       * <code>optional int32 term = 4;</code>
        */
-      public Builder clearCandidateTerm() {
+      public Builder clearTerm() {
         bitField0_ = (bitField0_ & ~0x00000008);
-        candidateTerm_ = 0;
+        term_ = 0;
         onChanged();
         return this;
       }
@@ -7561,6 +7561,15 @@ public final class Mgmt {
   public interface AppendMessageOrBuilder extends
       // @@protoc_insertion_point(interface_extends:AppendMessage)
       com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional int32 term = 9;</code>
+     */
+    boolean hasTerm();
+    /**
+     * <code>optional int32 term = 9;</code>
+     */
+    int getTerm();
 
     /**
      * <code>optional int32 log_index = 1;</code>
@@ -7693,41 +7702,46 @@ public final class Mgmt {
               break;
             }
             case 8: {
-              bitField0_ |= 0x00000001;
+              bitField0_ |= 0x00000002;
               logIndex_ = input.readInt32();
               break;
             }
             case 16: {
-              bitField0_ |= 0x00000002;
+              bitField0_ |= 0x00000004;
               prevLogIndex_ = input.readInt32();
               break;
             }
             case 24: {
-              bitField0_ |= 0x00000004;
+              bitField0_ |= 0x00000008;
               prevLogTerm_ = input.readInt32();
               break;
             }
             case 32: {
-              bitField0_ |= 0x00000008;
+              bitField0_ |= 0x00000010;
               leaderId_ = input.readInt32();
               break;
             }
             case 48: {
-              bitField0_ |= 0x00000010;
+              bitField0_ |= 0x00000020;
               success_ = input.readBool();
               break;
             }
             case 56: {
-              bitField0_ |= 0x00000020;
+              bitField0_ |= 0x00000040;
               leaderCommit_ = input.readInt32();
               break;
             }
             case 66: {
-              if (!((mutable_bitField0_ & 0x00000040) == 0x00000040)) {
+              if (!((mutable_bitField0_ & 0x00000080) == 0x00000080)) {
                 entries_ = new java.util.ArrayList<poke.core.Mgmt.LogEntries>();
-                mutable_bitField0_ |= 0x00000040;
+                mutable_bitField0_ |= 0x00000080;
               }
               entries_.add(input.readMessage(poke.core.Mgmt.LogEntries.PARSER, extensionRegistry));
+              break;
+            }
+            case 72: {
+              bitField0_ |= 0x00000001;
+              term_ = input.readInt32();
               break;
             }
           }
@@ -7738,7 +7752,7 @@ public final class Mgmt {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000040) == 0x00000040)) {
+        if (((mutable_bitField0_ & 0x00000080) == 0x00000080)) {
           entries_ = java.util.Collections.unmodifiableList(entries_);
         }
         this.unknownFields = unknownFields.build();
@@ -7773,13 +7787,28 @@ public final class Mgmt {
     }
 
     private int bitField0_;
+    public static final int TERM_FIELD_NUMBER = 9;
+    private int term_;
+    /**
+     * <code>optional int32 term = 9;</code>
+     */
+    public boolean hasTerm() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional int32 term = 9;</code>
+     */
+    public int getTerm() {
+      return term_;
+    }
+
     public static final int LOG_INDEX_FIELD_NUMBER = 1;
     private int logIndex_;
     /**
      * <code>optional int32 log_index = 1;</code>
      */
     public boolean hasLogIndex() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
+      return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
      * <code>optional int32 log_index = 1;</code>
@@ -7794,7 +7823,7 @@ public final class Mgmt {
      * <code>optional int32 prev_log_index = 2;</code>
      */
     public boolean hasPrevLogIndex() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
+      return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
      * <code>optional int32 prev_log_index = 2;</code>
@@ -7809,7 +7838,7 @@ public final class Mgmt {
      * <code>optional int32 prev_log_term = 3;</code>
      */
     public boolean hasPrevLogTerm() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
+      return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     /**
      * <code>optional int32 prev_log_term = 3;</code>
@@ -7824,7 +7853,7 @@ public final class Mgmt {
      * <code>optional int32 leader_id = 4;</code>
      */
     public boolean hasLeaderId() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
+      return ((bitField0_ & 0x00000010) == 0x00000010);
     }
     /**
      * <code>optional int32 leader_id = 4;</code>
@@ -7839,7 +7868,7 @@ public final class Mgmt {
      * <code>optional bool success = 6;</code>
      */
     public boolean hasSuccess() {
-      return ((bitField0_ & 0x00000010) == 0x00000010);
+      return ((bitField0_ & 0x00000020) == 0x00000020);
     }
     /**
      * <code>optional bool success = 6;</code>
@@ -7854,7 +7883,7 @@ public final class Mgmt {
      * <code>optional int32 leader_commit = 7;</code>
      */
     public boolean hasLeaderCommit() {
-      return ((bitField0_ & 0x00000020) == 0x00000020);
+      return ((bitField0_ & 0x00000040) == 0x00000040);
     }
     /**
      * <code>optional int32 leader_commit = 7;</code>
@@ -7899,6 +7928,7 @@ public final class Mgmt {
     }
 
     private void initFields() {
+      term_ = 0;
       logIndex_ = 0;
       prevLogIndex_ = 0;
       prevLogTerm_ = 0;
@@ -7920,26 +7950,29 @@ public final class Mgmt {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeInt32(1, logIndex_);
       }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeInt32(2, prevLogIndex_);
       }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
         output.writeInt32(3, prevLogTerm_);
       }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
         output.writeInt32(4, leaderId_);
       }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
         output.writeBool(6, success_);
       }
-      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
         output.writeInt32(7, leaderCommit_);
       }
       for (int i = 0; i < entries_.size(); i++) {
         output.writeMessage(8, entries_.get(i));
+      }
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeInt32(9, term_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -7950,33 +7983,37 @@ public final class Mgmt {
       if (size != -1) return size;
 
       size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(1, logIndex_);
       }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(2, prevLogIndex_);
       }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(3, prevLogTerm_);
       }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(4, leaderId_);
       }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(6, success_);
       }
-      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(7, leaderCommit_);
       }
       for (int i = 0; i < entries_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(8, entries_.get(i));
+      }
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(9, term_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -8096,21 +8133,23 @@ public final class Mgmt {
 
       public Builder clear() {
         super.clear();
-        logIndex_ = 0;
+        term_ = 0;
         bitField0_ = (bitField0_ & ~0x00000001);
-        prevLogIndex_ = 0;
+        logIndex_ = 0;
         bitField0_ = (bitField0_ & ~0x00000002);
-        prevLogTerm_ = 0;
+        prevLogIndex_ = 0;
         bitField0_ = (bitField0_ & ~0x00000004);
-        leaderId_ = 0;
+        prevLogTerm_ = 0;
         bitField0_ = (bitField0_ & ~0x00000008);
-        success_ = false;
+        leaderId_ = 0;
         bitField0_ = (bitField0_ & ~0x00000010);
-        leaderCommit_ = 0;
+        success_ = false;
         bitField0_ = (bitField0_ & ~0x00000020);
+        leaderCommit_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000040);
         if (entriesBuilder_ == null) {
           entries_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000040);
+          bitField0_ = (bitField0_ & ~0x00000080);
         } else {
           entriesBuilder_.clear();
         }
@@ -8145,31 +8184,35 @@ public final class Mgmt {
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.logIndex_ = logIndex_;
+        result.term_ = term_;
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.prevLogIndex_ = prevLogIndex_;
+        result.logIndex_ = logIndex_;
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
         }
-        result.prevLogTerm_ = prevLogTerm_;
+        result.prevLogIndex_ = prevLogIndex_;
         if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
           to_bitField0_ |= 0x00000008;
         }
-        result.leaderId_ = leaderId_;
+        result.prevLogTerm_ = prevLogTerm_;
         if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
           to_bitField0_ |= 0x00000010;
         }
-        result.success_ = success_;
+        result.leaderId_ = leaderId_;
         if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
           to_bitField0_ |= 0x00000020;
         }
+        result.success_ = success_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
         result.leaderCommit_ = leaderCommit_;
         if (entriesBuilder_ == null) {
-          if (((bitField0_ & 0x00000040) == 0x00000040)) {
+          if (((bitField0_ & 0x00000080) == 0x00000080)) {
             entries_ = java.util.Collections.unmodifiableList(entries_);
-            bitField0_ = (bitField0_ & ~0x00000040);
+            bitField0_ = (bitField0_ & ~0x00000080);
           }
           result.entries_ = entries_;
         } else {
@@ -8191,6 +8234,9 @@ public final class Mgmt {
 
       public Builder mergeFrom(poke.core.Mgmt.AppendMessage other) {
         if (other == poke.core.Mgmt.AppendMessage.getDefaultInstance()) return this;
+        if (other.hasTerm()) {
+          setTerm(other.getTerm());
+        }
         if (other.hasLogIndex()) {
           setLogIndex(other.getLogIndex());
         }
@@ -8213,7 +8259,7 @@ public final class Mgmt {
           if (!other.entries_.isEmpty()) {
             if (entries_.isEmpty()) {
               entries_ = other.entries_;
-              bitField0_ = (bitField0_ & ~0x00000040);
+              bitField0_ = (bitField0_ & ~0x00000080);
             } else {
               ensureEntriesIsMutable();
               entries_.addAll(other.entries_);
@@ -8226,7 +8272,7 @@ public final class Mgmt {
               entriesBuilder_.dispose();
               entriesBuilder_ = null;
               entries_ = other.entries_;
-              bitField0_ = (bitField0_ & ~0x00000040);
+              bitField0_ = (bitField0_ & ~0x00000080);
               entriesBuilder_ = 
                 com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
                    getEntriesFieldBuilder() : null;
@@ -8262,12 +8308,44 @@ public final class Mgmt {
       }
       private int bitField0_;
 
+      private int term_ ;
+      /**
+       * <code>optional int32 term = 9;</code>
+       */
+      public boolean hasTerm() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional int32 term = 9;</code>
+       */
+      public int getTerm() {
+        return term_;
+      }
+      /**
+       * <code>optional int32 term = 9;</code>
+       */
+      public Builder setTerm(int value) {
+        bitField0_ |= 0x00000001;
+        term_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 term = 9;</code>
+       */
+      public Builder clearTerm() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        term_ = 0;
+        onChanged();
+        return this;
+      }
+
       private int logIndex_ ;
       /**
        * <code>optional int32 log_index = 1;</code>
        */
       public boolean hasLogIndex() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
+        return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
        * <code>optional int32 log_index = 1;</code>
@@ -8279,7 +8357,7 @@ public final class Mgmt {
        * <code>optional int32 log_index = 1;</code>
        */
       public Builder setLogIndex(int value) {
-        bitField0_ |= 0x00000001;
+        bitField0_ |= 0x00000002;
         logIndex_ = value;
         onChanged();
         return this;
@@ -8288,7 +8366,7 @@ public final class Mgmt {
        * <code>optional int32 log_index = 1;</code>
        */
       public Builder clearLogIndex() {
-        bitField0_ = (bitField0_ & ~0x00000001);
+        bitField0_ = (bitField0_ & ~0x00000002);
         logIndex_ = 0;
         onChanged();
         return this;
@@ -8299,7 +8377,7 @@ public final class Mgmt {
        * <code>optional int32 prev_log_index = 2;</code>
        */
       public boolean hasPrevLogIndex() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
+        return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
        * <code>optional int32 prev_log_index = 2;</code>
@@ -8311,7 +8389,7 @@ public final class Mgmt {
        * <code>optional int32 prev_log_index = 2;</code>
        */
       public Builder setPrevLogIndex(int value) {
-        bitField0_ |= 0x00000002;
+        bitField0_ |= 0x00000004;
         prevLogIndex_ = value;
         onChanged();
         return this;
@@ -8320,7 +8398,7 @@ public final class Mgmt {
        * <code>optional int32 prev_log_index = 2;</code>
        */
       public Builder clearPrevLogIndex() {
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000004);
         prevLogIndex_ = 0;
         onChanged();
         return this;
@@ -8331,7 +8409,7 @@ public final class Mgmt {
        * <code>optional int32 prev_log_term = 3;</code>
        */
       public boolean hasPrevLogTerm() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
+        return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
        * <code>optional int32 prev_log_term = 3;</code>
@@ -8343,7 +8421,7 @@ public final class Mgmt {
        * <code>optional int32 prev_log_term = 3;</code>
        */
       public Builder setPrevLogTerm(int value) {
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000008;
         prevLogTerm_ = value;
         onChanged();
         return this;
@@ -8352,7 +8430,7 @@ public final class Mgmt {
        * <code>optional int32 prev_log_term = 3;</code>
        */
       public Builder clearPrevLogTerm() {
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000008);
         prevLogTerm_ = 0;
         onChanged();
         return this;
@@ -8363,7 +8441,7 @@ public final class Mgmt {
        * <code>optional int32 leader_id = 4;</code>
        */
       public boolean hasLeaderId() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
+        return ((bitField0_ & 0x00000010) == 0x00000010);
       }
       /**
        * <code>optional int32 leader_id = 4;</code>
@@ -8375,7 +8453,7 @@ public final class Mgmt {
        * <code>optional int32 leader_id = 4;</code>
        */
       public Builder setLeaderId(int value) {
-        bitField0_ |= 0x00000008;
+        bitField0_ |= 0x00000010;
         leaderId_ = value;
         onChanged();
         return this;
@@ -8384,7 +8462,7 @@ public final class Mgmt {
        * <code>optional int32 leader_id = 4;</code>
        */
       public Builder clearLeaderId() {
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000010);
         leaderId_ = 0;
         onChanged();
         return this;
@@ -8395,7 +8473,7 @@ public final class Mgmt {
        * <code>optional bool success = 6;</code>
        */
       public boolean hasSuccess() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
+        return ((bitField0_ & 0x00000020) == 0x00000020);
       }
       /**
        * <code>optional bool success = 6;</code>
@@ -8407,7 +8485,7 @@ public final class Mgmt {
        * <code>optional bool success = 6;</code>
        */
       public Builder setSuccess(boolean value) {
-        bitField0_ |= 0x00000010;
+        bitField0_ |= 0x00000020;
         success_ = value;
         onChanged();
         return this;
@@ -8416,7 +8494,7 @@ public final class Mgmt {
        * <code>optional bool success = 6;</code>
        */
       public Builder clearSuccess() {
-        bitField0_ = (bitField0_ & ~0x00000010);
+        bitField0_ = (bitField0_ & ~0x00000020);
         success_ = false;
         onChanged();
         return this;
@@ -8427,7 +8505,7 @@ public final class Mgmt {
        * <code>optional int32 leader_commit = 7;</code>
        */
       public boolean hasLeaderCommit() {
-        return ((bitField0_ & 0x00000020) == 0x00000020);
+        return ((bitField0_ & 0x00000040) == 0x00000040);
       }
       /**
        * <code>optional int32 leader_commit = 7;</code>
@@ -8439,7 +8517,7 @@ public final class Mgmt {
        * <code>optional int32 leader_commit = 7;</code>
        */
       public Builder setLeaderCommit(int value) {
-        bitField0_ |= 0x00000020;
+        bitField0_ |= 0x00000040;
         leaderCommit_ = value;
         onChanged();
         return this;
@@ -8448,7 +8526,7 @@ public final class Mgmt {
        * <code>optional int32 leader_commit = 7;</code>
        */
       public Builder clearLeaderCommit() {
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000040);
         leaderCommit_ = 0;
         onChanged();
         return this;
@@ -8457,9 +8535,9 @@ public final class Mgmt {
       private java.util.List<poke.core.Mgmt.LogEntries> entries_ =
         java.util.Collections.emptyList();
       private void ensureEntriesIsMutable() {
-        if (!((bitField0_ & 0x00000040) == 0x00000040)) {
+        if (!((bitField0_ & 0x00000080) == 0x00000080)) {
           entries_ = new java.util.ArrayList<poke.core.Mgmt.LogEntries>(entries_);
-          bitField0_ |= 0x00000040;
+          bitField0_ |= 0x00000080;
          }
       }
 
@@ -8609,7 +8687,7 @@ public final class Mgmt {
       public Builder clearEntries() {
         if (entriesBuilder_ == null) {
           entries_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000040);
+          bitField0_ = (bitField0_ & ~0x00000080);
           onChanged();
         } else {
           entriesBuilder_.clear();
@@ -8686,7 +8764,7 @@ public final class Mgmt {
           entriesBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
               poke.core.Mgmt.LogEntries, poke.core.Mgmt.LogEntries.Builder, poke.core.Mgmt.LogEntriesOrBuilder>(
                   entries_,
-                  ((bitField0_ & 0x00000040) == 0x00000040),
+                  ((bitField0_ & 0x00000080) == 0x00000080),
                   getParentForChildren(),
                   isClean());
           entries_ = null;
@@ -8719,15 +8797,15 @@ public final class Mgmt {
     int getLogIndex();
 
     /**
-     * <code>optional string logData = 2;</code>
+     * <code>optional string log_data = 2;</code>
      */
     boolean hasLogData();
     /**
-     * <code>optional string logData = 2;</code>
+     * <code>optional string log_data = 2;</code>
      */
     java.lang.String getLogData();
     /**
-     * <code>optional string logData = 2;</code>
+     * <code>optional string log_data = 2;</code>
      */
     com.google.protobuf.ByteString
         getLogDataBytes();
@@ -8850,16 +8928,16 @@ public final class Mgmt {
       return logIndex_;
     }
 
-    public static final int LOGDATA_FIELD_NUMBER = 2;
+    public static final int LOG_DATA_FIELD_NUMBER = 2;
     private java.lang.Object logData_;
     /**
-     * <code>optional string logData = 2;</code>
+     * <code>optional string log_data = 2;</code>
      */
     public boolean hasLogData() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>optional string logData = 2;</code>
+     * <code>optional string log_data = 2;</code>
      */
     public java.lang.String getLogData() {
       java.lang.Object ref = logData_;
@@ -8876,7 +8954,7 @@ public final class Mgmt {
       }
     }
     /**
-     * <code>optional string logData = 2;</code>
+     * <code>optional string log_data = 2;</code>
      */
     public com.google.protobuf.ByteString
         getLogDataBytes() {
@@ -9174,13 +9252,13 @@ public final class Mgmt {
 
       private java.lang.Object logData_ = "";
       /**
-       * <code>optional string logData = 2;</code>
+       * <code>optional string log_data = 2;</code>
        */
       public boolean hasLogData() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>optional string logData = 2;</code>
+       * <code>optional string log_data = 2;</code>
        */
       public java.lang.String getLogData() {
         java.lang.Object ref = logData_;
@@ -9197,7 +9275,7 @@ public final class Mgmt {
         }
       }
       /**
-       * <code>optional string logData = 2;</code>
+       * <code>optional string log_data = 2;</code>
        */
       public com.google.protobuf.ByteString
           getLogDataBytes() {
@@ -9213,7 +9291,7 @@ public final class Mgmt {
         }
       }
       /**
-       * <code>optional string logData = 2;</code>
+       * <code>optional string log_data = 2;</code>
        */
       public Builder setLogData(
           java.lang.String value) {
@@ -9226,7 +9304,7 @@ public final class Mgmt {
         return this;
       }
       /**
-       * <code>optional string logData = 2;</code>
+       * <code>optional string log_data = 2;</code>
        */
       public Builder clearLogData() {
         bitField0_ = (bitField0_ & ~0x00000002);
@@ -9235,7 +9313,7 @@ public final class Mgmt {
         return this;
       }
       /**
-       * <code>optional string logData = 2;</code>
+       * <code>optional string log_data = 2;</code>
        */
       public Builder setLogDataBytes(
           com.google.protobuf.ByteString value) {
@@ -9264,20 +9342,19 @@ public final class Mgmt {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional int32 term = 1;</code>
-     */
-    boolean hasTerm();
-    /**
-     * <code>optional int32 term = 1;</code>
-     */
-    int getTerm();
-
-    /**
      * <code>required .RaftMessage.ElectionAction action = 2;</code>
+     *
+     * <pre>
+     *optional int32 term = 1;
+     * </pre>
      */
     boolean hasAction();
     /**
      * <code>required .RaftMessage.ElectionAction action = 2;</code>
+     *
+     * <pre>
+     *optional int32 term = 1;
+     * </pre>
      */
     poke.core.Mgmt.RaftMessage.ElectionAction getAction();
 
@@ -9359,25 +9436,20 @@ public final class Mgmt {
               }
               break;
             }
-            case 8: {
-              bitField0_ |= 0x00000001;
-              term_ = input.readInt32();
-              break;
-            }
             case 16: {
               int rawValue = input.readEnum();
               poke.core.Mgmt.RaftMessage.ElectionAction value = poke.core.Mgmt.RaftMessage.ElectionAction.valueOf(rawValue);
               if (value == null) {
                 unknownFields.mergeVarintField(2, rawValue);
               } else {
-                bitField0_ |= 0x00000002;
+                bitField0_ |= 0x00000001;
                 action_ = value;
               }
               break;
             }
             case 26: {
               poke.core.Mgmt.RequestVoteMessage.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000004) == 0x00000004)) {
+              if (((bitField0_ & 0x00000002) == 0x00000002)) {
                 subBuilder = requestVote_.toBuilder();
               }
               requestVote_ = input.readMessage(poke.core.Mgmt.RequestVoteMessage.PARSER, extensionRegistry);
@@ -9385,12 +9457,12 @@ public final class Mgmt {
                 subBuilder.mergeFrom(requestVote_);
                 requestVote_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00000004;
+              bitField0_ |= 0x00000002;
               break;
             }
             case 34: {
               poke.core.Mgmt.AppendMessage.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000008) == 0x00000008)) {
+              if (((bitField0_ & 0x00000004) == 0x00000004)) {
                 subBuilder = appendMessage_.toBuilder();
               }
               appendMessage_ = input.readMessage(poke.core.Mgmt.AppendMessage.PARSER, extensionRegistry);
@@ -9398,7 +9470,7 @@ public final class Mgmt {
                 subBuilder.mergeFrom(appendMessage_);
                 appendMessage_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00000008;
+              bitField0_ |= 0x00000004;
               break;
             }
           }
@@ -9541,31 +9613,24 @@ public final class Mgmt {
     }
 
     private int bitField0_;
-    public static final int TERM_FIELD_NUMBER = 1;
-    private int term_;
-    /**
-     * <code>optional int32 term = 1;</code>
-     */
-    public boolean hasTerm() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>optional int32 term = 1;</code>
-     */
-    public int getTerm() {
-      return term_;
-    }
-
     public static final int ACTION_FIELD_NUMBER = 2;
     private poke.core.Mgmt.RaftMessage.ElectionAction action_;
     /**
      * <code>required .RaftMessage.ElectionAction action = 2;</code>
+     *
+     * <pre>
+     *optional int32 term = 1;
+     * </pre>
      */
     public boolean hasAction() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
+      return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
      * <code>required .RaftMessage.ElectionAction action = 2;</code>
+     *
+     * <pre>
+     *optional int32 term = 1;
+     * </pre>
      */
     public poke.core.Mgmt.RaftMessage.ElectionAction getAction() {
       return action_;
@@ -9577,7 +9642,7 @@ public final class Mgmt {
      * <code>optional .RequestVoteMessage request_vote = 3;</code>
      */
     public boolean hasRequestVote() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
+      return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
      * <code>optional .RequestVoteMessage request_vote = 3;</code>
@@ -9598,7 +9663,7 @@ public final class Mgmt {
      * <code>optional .AppendMessage append_message = 4;</code>
      */
     public boolean hasAppendMessage() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
+      return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
      * <code>optional .AppendMessage append_message = 4;</code>
@@ -9614,7 +9679,6 @@ public final class Mgmt {
     }
 
     private void initFields() {
-      term_ = 0;
       action_ = poke.core.Mgmt.RaftMessage.ElectionAction.APPEND;
       requestVote_ = poke.core.Mgmt.RequestVoteMessage.getDefaultInstance();
       appendMessage_ = poke.core.Mgmt.AppendMessage.getDefaultInstance();
@@ -9637,15 +9701,12 @@ public final class Mgmt {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeInt32(1, term_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeEnum(2, action_.getNumber());
       }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeMessage(3, requestVote_);
       }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeMessage(4, appendMessage_);
       }
       getUnknownFields().writeTo(output);
@@ -9659,17 +9720,13 @@ public final class Mgmt {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(1, term_);
+          .computeEnumSize(2, action_.getNumber());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(2, action_.getNumber());
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(3, requestVote_);
       }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(4, appendMessage_);
       }
@@ -9792,22 +9849,20 @@ public final class Mgmt {
 
       public Builder clear() {
         super.clear();
-        term_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
         action_ = poke.core.Mgmt.RaftMessage.ElectionAction.APPEND;
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000001);
         if (requestVoteBuilder_ == null) {
           requestVote_ = poke.core.Mgmt.RequestVoteMessage.getDefaultInstance();
         } else {
           requestVoteBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000002);
         if (appendMessageBuilder_ == null) {
           appendMessage_ = poke.core.Mgmt.AppendMessage.getDefaultInstance();
         } else {
           appendMessageBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -9839,21 +9894,17 @@ public final class Mgmt {
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.term_ = term_;
+        result.action_ = action_;
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
-        }
-        result.action_ = action_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000004;
         }
         if (requestVoteBuilder_ == null) {
           result.requestVote_ = requestVote_;
         } else {
           result.requestVote_ = requestVoteBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
-          to_bitField0_ |= 0x00000008;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
         }
         if (appendMessageBuilder_ == null) {
           result.appendMessage_ = appendMessage_;
@@ -9876,9 +9927,6 @@ public final class Mgmt {
 
       public Builder mergeFrom(poke.core.Mgmt.RaftMessage other) {
         if (other == poke.core.Mgmt.RaftMessage.getDefaultInstance()) return this;
-        if (other.hasTerm()) {
-          setTerm(other.getTerm());
-        }
         if (other.hasAction()) {
           setAction(other.getAction());
         }
@@ -9919,68 +9967,52 @@ public final class Mgmt {
       }
       private int bitField0_;
 
-      private int term_ ;
-      /**
-       * <code>optional int32 term = 1;</code>
-       */
-      public boolean hasTerm() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>optional int32 term = 1;</code>
-       */
-      public int getTerm() {
-        return term_;
-      }
-      /**
-       * <code>optional int32 term = 1;</code>
-       */
-      public Builder setTerm(int value) {
-        bitField0_ |= 0x00000001;
-        term_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional int32 term = 1;</code>
-       */
-      public Builder clearTerm() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        term_ = 0;
-        onChanged();
-        return this;
-      }
-
       private poke.core.Mgmt.RaftMessage.ElectionAction action_ = poke.core.Mgmt.RaftMessage.ElectionAction.APPEND;
       /**
        * <code>required .RaftMessage.ElectionAction action = 2;</code>
+       *
+       * <pre>
+       *optional int32 term = 1;
+       * </pre>
        */
       public boolean hasAction() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
+        return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
        * <code>required .RaftMessage.ElectionAction action = 2;</code>
+       *
+       * <pre>
+       *optional int32 term = 1;
+       * </pre>
        */
       public poke.core.Mgmt.RaftMessage.ElectionAction getAction() {
         return action_;
       }
       /**
        * <code>required .RaftMessage.ElectionAction action = 2;</code>
+       *
+       * <pre>
+       *optional int32 term = 1;
+       * </pre>
        */
       public Builder setAction(poke.core.Mgmt.RaftMessage.ElectionAction value) {
         if (value == null) {
           throw new NullPointerException();
         }
-        bitField0_ |= 0x00000002;
+        bitField0_ |= 0x00000001;
         action_ = value;
         onChanged();
         return this;
       }
       /**
        * <code>required .RaftMessage.ElectionAction action = 2;</code>
+       *
+       * <pre>
+       *optional int32 term = 1;
+       * </pre>
        */
       public Builder clearAction() {
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000001);
         action_ = poke.core.Mgmt.RaftMessage.ElectionAction.APPEND;
         onChanged();
         return this;
@@ -9993,7 +10025,7 @@ public final class Mgmt {
        * <code>optional .RequestVoteMessage request_vote = 3;</code>
        */
       public boolean hasRequestVote() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
+        return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
        * <code>optional .RequestVoteMessage request_vote = 3;</code>
@@ -10018,7 +10050,7 @@ public final class Mgmt {
         } else {
           requestVoteBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000002;
         return this;
       }
       /**
@@ -10032,7 +10064,7 @@ public final class Mgmt {
         } else {
           requestVoteBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000002;
         return this;
       }
       /**
@@ -10040,7 +10072,7 @@ public final class Mgmt {
        */
       public Builder mergeRequestVote(poke.core.Mgmt.RequestVoteMessage value) {
         if (requestVoteBuilder_ == null) {
-          if (((bitField0_ & 0x00000004) == 0x00000004) &&
+          if (((bitField0_ & 0x00000002) == 0x00000002) &&
               requestVote_ != poke.core.Mgmt.RequestVoteMessage.getDefaultInstance()) {
             requestVote_ =
               poke.core.Mgmt.RequestVoteMessage.newBuilder(requestVote_).mergeFrom(value).buildPartial();
@@ -10051,7 +10083,7 @@ public final class Mgmt {
         } else {
           requestVoteBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000002;
         return this;
       }
       /**
@@ -10064,14 +10096,14 @@ public final class Mgmt {
         } else {
           requestVoteBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
       /**
        * <code>optional .RequestVoteMessage request_vote = 3;</code>
        */
       public poke.core.Mgmt.RequestVoteMessage.Builder getRequestVoteBuilder() {
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000002;
         onChanged();
         return getRequestVoteFieldBuilder().getBuilder();
       }
@@ -10109,7 +10141,7 @@ public final class Mgmt {
        * <code>optional .AppendMessage append_message = 4;</code>
        */
       public boolean hasAppendMessage() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
+        return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
        * <code>optional .AppendMessage append_message = 4;</code>
@@ -10134,7 +10166,7 @@ public final class Mgmt {
         } else {
           appendMessageBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000008;
+        bitField0_ |= 0x00000004;
         return this;
       }
       /**
@@ -10148,7 +10180,7 @@ public final class Mgmt {
         } else {
           appendMessageBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000008;
+        bitField0_ |= 0x00000004;
         return this;
       }
       /**
@@ -10156,7 +10188,7 @@ public final class Mgmt {
        */
       public Builder mergeAppendMessage(poke.core.Mgmt.AppendMessage value) {
         if (appendMessageBuilder_ == null) {
-          if (((bitField0_ & 0x00000008) == 0x00000008) &&
+          if (((bitField0_ & 0x00000004) == 0x00000004) &&
               appendMessage_ != poke.core.Mgmt.AppendMessage.getDefaultInstance()) {
             appendMessage_ =
               poke.core.Mgmt.AppendMessage.newBuilder(appendMessage_).mergeFrom(value).buildPartial();
@@ -10167,7 +10199,7 @@ public final class Mgmt {
         } else {
           appendMessageBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000008;
+        bitField0_ |= 0x00000004;
         return this;
       }
       /**
@@ -10180,14 +10212,14 @@ public final class Mgmt {
         } else {
           appendMessageBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
       /**
        * <code>optional .AppendMessage append_message = 4;</code>
        */
       public poke.core.Mgmt.AppendMessage.Builder getAppendMessageBuilder() {
-        bitField0_ |= 0x00000008;
+        bitField0_ |= 0x00000004;
         onChanged();
         return getAppendMessageFieldBuilder().getBuilder();
       }
@@ -12572,28 +12604,28 @@ public final class Mgmt {
       "\003 \002(\003\"p\n\nMgmtHeader\022\022\n\noriginator\030\002 \002(\005\022" +
       "\024\n\014securityCode\030\003 \002(\005\022\014\n\004time\030\004 \002(\003\022\032\n\004p" +
       "ath\030\007 \003(\0132\014.VectorClock\022\016\n\006toNode\030\010 \001(\005\"",
-      "\207\001\n\022RequestVoteMessage\022\024\n\014candidate_id\030\001" +
-      " \001(\005\022\026\n\016last_log_index\030\002 \001(\005\022\025\n\rlast_log" +
-      "_term\030\003 \001(\005\022\026\n\016candidate_term\030\004 \001(\005\022\024\n\014v" +
-      "ote_granted\030\005 \001(\010\"\252\001\n\rAppendMessage\022\021\n\tl" +
-      "og_index\030\001 \001(\005\022\026\n\016prev_log_index\030\002 \001(\005\022\025" +
-      "\n\rprev_log_term\030\003 \001(\005\022\021\n\tleader_id\030\004 \001(\005" +
-      "\022\017\n\007success\030\006 \001(\010\022\025\n\rleader_commit\030\007 \001(\005" +
-      "\022\034\n\007entries\030\010 \003(\0132\013.LogEntries\"0\n\nLogEnt" +
-      "ries\022\021\n\tlog_index\030\001 \001(\005\022\017\n\007logData\030\002 \001(\t" +
-      "\"\340\001\n\013RaftMessage\022\014\n\004term\030\001 \001(\005\022+\n\006action",
-      "\030\002 \002(\0162\033.RaftMessage.ElectionAction\022)\n\014r" +
-      "equest_vote\030\003 \001(\0132\023.RequestVoteMessage\022&" +
-      "\n\016append_message\030\004 \001(\0132\016.AppendMessage\"C" +
-      "\n\016ElectionAction\022\n\n\006APPEND\020\001\022\017\n\013REQUESTV" +
-      "OTE\020\002\022\n\n\006LEADER\020\003\022\010\n\004VOTE\020\004\"\214\002\n\nManageme" +
-      "nt\022\033\n\006header\030\001 \002(\0132\013.MgmtHeader\022\027\n\005graph" +
-      "\030\002 \001(\0132\010.Network\022\030\n\004beat\030\003 \001(\0132\n.Heartbe" +
-      "at\022!\n\010election\030\004 \001(\0132\017.LeaderElection\022#\n" +
-      "\014vote_declare\030\007 \001(\0132\r.VotingBallot\022\036\n\tvo" +
-      "te_cast\030\010 \001(\0132\013.VotingCast\022\"\n\013vote_statu",
-      "s\030\t \001(\0132\r.VotingStatus\022\"\n\014raft_message\030\n" +
-      " \001(\0132\014.RaftMessageB\r\n\tpoke.coreH\001"
+      "}\n\022RequestVoteMessage\022\024\n\014candidate_id\030\001 " +
+      "\001(\005\022\026\n\016last_log_index\030\002 \001(\005\022\025\n\rlast_log_" +
+      "term\030\003 \001(\005\022\014\n\004term\030\004 \001(\005\022\024\n\014vote_granted" +
+      "\030\005 \001(\010\"\270\001\n\rAppendMessage\022\014\n\004term\030\t \001(\005\022\021" +
+      "\n\tlog_index\030\001 \001(\005\022\026\n\016prev_log_index\030\002 \001(" +
+      "\005\022\025\n\rprev_log_term\030\003 \001(\005\022\021\n\tleader_id\030\004 " +
+      "\001(\005\022\017\n\007success\030\006 \001(\010\022\025\n\rleader_commit\030\007 " +
+      "\001(\005\022\034\n\007entries\030\010 \003(\0132\013.LogEntries\"1\n\nLog" +
+      "Entries\022\021\n\tlog_index\030\001 \001(\005\022\020\n\010log_data\030\002" +
+      " \001(\t\"\322\001\n\013RaftMessage\022+\n\006action\030\002 \002(\0162\033.R",
+      "aftMessage.ElectionAction\022)\n\014request_vot" +
+      "e\030\003 \001(\0132\023.RequestVoteMessage\022&\n\016append_m" +
+      "essage\030\004 \001(\0132\016.AppendMessage\"C\n\016Election" +
+      "Action\022\n\n\006APPEND\020\001\022\017\n\013REQUESTVOTE\020\002\022\n\n\006L" +
+      "EADER\020\003\022\010\n\004VOTE\020\004\"\214\002\n\nManagement\022\033\n\006head" +
+      "er\030\001 \002(\0132\013.MgmtHeader\022\027\n\005graph\030\002 \001(\0132\010.N" +
+      "etwork\022\030\n\004beat\030\003 \001(\0132\n.Heartbeat\022!\n\010elec" +
+      "tion\030\004 \001(\0132\017.LeaderElection\022#\n\014vote_decl" +
+      "are\030\007 \001(\0132\r.VotingBallot\022\036\n\tvote_cast\030\010 " +
+      "\001(\0132\013.VotingCast\022\"\n\013vote_status\030\t \001(\0132\r.",
+      "VotingStatus\022\"\n\014raft_message\030\n \001(\0132\014.Raf" +
+      "tMessageB\r\n\tpoke.coreH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -12660,13 +12692,13 @@ public final class Mgmt {
     internal_static_RequestVoteMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_RequestVoteMessage_descriptor,
-        new java.lang.String[] { "CandidateId", "LastLogIndex", "LastLogTerm", "CandidateTerm", "VoteGranted", });
+        new java.lang.String[] { "CandidateId", "LastLogIndex", "LastLogTerm", "Term", "VoteGranted", });
     internal_static_AppendMessage_descriptor =
       getDescriptor().getMessageTypes().get(9);
     internal_static_AppendMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_AppendMessage_descriptor,
-        new java.lang.String[] { "LogIndex", "PrevLogIndex", "PrevLogTerm", "LeaderId", "Success", "LeaderCommit", "Entries", });
+        new java.lang.String[] { "Term", "LogIndex", "PrevLogIndex", "PrevLogTerm", "LeaderId", "Success", "LeaderCommit", "Entries", });
     internal_static_LogEntries_descriptor =
       getDescriptor().getMessageTypes().get(10);
     internal_static_LogEntries_fieldAccessorTable = new
@@ -12678,7 +12710,7 @@ public final class Mgmt {
     internal_static_RaftMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_RaftMessage_descriptor,
-        new java.lang.String[] { "Term", "Action", "RequestVote", "AppendMessage", });
+        new java.lang.String[] { "Action", "RequestVote", "AppendMessage", });
     internal_static_Management_descriptor =
       getDescriptor().getMessageTypes().get(12);
     internal_static_Management_fieldAccessorTable = new

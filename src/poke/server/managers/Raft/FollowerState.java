@@ -6,9 +6,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import poke.core.Mgmt.AppendMessage;
+import poke.core.Mgmt.LogEntries;
 import poke.core.Mgmt.Management;
 import poke.core.Mgmt.RaftMessage;
 import poke.core.Mgmt.RequestVoteMessage;
+import poke.core.Mgmt.RaftMessage.ElectionAction;
+import poke.server.managers.ConnectionManager;
 
 public class FollowerState implements RaftState {
 
@@ -46,12 +49,37 @@ public class FollowerState implements RaftState {
 		case APPEND:
 			AppendMessage am = msg.getAppendMessage();
 			raftMgmt.leaderID = am.getLeaderId();
+			boolean success = false;
 			raftMgmt.resetTimeOut();
+			if (am.hasPrevLogIndex() && am.hasPrevLogTerm()) {
+				if (am.getEntriesCount() > 0) {
+					logger.info("appending " + am.getEntries(0));
+					int term = am.getTerm();
+					int logIndex = am.getLogIndex();
+					String logData = null;
+					int prevLogTerm = am.getPrevLogTerm();
+					int prevLogIndex = am.getPrevLogIndex();
 
-			if (am.getEntriesCount() > 0) {
-				// TODO append work
+					LogEntries entry = am.getEntries(0);
+					logData = entry.getLogData();
+					LogEntry leaderLog = new LogEntry(term, logIndex,
+							prevLogTerm, prevLogIndex, logData);
+					success = LogManager.appendLogs(leaderLog,
+							am.getLeaderCommit());
+
+				}
 			}
-			//logger.info("appending "+ am.getEntries(0));
+
+			AppendMessage.Builder amResponse = am.toBuilder();
+			amResponse.setSuccess(success);
+			amResponse.setTerm(raftMgmt.term);
+
+			Management.Builder response = mgmt.toBuilder();
+			response.getRaftMessage().toBuilder()
+					.setAppendMessage(amResponse.build());
+
+			// TODO send rsponse
+			ConnectionManager.sendToNode(response.build(), am.getLeaderId());
 
 			break;
 		case REQUESTVOTE:
@@ -68,7 +96,7 @@ public class FollowerState implements RaftState {
 
 			// don't do anything if already voted for this term or it is a stale
 			// vote request
-			if (rv.getCandidateTerm() <= raftMgmt.votedForTerm) {
+			if (rv.getTerm() <= raftMgmt.votedForTerm) {
 				logger.info("stale/already voted");
 				break;
 			}
@@ -85,11 +113,15 @@ public class FollowerState implements RaftState {
 					// term = rv.getCandidateTerm();
 				}
 			}
-			if (voteGranted) // reset timeout if granting vote
-				raftMgmt.resetTimeOut();
 
 			RequestVoteMessage.Builder rvResponse = rv.toBuilder();
 			rvResponse.setVoteGranted(voteGranted);
+
+			if (voteGranted) {
+				raftMgmt.resetTimeOut();
+			} else {
+				rvResponse.setTerm(raftMgmt.term);
+			}
 
 			raftMgmt.voteForCandidate(rvResponse.build());
 			break;
@@ -97,5 +129,4 @@ public class FollowerState implements RaftState {
 		}
 
 	}
-
 }

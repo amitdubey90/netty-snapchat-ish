@@ -3,10 +3,14 @@ package poke.server.managers.Raft;
 import java.util.LinkedHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public final class LogManager implements Runnable {
 
 	static LinkedHashMap<Integer, LogEntry> logs = new LinkedHashMap<Integer, LogEntry>();
 	protected static AtomicReference<LogManager> instance = new AtomicReference<LogManager>();
+	protected static Logger logger = LoggerFactory.getLogger("LogManager");
 
 	static int currentLogIndex;
 	static int currentLogTerm;
@@ -39,9 +43,9 @@ public final class LogManager implements Runnable {
 
 	// called by leader.
 	public static LogEntry createEntry(int term, String logData) {
-
-		LogEntry entry = new LogEntry(term, currentLogIndex, logData);
-		logs.put(currentLogIndex++, entry);
+		LogEntry entry = new LogEntry(term, ++currentLogIndex, prevTerm,
+				prevIndex, logData);
+		logs.put(currentLogIndex, entry);
 		return entry;
 	}
 
@@ -53,64 +57,37 @@ public final class LogManager implements Runnable {
 		currentLogTerm = term;
 	}
 
-	public static int[] appendLogs(LogEntry leaderLog, int leaderCommitIndex) {
+	public static boolean appendLogs(LogEntry leaderLog, int leaderCommitIndex) {
 
-		int[] retArray = new int[2];
+		boolean result = false;
 
-		if (leaderLog.term == currentLogTerm
-				&& leaderLog.logIndex == currentLogIndex) {
+		// Consistency Check.
+		if (leaderLog.prevLogTerm == currentLogTerm
+				&& leaderLog.prevLogIndex == currentLogIndex) {
 
-			// Consistency Check.
-
-			if (logs.get((leaderLog.logIndex) - 1) != null) {
-				logs.put(currentLogIndex + 1, leaderLog);
-				currentLogTerm = leaderLog.term;
-				currentLogIndex = leaderLog.logIndex;
-
-				if (commitIndex < leaderCommitIndex) {
-					commitIndex = Math.min(leaderCommitIndex,
-							currentLogIndex - 1);
-				}
-
-				retArray[0] = currentLogTerm;
-				retArray[1] = currentLogIndex;
-				return retArray;
-			} else {
-
-				System.out.println("Term:" + leaderLog.term + " LogIndex:"
-						+ leaderLog.logIndex
-						+ " Not recorded Log on worker server");
-				retArray[0] = currentLogTerm;
-				retArray[1] = currentLogIndex;
-				return retArray;
-			}
-
-		} else if (leaderLog.term != currentLogTerm
-				&& leaderLog.logIndex == currentLogIndex) {
-
-			logs.put(leaderLog.logIndex, leaderLog);
+			// if (logs.get((leaderLog.logIndex) - 1) != null) {
 			currentLogTerm = leaderLog.term;
 			currentLogIndex = leaderLog.logIndex;
 
-			if (commitIndex < leaderCommitIndex) {
-				commitIndex = Math.min(leaderCommitIndex, currentLogIndex - 1);
-			}
-
-			retArray[0] = currentLogTerm;
-			retArray[1] = currentLogIndex;
-			return retArray;
+			logs.put(currentLogIndex, leaderLog);
+			result = true;
+		} else if (leaderLog.term >= currentLogTerm
+				&& leaderLog.logIndex == currentLogIndex) {
+			currentLogIndex = leaderLog.prevLogIndex;
 		}
 
-		return retArray;
+		LogManager.leaderCommitIndex = leaderCommitIndex;
+		commitIndex = Math.min(LogManager.leaderCommitIndex, currentLogIndex);
+
+		return result;
 	}
 
-	public void stateMachine(int leaderCommitIndex) {
-		while (commitIndex <= leaderCommitIndex
-				&& commitIndex <= currentLogIndex && lastApplied <= commitIndex) {
-			System.out.println("Executing Logs"
-					+ logs.get(currentLogIndex).getLogData());
-			lastApplied++;
+	public void stateMachine() {
+		if (leaderCommitIndex > commitIndex) {
+			lastApplied = Math.min(currentLogIndex, commitIndex);
+			logger.info("Applying " + lastApplied + " to state");
 		}
+
 	}
 
 	@Override
@@ -119,7 +96,7 @@ public final class LogManager implements Runnable {
 		while (true) {
 
 			try {
-				stateMachine(commitIndex);
+				stateMachine();
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -129,10 +106,10 @@ public final class LogManager implements Runnable {
 	}
 
 	public static LogEntry getLastLogEntry() {
-		return logs.get(currentLogIndex - 1);
+		return logs.get(currentLogIndex);
 	}
 
-	public static int getPrevLogIndex() {
+	public static int getPrevLogIndex(int logIndex) {
 		return prevIndex;
 	}
 

@@ -136,7 +136,7 @@ public class ElectionManager implements ElectionListener {
 		logger.info("Timeout! Starting election");
 		RaftMessage.Builder rlf = RaftMessage.newBuilder();
 		rlf.setAction(ElectionAction.REQUESTVOTE);
-		rlf.setTerm(electionCycle);
+		//rlf.setTerm(electionCycle);
 
 		MgmtHeader.Builder mhb = MgmtHeader.newBuilder();
 		mhb.setOriginator(conf.getNodeId());

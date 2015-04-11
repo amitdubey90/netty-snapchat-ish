@@ -12,6 +12,7 @@ import poke.core.Mgmt.AppendMessage;
 import poke.core.Mgmt.LogEntries;
 import poke.core.Mgmt.Management;
 import poke.core.Mgmt.RaftMessage;
+import poke.core.Mgmt.RaftMessage.ElectionAction;
 import poke.server.managers.ConnectionManager;
 
 public class LeaderState implements RaftState {
@@ -37,27 +38,28 @@ public class LeaderState implements RaftState {
 	public void sendAppendNotice() {
 		// if the leader is sending append RPCs for the first time, send new
 		// entries (index + 1)
-			LogEntry entry = LogManager.getLastLogEntry();
-			Management.Builder m = raftMgmt.buildAppendMessage();
+		LogEntry entry = LogManager.getLastLogEntry();
+		Management.Builder m = raftMgmt.buildRaftMessage(ElectionAction.APPEND);
 
-			AppendMessage.Builder am = AppendMessage.newBuilder();
+		AppendMessage.Builder am = AppendMessage.newBuilder();
 
-			am.setPrevLogIndex(LogManager.getPrevLogIndex());
-			am.setPrevLogTerm(LogManager.getPrevLogTerm());
-			am.setLogIndex(LogManager.currentLogIndex);
-			am.setLeaderCommit(LogManager.commitIndex);
-			am.setLeaderId(raftMgmt.leaderID);
+		am.setPrevLogIndex(entry.getPrevLogIndex());
+		am.setPrevLogTerm(entry.getPrevLogTerm());
+		am.setLogIndex(entry.logIndex);
+		am.setLeaderCommit(LogManager.commitIndex);
+		am.setLeaderId(raftMgmt.leaderID);
+		am.setTerm(raftMgmt.term);
 
-			LogEntries.Builder log = LogEntries.newBuilder();
-			if (entry != null) {
-				//System.out.println(entry.toString());
-				log.setLogIndex(entry.getLogIndex());
-				log.setLogData(entry.getLogData());
-			}
-			// TODO add entries
-			am.addEntries(log);
-			m.getRaftMessageBuilder().setAppendMessage(am.build());
-			ConnectionManager.flushBroadcast(m.build());
+		LogEntries.Builder log = LogEntries.newBuilder();
+		if (entry != null) {
+			// System.out.println(entry.toString());
+			log.setLogIndex(entry.getLogIndex());
+			log.setLogData(entry.getLogData());
+		}
+		// TODO add entries
+		am.addEntries(log);
+		m.getRaftMessageBuilder().setAppendMessage(am.build());
+		ConnectionManager.flushBroadcast(m.build());
 	}
 
 	public void reInitializeLeader() {
@@ -66,7 +68,7 @@ public class LeaderState implements RaftState {
 		nextIndex = new ConcurrentHashMap<Integer, Integer>();
 		// TODO check exact index to re-initiate
 		int index = LogManager.getCurrentLogIndex();
-		for(int i = 0; i< RaftManager.totalNodes ; i++)
+		for (int i = 0; i < RaftManager.totalNodes; i++)
 			nextIndex.put(0, index);
 		isNewLeader = true;
 	}
@@ -80,10 +82,8 @@ public class LeaderState implements RaftState {
 		switch (action) {
 
 		case APPEND:
-			if (msg.getTerm() > raftMgmt.term) {
-				raftMgmt.convertToFollower(msg);
-			}
 			// TODO handle append responses
+			logger.info("Response received from" + mgmt.getHeader().getOriginator());
 			break;
 		case REQUESTVOTE:
 			break;

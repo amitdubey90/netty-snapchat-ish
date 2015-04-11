@@ -40,7 +40,7 @@ public class CandidateState implements RaftState {
 		case APPEND:
 			AppendMessage am = msg.getAppendMessage();
 			raftMgmt.leaderID = am.getLeaderId();
-			raftMgmt.convertToFollower(msg);
+			raftMgmt.convertToFollower(am.getTerm());
 			if (am.getEntriesCount() > 0) {
 				// TODO append work
 			}
@@ -50,10 +50,10 @@ public class CandidateState implements RaftState {
 			RequestVoteMessage rvm = msg.getRequestVote();
 			if (rvm.hasVoteGranted()) {
 				if (rvm.getVoteGranted()
-						&& rvm.getCandidateTerm() == raftMgmt.term) {
+						&& rvm.getTerm() == raftMgmt.term) {
 					raftMgmt.receiveVote();
 				} else {
-					raftMgmt.term = msg.getTerm();
+					raftMgmt.term = rvm.getTerm();
 					raftMgmt.currentState = RaftManager.followerInstance;
 				}
 			}
