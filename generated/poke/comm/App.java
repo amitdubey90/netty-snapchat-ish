@@ -14728,12 +14728,6 @@ public final class App {
           return false;
         }
       }
-      if (hasClusterMessage()) {
-        if (!getClusterMessage().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -15097,12 +15091,6 @@ public final class App {
         }
         if (hasSpaceStatus()) {
           if (!getSpaceStatus().isInitialized()) {
-            
-            return false;
-          }
-        }
-        if (hasClusterMessage()) {
-          if (!getClusterMessage().isInitialized()) {
             
             return false;
           }
@@ -16737,29 +16725,29 @@ public final class App {
         getMsgIdBytes();
 
     /**
-     * <code>required string senderUserName = 2;</code>
+     * <code>optional string senderUserName = 2;</code>
      */
     boolean hasSenderUserName();
     /**
-     * <code>required string senderUserName = 2;</code>
+     * <code>optional string senderUserName = 2;</code>
      */
     java.lang.String getSenderUserName();
     /**
-     * <code>required string senderUserName = 2;</code>
+     * <code>optional string senderUserName = 2;</code>
      */
     com.google.protobuf.ByteString
         getSenderUserNameBytes();
 
     /**
-     * <code>required string receiverUserName = 3;</code>
+     * <code>optional string receiverUserName = 3;</code>
      */
     boolean hasReceiverUserName();
     /**
-     * <code>required string receiverUserName = 3;</code>
+     * <code>optional string receiverUserName = 3;</code>
      */
     java.lang.String getReceiverUserName();
     /**
-     * <code>required string receiverUserName = 3;</code>
+     * <code>optional string receiverUserName = 3;</code>
      */
     com.google.protobuf.ByteString
         getReceiverUserNameBytes();
@@ -17075,13 +17063,13 @@ public final class App {
     public static final int SENDERUSERNAME_FIELD_NUMBER = 2;
     private java.lang.Object senderUserName_;
     /**
-     * <code>required string senderUserName = 2;</code>
+     * <code>optional string senderUserName = 2;</code>
      */
     public boolean hasSenderUserName() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>required string senderUserName = 2;</code>
+     * <code>optional string senderUserName = 2;</code>
      */
     public java.lang.String getSenderUserName() {
       java.lang.Object ref = senderUserName_;
@@ -17098,7 +17086,7 @@ public final class App {
       }
     }
     /**
-     * <code>required string senderUserName = 2;</code>
+     * <code>optional string senderUserName = 2;</code>
      */
     public com.google.protobuf.ByteString
         getSenderUserNameBytes() {
@@ -17117,13 +17105,13 @@ public final class App {
     public static final int RECEIVERUSERNAME_FIELD_NUMBER = 3;
     private java.lang.Object receiverUserName_;
     /**
-     * <code>required string receiverUserName = 3;</code>
+     * <code>optional string receiverUserName = 3;</code>
      */
     public boolean hasReceiverUserName() {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <code>required string receiverUserName = 3;</code>
+     * <code>optional string receiverUserName = 3;</code>
      */
     public java.lang.String getReceiverUserName() {
       java.lang.Object ref = receiverUserName_;
@@ -17140,7 +17128,7 @@ public final class App {
       }
     }
     /**
-     * <code>required string receiverUserName = 3;</code>
+     * <code>optional string receiverUserName = 3;</code>
      */
     public com.google.protobuf.ByteString
         getReceiverUserNameBytes() {
@@ -17285,14 +17273,6 @@ public final class App {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      if (!hasSenderUserName()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasReceiverUserName()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -17597,14 +17577,6 @@ public final class App {
       }
 
       public final boolean isInitialized() {
-        if (!hasSenderUserName()) {
-          
-          return false;
-        }
-        if (!hasReceiverUserName()) {
-          
-          return false;
-        }
         return true;
       }
 
@@ -17705,13 +17677,13 @@ public final class App {
 
       private java.lang.Object senderUserName_ = "";
       /**
-       * <code>required string senderUserName = 2;</code>
+       * <code>optional string senderUserName = 2;</code>
        */
       public boolean hasSenderUserName() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>required string senderUserName = 2;</code>
+       * <code>optional string senderUserName = 2;</code>
        */
       public java.lang.String getSenderUserName() {
         java.lang.Object ref = senderUserName_;
@@ -17728,7 +17700,7 @@ public final class App {
         }
       }
       /**
-       * <code>required string senderUserName = 2;</code>
+       * <code>optional string senderUserName = 2;</code>
        */
       public com.google.protobuf.ByteString
           getSenderUserNameBytes() {
@@ -17744,7 +17716,7 @@ public final class App {
         }
       }
       /**
-       * <code>required string senderUserName = 2;</code>
+       * <code>optional string senderUserName = 2;</code>
        */
       public Builder setSenderUserName(
           java.lang.String value) {
@@ -17757,7 +17729,7 @@ public final class App {
         return this;
       }
       /**
-       * <code>required string senderUserName = 2;</code>
+       * <code>optional string senderUserName = 2;</code>
        */
       public Builder clearSenderUserName() {
         bitField0_ = (bitField0_ & ~0x00000002);
@@ -17766,7 +17738,7 @@ public final class App {
         return this;
       }
       /**
-       * <code>required string senderUserName = 2;</code>
+       * <code>optional string senderUserName = 2;</code>
        */
       public Builder setSenderUserNameBytes(
           com.google.protobuf.ByteString value) {
@@ -17781,13 +17753,13 @@ public final class App {
 
       private java.lang.Object receiverUserName_ = "";
       /**
-       * <code>required string receiverUserName = 3;</code>
+       * <code>optional string receiverUserName = 3;</code>
        */
       public boolean hasReceiverUserName() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <code>required string receiverUserName = 3;</code>
+       * <code>optional string receiverUserName = 3;</code>
        */
       public java.lang.String getReceiverUserName() {
         java.lang.Object ref = receiverUserName_;
@@ -17804,7 +17776,7 @@ public final class App {
         }
       }
       /**
-       * <code>required string receiverUserName = 3;</code>
+       * <code>optional string receiverUserName = 3;</code>
        */
       public com.google.protobuf.ByteString
           getReceiverUserNameBytes() {
@@ -17820,7 +17792,7 @@ public final class App {
         }
       }
       /**
-       * <code>required string receiverUserName = 3;</code>
+       * <code>optional string receiverUserName = 3;</code>
        */
       public Builder setReceiverUserName(
           java.lang.String value) {
@@ -17833,7 +17805,7 @@ public final class App {
         return this;
       }
       /**
-       * <code>required string receiverUserName = 3;</code>
+       * <code>optional string receiverUserName = 3;</code>
        */
       public Builder clearReceiverUserName() {
         bitField0_ = (bitField0_ & ~0x00000004);
@@ -17842,7 +17814,7 @@ public final class App {
         return this;
       }
       /**
-       * <code>required string receiverUserName = 3;</code>
+       * <code>optional string receiverUserName = 3;</code>
        */
       public Builder setReceiverUserNameBytes(
           com.google.protobuf.ByteString value) {
@@ -18226,8 +18198,8 @@ public final class App {
       "luster_message\030\004 \001(\0132\017.ClusterMessage\":\n" +
       "\007Request\022\027\n\006header\030\001 \002(\0132\007.Header\022\026\n\004bod" +
       "y\030\002 \002(\0132\010.Payload\"\362\001\n\016ClusterMessage\022\r\n\005" +
-      "msgId\030\001 \001(\t\022\026\n\016senderUserName\030\002 \002(\t\022\030\n\020r" +
-      "eceiverUserName\030\003 \002(\t\022\017\n\007msgText\030\004 \001(\t\022\024" +
+      "msgId\030\001 \001(\t\022\026\n\016senderUserName\030\002 \001(\t\022\030\n\020r" +
+      "eceiverUserName\030\003 \001(\t\022\017\n\007msgText\030\004 \001(\t\022\024" +
       "\n\014msgImageName\030\005 \001(\t\022\024\n\014msgImageBits\030\006 \001" +
       "(\014\0229\n\013messageType\030\007 \001(\0162\033.ClusterMessage" +
       ".MessageType:\007SUCCESS\"\'\n\013MessageType\022\013\n\007" +

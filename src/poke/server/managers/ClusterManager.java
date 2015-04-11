@@ -6,11 +6,6 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicReference;
@@ -18,12 +13,9 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import poke.client.ChatClientInitializer;
 import poke.server.ServerInitializer;
 import poke.server.conf.ClusterConf;
-import poke.server.conf.ClusterConf.ClusterNodes;
 import poke.server.conf.NodeDesc;
-import poke.server.conf.ServerConf;
 
 public class ClusterManager {
 	protected static Logger logger = LoggerFactory.getLogger("cluster");

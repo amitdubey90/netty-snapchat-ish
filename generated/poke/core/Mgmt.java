@@ -6881,6 +6881,15 @@ public final class Mgmt {
     int getLastLogTerm();
 
     /**
+     * <code>optional int32 candidate_term = 4;</code>
+     */
+    boolean hasCandidateTerm();
+    /**
+     * <code>optional int32 candidate_term = 4;</code>
+     */
+    int getCandidateTerm();
+
+    /**
      * <code>optional bool vote_granted = 5;</code>
      */
     boolean hasVoteGranted();
@@ -6956,8 +6965,13 @@ public final class Mgmt {
               lastLogTerm_ = input.readInt32();
               break;
             }
-            case 40: {
+            case 32: {
               bitField0_ |= 0x00000008;
+              candidateTerm_ = input.readInt32();
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000010;
               voteGranted_ = input.readBool();
               break;
             }
@@ -7046,13 +7060,28 @@ public final class Mgmt {
       return lastLogTerm_;
     }
 
+    public static final int CANDIDATE_TERM_FIELD_NUMBER = 4;
+    private int candidateTerm_;
+    /**
+     * <code>optional int32 candidate_term = 4;</code>
+     */
+    public boolean hasCandidateTerm() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional int32 candidate_term = 4;</code>
+     */
+    public int getCandidateTerm() {
+      return candidateTerm_;
+    }
+
     public static final int VOTE_GRANTED_FIELD_NUMBER = 5;
     private boolean voteGranted_;
     /**
      * <code>optional bool vote_granted = 5;</code>
      */
     public boolean hasVoteGranted() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
+      return ((bitField0_ & 0x00000010) == 0x00000010);
     }
     /**
      * <code>optional bool vote_granted = 5;</code>
@@ -7065,6 +7094,7 @@ public final class Mgmt {
       candidateId_ = 0;
       lastLogIndex_ = 0;
       lastLogTerm_ = 0;
+      candidateTerm_ = 0;
       voteGranted_ = false;
     }
     private byte memoizedIsInitialized = -1;
@@ -7090,6 +7120,9 @@ public final class Mgmt {
         output.writeInt32(3, lastLogTerm_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeInt32(4, candidateTerm_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
         output.writeBool(5, voteGranted_);
       }
       getUnknownFields().writeTo(output);
@@ -7114,6 +7147,10 @@ public final class Mgmt {
           .computeInt32Size(3, lastLogTerm_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(4, candidateTerm_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(5, voteGranted_);
       }
@@ -7240,8 +7277,10 @@ public final class Mgmt {
         bitField0_ = (bitField0_ & ~0x00000002);
         lastLogTerm_ = 0;
         bitField0_ = (bitField0_ & ~0x00000004);
-        voteGranted_ = false;
+        candidateTerm_ = 0;
         bitField0_ = (bitField0_ & ~0x00000008);
+        voteGranted_ = false;
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -7285,6 +7324,10 @@ public final class Mgmt {
         if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
           to_bitField0_ |= 0x00000008;
         }
+        result.candidateTerm_ = candidateTerm_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
         result.voteGranted_ = voteGranted_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
@@ -7310,6 +7353,9 @@ public final class Mgmt {
         }
         if (other.hasLastLogTerm()) {
           setLastLogTerm(other.getLastLogTerm());
+        }
+        if (other.hasCandidateTerm()) {
+          setCandidateTerm(other.getCandidateTerm());
         }
         if (other.hasVoteGranted()) {
           setVoteGranted(other.getVoteGranted());
@@ -7437,12 +7483,44 @@ public final class Mgmt {
         return this;
       }
 
+      private int candidateTerm_ ;
+      /**
+       * <code>optional int32 candidate_term = 4;</code>
+       */
+      public boolean hasCandidateTerm() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional int32 candidate_term = 4;</code>
+       */
+      public int getCandidateTerm() {
+        return candidateTerm_;
+      }
+      /**
+       * <code>optional int32 candidate_term = 4;</code>
+       */
+      public Builder setCandidateTerm(int value) {
+        bitField0_ |= 0x00000008;
+        candidateTerm_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 candidate_term = 4;</code>
+       */
+      public Builder clearCandidateTerm() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        candidateTerm_ = 0;
+        onChanged();
+        return this;
+      }
+
       private boolean voteGranted_ ;
       /**
        * <code>optional bool vote_granted = 5;</code>
        */
       public boolean hasVoteGranted() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
+        return ((bitField0_ & 0x00000010) == 0x00000010);
       }
       /**
        * <code>optional bool vote_granted = 5;</code>
@@ -7454,7 +7532,7 @@ public final class Mgmt {
        * <code>optional bool vote_granted = 5;</code>
        */
       public Builder setVoteGranted(boolean value) {
-        bitField0_ |= 0x00000008;
+        bitField0_ |= 0x00000010;
         voteGranted_ = value;
         onChanged();
         return this;
@@ -7463,7 +7541,7 @@ public final class Mgmt {
        * <code>optional bool vote_granted = 5;</code>
        */
       public Builder clearVoteGranted() {
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000010);
         voteGranted_ = false;
         onChanged();
         return this;
@@ -9186,11 +9264,11 @@ public final class Mgmt {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>required int32 term = 1;</code>
+     * <code>optional int32 term = 1;</code>
      */
     boolean hasTerm();
     /**
-     * <code>required int32 term = 1;</code>
+     * <code>optional int32 term = 1;</code>
      */
     int getTerm();
 
@@ -9466,13 +9544,13 @@ public final class Mgmt {
     public static final int TERM_FIELD_NUMBER = 1;
     private int term_;
     /**
-     * <code>required int32 term = 1;</code>
+     * <code>optional int32 term = 1;</code>
      */
     public boolean hasTerm() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>required int32 term = 1;</code>
+     * <code>optional int32 term = 1;</code>
      */
     public int getTerm() {
       return term_;
@@ -9547,10 +9625,6 @@ public final class Mgmt {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      if (!hasTerm()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
       if (!hasAction()) {
         memoizedIsInitialized = 0;
         return false;
@@ -9819,10 +9893,6 @@ public final class Mgmt {
       }
 
       public final boolean isInitialized() {
-        if (!hasTerm()) {
-          
-          return false;
-        }
         if (!hasAction()) {
           
           return false;
@@ -9851,19 +9921,19 @@ public final class Mgmt {
 
       private int term_ ;
       /**
-       * <code>required int32 term = 1;</code>
+       * <code>optional int32 term = 1;</code>
        */
       public boolean hasTerm() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required int32 term = 1;</code>
+       * <code>optional int32 term = 1;</code>
        */
       public int getTerm() {
         return term_;
       }
       /**
-       * <code>required int32 term = 1;</code>
+       * <code>optional int32 term = 1;</code>
        */
       public Builder setTerm(int value) {
         bitField0_ |= 0x00000001;
@@ -9872,7 +9942,7 @@ public final class Mgmt {
         return this;
       }
       /**
-       * <code>required int32 term = 1;</code>
+       * <code>optional int32 term = 1;</code>
        */
       public Builder clearTerm() {
         bitField0_ = (bitField0_ & ~0x00000001);
@@ -12502,28 +12572,28 @@ public final class Mgmt {
       "\003 \002(\003\"p\n\nMgmtHeader\022\022\n\noriginator\030\002 \002(\005\022" +
       "\024\n\014securityCode\030\003 \002(\005\022\014\n\004time\030\004 \002(\003\022\032\n\004p" +
       "ath\030\007 \003(\0132\014.VectorClock\022\016\n\006toNode\030\010 \001(\005\"",
-      "o\n\022RequestVoteMessage\022\024\n\014candidate_id\030\001 " +
-      "\001(\005\022\026\n\016last_log_index\030\002 \001(\005\022\025\n\rlast_log_" +
-      "term\030\003 \001(\005\022\024\n\014vote_granted\030\005 \001(\010\"\252\001\n\rApp" +
-      "endMessage\022\021\n\tlog_index\030\001 \001(\005\022\026\n\016prev_lo" +
-      "g_index\030\002 \001(\005\022\025\n\rprev_log_term\030\003 \001(\005\022\021\n\t" +
-      "leader_id\030\004 \001(\005\022\017\n\007success\030\006 \001(\010\022\025\n\rlead" +
-      "er_commit\030\007 \001(\005\022\034\n\007entries\030\010 \003(\0132\013.LogEn" +
-      "tries\"0\n\nLogEntries\022\021\n\tlog_index\030\001 \001(\005\022\017" +
-      "\n\007logData\030\002 \001(\t\"\340\001\n\013RaftMessage\022\014\n\004term\030" +
-      "\001 \002(\005\022+\n\006action\030\002 \002(\0162\033.RaftMessage.Elec",
-      "tionAction\022)\n\014request_vote\030\003 \001(\0132\023.Reque" +
-      "stVoteMessage\022&\n\016append_message\030\004 \001(\0132\016." +
-      "AppendMessage\"C\n\016ElectionAction\022\n\n\006APPEN" +
-      "D\020\001\022\017\n\013REQUESTVOTE\020\002\022\n\n\006LEADER\020\003\022\010\n\004VOTE" +
-      "\020\004\"\214\002\n\nManagement\022\033\n\006header\030\001 \002(\0132\013.Mgmt" +
-      "Header\022\027\n\005graph\030\002 \001(\0132\010.Network\022\030\n\004beat\030" +
-      "\003 \001(\0132\n.Heartbeat\022!\n\010election\030\004 \001(\0132\017.Le" +
-      "aderElection\022#\n\014vote_declare\030\007 \001(\0132\r.Vot" +
-      "ingBallot\022\036\n\tvote_cast\030\010 \001(\0132\013.VotingCas" +
-      "t\022\"\n\013vote_status\030\t \001(\0132\r.VotingStatus\022\"\n",
-      "\014raft_message\030\n \001(\0132\014.RaftMessageB\r\n\tpok" +
-      "e.coreH\001"
+      "\207\001\n\022RequestVoteMessage\022\024\n\014candidate_id\030\001" +
+      " \001(\005\022\026\n\016last_log_index\030\002 \001(\005\022\025\n\rlast_log" +
+      "_term\030\003 \001(\005\022\026\n\016candidate_term\030\004 \001(\005\022\024\n\014v" +
+      "ote_granted\030\005 \001(\010\"\252\001\n\rAppendMessage\022\021\n\tl" +
+      "og_index\030\001 \001(\005\022\026\n\016prev_log_index\030\002 \001(\005\022\025" +
+      "\n\rprev_log_term\030\003 \001(\005\022\021\n\tleader_id\030\004 \001(\005" +
+      "\022\017\n\007success\030\006 \001(\010\022\025\n\rleader_commit\030\007 \001(\005" +
+      "\022\034\n\007entries\030\010 \003(\0132\013.LogEntries\"0\n\nLogEnt" +
+      "ries\022\021\n\tlog_index\030\001 \001(\005\022\017\n\007logData\030\002 \001(\t" +
+      "\"\340\001\n\013RaftMessage\022\014\n\004term\030\001 \001(\005\022+\n\006action",
+      "\030\002 \002(\0162\033.RaftMessage.ElectionAction\022)\n\014r" +
+      "equest_vote\030\003 \001(\0132\023.RequestVoteMessage\022&" +
+      "\n\016append_message\030\004 \001(\0132\016.AppendMessage\"C" +
+      "\n\016ElectionAction\022\n\n\006APPEND\020\001\022\017\n\013REQUESTV" +
+      "OTE\020\002\022\n\n\006LEADER\020\003\022\010\n\004VOTE\020\004\"\214\002\n\nManageme" +
+      "nt\022\033\n\006header\030\001 \002(\0132\013.MgmtHeader\022\027\n\005graph" +
+      "\030\002 \001(\0132\010.Network\022\030\n\004beat\030\003 \001(\0132\n.Heartbe" +
+      "at\022!\n\010election\030\004 \001(\0132\017.LeaderElection\022#\n" +
+      "\014vote_declare\030\007 \001(\0132\r.VotingBallot\022\036\n\tvo" +
+      "te_cast\030\010 \001(\0132\013.VotingCast\022\"\n\013vote_statu",
+      "s\030\t \001(\0132\r.VotingStatus\022\"\n\014raft_message\030\n" +
+      " \001(\0132\014.RaftMessageB\r\n\tpoke.coreH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -12590,7 +12660,7 @@ public final class Mgmt {
     internal_static_RequestVoteMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_RequestVoteMessage_descriptor,
-        new java.lang.String[] { "CandidateId", "LastLogIndex", "LastLogTerm", "VoteGranted", });
+        new java.lang.String[] { "CandidateId", "LastLogIndex", "LastLogTerm", "CandidateTerm", "VoteGranted", });
     internal_static_AppendMessage_descriptor =
       getDescriptor().getMessageTypes().get(9);
     internal_static_AppendMessage_fieldAccessorTable = new

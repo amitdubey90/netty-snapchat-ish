@@ -38,29 +38,25 @@ public class CandidateState implements RaftState {
 
 		switch (action) {
 		case APPEND:
-			if (msg.getTerm() >= raftMgmt.term) {
-				AppendMessage am = msg.getAppendMessage();
-				raftMgmt.leaderID = am.getLeaderId();
-				raftMgmt.convertToFollower(msg);
-				if (am.getEntriesCount() > 0) {
-					// TODO append work
-				}
+			AppendMessage am = msg.getAppendMessage();
+			raftMgmt.leaderID = am.getLeaderId();
+			raftMgmt.convertToFollower(msg);
+			if (am.getEntriesCount() > 0) {
+				// TODO append work
 			}
 			break;
 		case REQUESTVOTE:
 
 			RequestVoteMessage rvm = msg.getRequestVote();
-			// logger.info("Vote response received"+ rvm.getVoteGranted());
 			if (rvm.hasVoteGranted()) {
-				if (rvm.getVoteGranted()) {
-					//logger.info("Vote received by vote granted");
+				if (rvm.getVoteGranted()
+						&& rvm.getCandidateTerm() == raftMgmt.term) {
 					raftMgmt.receiveVote();
 				} else {
 					raftMgmt.term = msg.getTerm();
 					raftMgmt.currentState = RaftManager.followerInstance;
 				}
 			}
-			// candidate ignores other vote requests
 			break;
 
 		default:

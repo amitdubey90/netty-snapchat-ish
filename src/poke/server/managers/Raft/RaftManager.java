@@ -20,6 +20,12 @@ public class RaftManager {
 	protected static AtomicReference<RaftManager> instance = new AtomicReference<RaftManager>();
 
 	private static ServerConf conf;
+	
+	protected static RaftState followerInstance;
+	protected static RaftState candidateInstance;
+	protected static RaftState leaderInstance;
+	
+	protected static int totalNodes;
 
 	boolean forever = true;
 
@@ -27,12 +33,6 @@ public class RaftManager {
 	protected long lastKnownBeat;
 	protected int electionTimeOut;
 	protected RaftTimer timer;
-
-	protected static RaftState followerInstance;
-	protected static RaftState candidateInstance;
-	protected static RaftState leaderInstance;
-
-	// protected static LogManager logMgmt;
 
 	protected int voteCount;
 	protected int term;
@@ -49,6 +49,8 @@ public class RaftManager {
 		followerInstance = FollowerState.init();
 		candidateInstance = CandidateState.init();
 		leaderInstance = LeaderState.init();
+		
+		totalNodes = conf.getAdjacent().getAdjacentNodes().size() + 1;
 
 		return instance.get();
 	}
@@ -72,6 +74,11 @@ public class RaftManager {
 
 	// current state is responsible for requests
 	public void processRequest(Management mgmt) {
+		if (mgmt.getRaftMessage().hasTerm()
+				&& mgmt.getRaftMessage().getTerm() > this.term) {
+			convertToFollower(mgmt.getRaftMessage());
+			return;
+		}
 		currentState.processRequest(mgmt);
 	}
 
@@ -90,7 +97,8 @@ public class RaftManager {
 			voteCount = 0;
 			sendLeaderNotice();
 			currentState = leaderInstance;
-			((LeaderState) currentState).setIsNewLeader(true);
+			((LeaderState) currentState).reInitializeLeader();
+			;
 			leaderID = conf.getNodeId();
 			logger.info("I am the leader " + conf.getNodeId());
 		}
@@ -104,23 +112,21 @@ public class RaftManager {
 	}
 
 	public void createLogEntry() {
-		// TODO LogManager.createEntry(term, "data");
+		// System.out.println("Creating new log");
+		LogManager.createEntry(term, System.currentTimeMillis() + " - data");
 	}
-	
-	public void resetTimeOut(){
+
+	public void resetTimeOut() {
 		lastKnownBeat = System.currentTimeMillis();
 	}
-	
-	public void convertToCandidate(RaftMessage msg){
-		if(msg != null){
-			//term = msg.getTerm();
-		}
+
+	public void convertToCandidate(RaftMessage msg) {
 		currentState = candidateInstance;
 		resetTimeOut();
 	}
-	
+
 	public void convertToFollower(RaftMessage msg) {
-		if (msg != null){
+		if (msg != null) {
 			term = msg.getTerm();
 		}
 		currentState = followerInstance;
@@ -151,8 +157,9 @@ public class RaftManager {
 	}
 
 	// vote for a candidate
-	public void voteForCandidate(int term, boolean voteGranted,
-			Integer destination) {
+	public void voteForCandidate(RequestVoteMessage rvResponse) {
+
+		int destination = rvResponse.getCandidateId();
 		logger.info("Voting for node" + destination);
 		RaftMessage.Builder rlf = RaftMessage.newBuilder();
 		rlf.setAction(ElectionAction.REQUESTVOTE);
@@ -163,12 +170,7 @@ public class RaftManager {
 		mhb.setTime(System.currentTimeMillis());
 		mhb.setSecurityCode(-999);
 
-		RequestVoteMessage.Builder rvm = RequestVoteMessage.newBuilder();
-		rvm.setCandidateId(destination);
-		rvm.setLastLogIndex(LogManager.currentLogIndex);
-		rvm.setLastLogTerm(LogManager.currentLogTerm);
-		rvm.setVoteGranted(voteGranted);
-		rlf.setRequestVote(rvm);
+		rlf.setRequestVote(rvResponse);
 
 		Management.Builder mb = Management.newBuilder();
 		mb.setHeader(mhb.build());
@@ -185,7 +187,7 @@ public class RaftManager {
 	public void sendRequestVote() {
 		RaftMessage.Builder rlf = RaftMessage.newBuilder();
 		rlf.setAction(ElectionAction.REQUESTVOTE);
-		rlf.setTerm(term);
+		// rlf.setTerm(term);
 
 		MgmtHeader.Builder mhb = MgmtHeader.newBuilder();
 		mhb.setOriginator(conf.getNodeId());
@@ -196,6 +198,7 @@ public class RaftManager {
 		rvm.setCandidateId(conf.getNodeId());
 		rvm.setLastLogIndex(LogManager.currentLogIndex);
 		rvm.setLastLogTerm(LogManager.currentLogTerm);
+		rvm.setCandidateTerm(term);
 
 		rlf.setRequestVote(rvm.build());
 
@@ -211,10 +214,10 @@ public class RaftManager {
 		// now send it out to all my edges
 		logger.info(mgmt.toString());
 		ConnectionManager.sendToNode(mgmt, toNode);
-		//ConnectionManager.flushBroadcast(mgmt);
+		// ConnectionManager.flushBroadcast(mgmt);
 	}
-	
-	public Management.Builder buildAppendMessage(){
+
+	public Management.Builder buildAppendMessage() {
 		RaftMessage.Builder rlf = RaftMessage.newBuilder();
 		rlf.setAction(ElectionAction.APPEND);
 		rlf.setTerm(term);
@@ -227,7 +230,7 @@ public class RaftManager {
 		Management.Builder mb = Management.newBuilder();
 		mb.setHeader(mhb.build());
 		mb.setRaftMessage(rlf.build());
-		
+
 		return mb;
 	}
 
@@ -245,10 +248,10 @@ public class RaftManager {
 						}
 					} else {
 						if (now - lastKnownBeat > electionTimeOut / 4) {
-							//TODO remove createLogEntry() when done testing
-							// createLogEntry(); 
-							((LeaderState)currentState).sendAppendNotice();
-							
+							// TODO remove createLogEntry() when done testing
+							createLogEntry();
+							((LeaderState) currentState).sendAppendNotice();
+
 							lastKnownBeat = System.currentTimeMillis();
 						}
 					}

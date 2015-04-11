@@ -98,9 +98,9 @@ public class Server {
 	 * 
 	 * @param cfg
 	 */
-	public Server(File cfg, File clusterCfg) {
+	public Server(File cfg) {
 		init(cfg);
-		initCluster(clusterCfg);
+		//initCluster(clusterCfg);
 	}
 
 	private void initCluster(File clusterCfg) {
@@ -315,8 +315,8 @@ public class Server {
 		jobMgr = JobManager.initManager(conf);
 
 		// create manager for adding cluster connections
-		clusterMgr = ClusterManager.initManager(clusterConf);
-		clusterMgr.registerConnections();
+		//clusterMgr = ClusterManager.initManager(clusterConf);
+		//clusterMgr.registerConnections();
 		System.out.println("---> Server.startManagers() expecting " + conf.getAdjacent().getAdjacentNodes().size()
 				+ " connections");
 		// establish nearest nodes and start sending heartbeats
@@ -345,11 +345,6 @@ public class Server {
 			logger.error("Missing server configuration file");
 			return;
 		}
-		else if (clusterConf == null ) {
-			logger.error("Missing cluster configuration file");
-			return;
-		}
-		
 
 		logger.info("Initializing server " + conf.getNodeId());
 
@@ -376,7 +371,7 @@ public class Server {
 	 */
 	public static void main(String[] args) {
 		System.out.println("args.length: "+args.length);
-		if (args.length!=2) {
+		if (args.length!=1) {
 			System.err.println("Usage: java " + Server.class.getClass().getName() + " conf-file");
 			System.exit(1);
 		}
@@ -387,14 +382,14 @@ public class Server {
 			System.exit(2);
 		}
 		
-		File clusterCfg = new File(args[1]);
+		/*File clusterCfg = new File(args[1]);
 		if (!clusterCfg.exists()) {
 			Server.logger.error("cluster configuration file does not exist: " + cfg);
 			System.exit(2);
-		}
+		}*/
 
-		
-		Server svr = new Server(cfg,clusterCfg);
+//		Server svr = new Server(cfg,clusterCfg);
+		Server svr = new Server(cfg);
 		svr.run();
 	}
 }
