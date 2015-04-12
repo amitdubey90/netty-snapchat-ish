@@ -43,6 +43,9 @@ public final class LogManager implements Runnable {
 
 	// called by leader.
 	public static LogEntry createEntry(int term, String logData) {
+		prevIndex = currentLogIndex;
+		prevTerm = currentLogTerm;
+		currentLogTerm = term;
 		LogEntry entry = new LogEntry(term, ++currentLogIndex, prevTerm,
 				prevIndex, logData);
 		logs.put(currentLogIndex, entry);
@@ -60,7 +63,7 @@ public final class LogManager implements Runnable {
 	public static boolean appendLogs(LogEntry leaderLog, int leaderCommitIndex) {
 
 		boolean result = false;
-
+		logger.info("logger : "+ leaderLog.toString());
 		// Consistency Check.
 		if (leaderLog.prevLogTerm == currentLogTerm
 				&& leaderLog.prevLogIndex == currentLogIndex) {
@@ -87,7 +90,6 @@ public final class LogManager implements Runnable {
 			lastApplied = Math.min(currentLogIndex, commitIndex);
 			logger.info("Applying " + lastApplied + " to state");
 		}
-
 	}
 
 	@Override
