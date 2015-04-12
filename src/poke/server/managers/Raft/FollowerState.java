@@ -71,9 +71,10 @@ public class FollowerState implements RaftState {
 					AppendMessage.Builder amResponse = AppendMessage.newBuilder();
 					amResponse.setSuccess(success);
 					amResponse.setTerm(raftMgmt.term);
-
+					amResponse.setLogIndex(am.getLogIndex());
+					
 					Management.Builder response = raftMgmt
-							.buildRaftMessage(ElectionAction.APPEND);
+							.buildMgmtMessage(ElectionAction.APPEND);
 					response.getRaftMessageBuilder().setAppendMessage(
 							amResponse.build());
 

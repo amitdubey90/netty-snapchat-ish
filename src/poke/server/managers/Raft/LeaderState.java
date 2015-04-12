@@ -34,18 +34,20 @@ public class LeaderState implements RaftState {
 
 	public LeaderState() {
 		raftMgmt = RaftManager.getInstance();
+		Thread t = new Thread(new MatchIndexChecker());
+		t.start();
 	}
 
 	public void sendAppendNotice() {
-		for(Integer node: nextIndex.keySet()){
+		for (Integer node : nextIndex.keySet()) {
 			LogEntry entry = LogManager.getLogEntry(nextIndex.get(node));
-			Management.Builder m = raftMgmt.buildRaftMessage(ElectionAction.APPEND);
-			logger.info("Sending data for" +nextIndex.get(node));
+			Management.Builder m = raftMgmt
+					.buildMgmtMessage(ElectionAction.APPEND);
+			//logger.info("Sending data for" + nextIndex.get(node));
 			AppendMessage.Builder am = AppendMessage.newBuilder();
 
 			LogEntries.Builder log = LogEntries.newBuilder();
 			if (entry != null) {
-				// System.out.println(entry.toString());
 				am.setPrevLogIndex(entry.getPrevLogIndex());
 				am.setPrevLogTerm(entry.getPrevLogTerm());
 				am.setLogIndex(entry.logIndex);
@@ -66,9 +68,8 @@ public class LeaderState implements RaftState {
 		nextIndex = new ConcurrentHashMap<Integer, Integer>();
 		Set<Integer> nodes = ConnectionManager.getConnectedNodes();
 		int currentIndex = LogManager.getCurrentLogIndex();
-		for(Integer n: nodes){
-			//logger.info("setting indexess for "+ n);
-			nextIndex.put(n, currentIndex+1);
+		for (Integer n : nodes) {
+			nextIndex.put(n, currentIndex + 1);
 			matchIndex.put(n, 0);
 		}
 	}
@@ -82,29 +83,33 @@ public class LeaderState implements RaftState {
 		switch (action) {
 
 		case APPEND:
-			// TODO handle append responses
 			Integer sourceNode = mgmt.getHeader().getOriginator();
-			//logger.info("Response received from" + sourceNode);
 			AppendMessage response = mgmt.getRaftMessage().getAppendMessage();
 			Integer mIdx = matchIndex.get(sourceNode);
 			Integer nIdx = nextIndex.get(sourceNode);
-			
-			//logger.info("Response: "+response.toString());
-			
-			if(response.hasSuccess()){
+
+			if (logger.isDebugEnabled())
+				logger.debug("Response: " + response.toString());
+
+			if (response.hasSuccess()) {
 				logger.info("has success");
-				if(response.getSuccess()){
-					if(nIdx != null){
-						nextIndex.put(sourceNode, nIdx+1);
-						//logger.info("Next index for "+ sourceNode +" is "+ (nIdx+1));
-					} //else
-					if(mIdx != null){
-						matchIndex.put(sourceNode, mIdx+1);
-						//logger.info("Match index for "+ sourceNode +" is "+ (mIdx+1));
-					}//	else
+				if (response.getSuccess()) {
+					if (nIdx != null) {
+						nextIndex.put(sourceNode, nIdx + 1);
+						if (logger.isDebugEnabled())
+							logger.debug("Next index for " + sourceNode
+									+ " is " + (nIdx + 1));
+					} // else
+					if (mIdx != null) {
+						matchIndex.put(sourceNode, mIdx + 1);
+						if (logger.isDebugEnabled())
+							logger.debug("Match index for " + sourceNode
+									+ " is " + (mIdx + 1));
+					}// else
+
 				} else {
 					logger.info("False response, decrementing");
-					nextIndex.put(sourceNode, nIdx-1);
+					nextIndex.put(sourceNode, nIdx - 1);
 				}
 			}
 			break;
@@ -113,6 +118,41 @@ public class LeaderState implements RaftState {
 		default:
 
 		}
-
 	}
+
+	public class MatchIndexChecker extends Thread {
+
+		boolean forever = true;
+		HashMap<Integer, Integer> countMap = new HashMap<Integer, Integer>();
+		int commitIndex = 0;
+
+		@Override
+		public void run() {
+			
+			while(true){
+				if (raftMgmt.isLeader) {
+					//logger.info("<<<Leader match index checker running>>>>");
+					int count = 0;
+					commitIndex = LogManager.commitIndex + 1;
+					for (Integer i : matchIndex.values()) {
+						if (i >= commitIndex)
+							count += 1;
+					}
+
+					if (count > (matchIndex.keySet().size() / 2)){
+						LogManager.commitIndex = commitIndex;
+						logger.info("Updating log index");
+					}
+				}
+				
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			
+		}
+	}
+
 }

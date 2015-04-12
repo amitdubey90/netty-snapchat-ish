@@ -30,6 +30,7 @@ public class LogPersistence extends Thread{
 	
 	
 	public void persistLog(LogEntry log){
+		//TODO improve storing mechanism
 		String temp = "";
 		temp = "PrevLogTerm:" + log.prevLogTerm + "  PrevLogIndex:" + log.prevLogIndex + "  LogTerm:"+log.term+ "  LogIndex:"+log.logIndex +"  ClientRequest:"+log.logData;
 		j.set(Integer.toString(log.logIndex), temp);
