@@ -52,8 +52,9 @@ public class OutboundMgmtWorker extends Thread {
 				if (msg.channel.isWritable()) {
 					boolean rtn = false;
 					if (msg.channel != null && msg.channel.isOpen() && msg.channel.isWritable()) {
-						ChannelFuture cf = msg.channel.write(msg);
-
+						ChannelFuture cf = msg.channel.writeAndFlush(msg.req);
+						
+						logger.info("Response sent");
 						// blocks on write - use listener to be async
 						cf.awaitUninterruptibly();
 						rtn = cf.isSuccess();

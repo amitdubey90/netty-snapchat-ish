@@ -17,6 +17,7 @@ package poke.server.managers;
 
 import io.netty.channel.Channel;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -56,7 +57,8 @@ public class ConnectionManager {
 			System.out.println("No destination found");
 		
 	}
-
+	
+	
 	public static void addConnection(Integer nodeId, Channel channel,
 			boolean isMgmt) {
 		logger.info("ConnectionManager adding connection to " + nodeId);
@@ -74,7 +76,23 @@ public class ConnectionManager {
 		else
 			return connections.get(nodeId);
 	}
+	
+	public static Collection<Channel> getMgmtConnections(){
+		return mgmtConnections.values();
+	}
+	
+	public static Collection<Channel> getConnections(){
+		return connections.values();
+	}
+	
+	public static Set<Integer> getConnectionsKeySet(){
+		return connections.keySet();
+	}
 
+	public static Set<Integer> getConnectedNodes(){
+		return mgmtConnections.keySet();
+	}
+	
 	public synchronized static void removeConnection(Integer nodeId,
 			boolean isMgmt) {
 		if (isMgmt)
@@ -146,9 +164,5 @@ public class ConnectionManager {
 
 	public static int getNumMgmtConnections() {
 		return mgmtConnections.size();
-	}
-	
-	public static Set<Integer> getConnectedNodes(){
-		return mgmtConnections.keySet();
 	}
 }
