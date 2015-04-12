@@ -1,6 +1,9 @@
 package poke.server.managers.Raft;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.slf4j.Logger;
@@ -21,11 +24,16 @@ public final class LogManager implements Runnable {
 
 	static int prevIndex;
 	static int prevTerm;
+	
+	static LogPersistence pWorker;
 
 	public static LogManager initManager() {
 		instance.compareAndSet(null, new LogManager());
 		commitIndex = 0;
 		currentLogIndex = 0;
+		pWorker = new LogPersistence();
+		Thread t = new Thread(pWorker);
+		t.start();
 		return instance.get();
 	}
 
@@ -104,6 +112,10 @@ public final class LogManager implements Runnable {
 		}
 
 	}
+	
+	public static LogEntry getLog(int logIndex){
+		return logs.get(logIndex);
+	}
 
 	public static LogEntry getLastLogEntry() {
 		return logs.get(currentLogIndex);
@@ -115,5 +127,17 @@ public final class LogManager implements Runnable {
 
 	public static int getPrevLogTerm() {
 		return prevTerm;
+	}
+	
+	public List<LogEntry> getLogsForPersistence(int size){
+		Iterator<Integer> it = logs.keySet().iterator();
+		List<LogEntry> list = new ArrayList<LogEntry>();
+		while(it.hasNext()){
+			Integer key = it.next();
+			list.add(logs.get(key));
+			if(size-- == 0) break;
+		}
+		
+		return list;
 	}
 }
