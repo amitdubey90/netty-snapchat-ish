@@ -13,4 +13,6 @@ runtime
 /classes
 *~
 .settings/
-
+.classpath
+.classpath
+._~
