@@ -13,6 +13,7 @@ import poke.core.Mgmt.RaftMessage;
 import poke.core.Mgmt.RaftMessage.ElectionAction;
 import poke.core.Mgmt.RequestVoteMessage;
 import poke.server.conf.ServerConf;
+import poke.server.management.ManagementAdapter;
 import poke.server.managers.ConnectionManager;
 
 public class RaftManager {
@@ -159,7 +160,8 @@ public class RaftManager {
 		mb.setRaftMessage(rlf.build());
 
 		// now send it out to all my edges
-		ConnectionManager.flushBroadcast(mb.build());
+		//ConnectionManager.flushBroadcast(mb.build());
+		ManagementAdapter.flushBroadcast(mb.build());
 	}
 
 	// vote for a candidate
@@ -186,7 +188,8 @@ public class RaftManager {
 		votedForTerm = term;
 
 		// now send it out to all my edges
-		ConnectionManager.sendToNode(mb.build(), destination);
+		//ConnectionManager.sendToNode(mb.build(), destination);
+		ManagementAdapter.sendToNode(mb.build(), destination);
 	}
 
 	public void sendRequestVote() {
@@ -206,12 +209,15 @@ public class RaftManager {
 		mb.setRaftMessage(rlf.build());
 
 		// now send it out to all my edges
-		ConnectionManager.flushBroadcast(mb.build());
+		//ConnectionManager.flushBroadcast(mb.build());
+		ManagementAdapter.flushBroadcast(mb.build());
 	}
 
 	public void sendAppendNotice(int toNode, Management mgmt) {
-		ConnectionManager.sendToNode(mgmt, toNode);
-		// ConnectionManager.flushBroadcast(mgmt);
+		// now send it out to all my edges
+		//ConnectionManager.sendToNode(mgmt, toNode);
+		ManagementAdapter.sendToNode(mgmt, toNode);
+		
 	}
 
 	public Management.Builder buildMgmtMessage(ElectionAction action) {
