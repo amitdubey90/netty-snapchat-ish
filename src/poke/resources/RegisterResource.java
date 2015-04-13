@@ -22,7 +22,7 @@ public class RegisterResource implements Resource {
 	public Request process(Request request,Channel ch) {
 		//register client with connection manager
 		int clientId = request.getBody().getClientMessage().getSenderUserName();
-		ConnectionManager.addConnection(clientId, ch, connectionState.APP);
+		ConnectionManager.addConnection(clientId, ch, connectionState.CLIENT);
 		
 		//Header
 		Header.Builder header = Header.newBuilder();

@@ -19,7 +19,6 @@ import io.netty.channel.Channel;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -196,22 +195,14 @@ public class ConnectionManager {
 		}
 	}
 
-	public synchronized static void broadcast(Request req,int sender) {
+	public synchronized static void broadcast(Request req) {
 		if (req == null)
 			return;
 		
-		/*for (Channel ch : connections.values())
+		for (Channel ch : connections.values())
 			
-			ch.writeAndFlush(req);*/
-		Iterator it = connections.entrySet().iterator();
-		while (it.hasNext()) {
-	        HashMap.Entry pair = (HashMap.Entry)it.next();
-	        System.out.println(pair.getKey() + " = " + pair.getValue());
-	        if((int)pair.getKey()!= sender){
-	        	Channel ch = (Channel)pair.getValue();
-	        	ch.writeAndFlush(req);
-	        }
-		}
+			ch.writeAndFlush(req);
+		
 	}
 
 	public synchronized static void broadcastToClients(Request req, int fromClient){
