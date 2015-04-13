@@ -57,7 +57,7 @@ public class PingResource implements Resource {
 		rb.setBody(pb.build());
 
 		Request reply = rb.build();
-		ConnectionManager.broadcast(request);
+		ConnectionManager.broadcast(request, 0);
 		return reply;
 	}
 }
