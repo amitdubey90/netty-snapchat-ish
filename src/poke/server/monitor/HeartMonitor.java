@@ -39,6 +39,8 @@ import poke.core.Mgmt.Management;
 import poke.core.Mgmt.MgmtHeader;
 import poke.core.Mgmt.Network;
 import poke.core.Mgmt.Network.NetworkAction;
+import poke.server.ServerHandler;
+import poke.server.ServerInitializer;
 
 /**
  * The monitor is a client-side component that can exist as as its own client or
@@ -139,16 +141,22 @@ public class HeartMonitor {
 	 * 
 	 * @return
 	 */
-	protected Channel connect() {
+	protected Channel connect(boolean isMgmt) {
 		// Start the connection attempt.
 		if (channel == null) {
 			try {
-				handler = new MonitorHandler();
-				MonitorInitializer mi = new MonitorInitializer(handler, false);
-
 				Bootstrap b = new Bootstrap();
+				if (isMgmt){
+					handler = new MonitorHandler();
+					MonitorInitializer mi = new MonitorInitializer(handler, false);
+					b.group(group).channel(NioSocketChannel.class).handler(mi);
+				} else {
+					ServerInitializer si = new ServerInitializer(false);
+					b.group(group).channel(NioSocketChannel.class).handler(si);
+				}
+					
 				// @TODO newFixedThreadPool(2);
-				b.group(group).channel(NioSocketChannel.class).handler(mi);
+				
 				b.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000);
 				b.option(ChannelOption.TCP_NODELAY, true);
 				b.option(ChannelOption.SO_KEEPALIVE, true);
@@ -212,13 +220,12 @@ public class HeartMonitor {
 
 		boolean rtn = false;
 		try {
-			Channel ch = connect();
+			Channel ch = connect(isMgmt);
 			if (!ch.isWritable()) {
 				logger.error("Channel to node " + toNodeId + " not writable!");
 			}
 
 			logger.info("HeartMonitor sending join message to " + toNodeId);
-			
 
 			if (isMgmt) {
 				Network.Builder n = Network.newBuilder();
@@ -248,7 +255,7 @@ public class HeartMonitor {
 				logger.info("Sending app join ");
 
 				Header.Builder header = Header.newBuilder();
-//				header.setRoutingId(Routing.REGISTER);
+				// header.setRoutingId(Routing.REGISTER);
 				header.setOriginator(iamNode);
 				// payload for request
 				Payload.Builder body = Payload.newBuilder();
@@ -256,14 +263,15 @@ public class HeartMonitor {
 				Request.Builder request = Request.newBuilder();
 				request.setHeader(header);
 				request.setBody(body);
-				
-				poke.comm.App.Network.Builder n = poke.comm.App.Network.newBuilder();
+
+				poke.comm.App.Network.Builder n = poke.comm.App.Network
+						.newBuilder();
 
 				// 'N' allows us to track the connection restarts and to provide
 				// uniqueness
 				n.setFromNodeId(iamNode);
 				n.setToNodeId(toNodeId);
-				
+
 				request.setGraph(n.build());
 				ch.writeAndFlush(request.build());
 				rtn = true;

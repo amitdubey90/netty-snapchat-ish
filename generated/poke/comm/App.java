@@ -16196,6 +16196,19 @@ public final class App {
      * <code>required .Payload body = 2;</code>
      */
     poke.comm.App.PayloadOrBuilder getBodyOrBuilder();
+
+    /**
+     * <code>optional .Network graph = 3;</code>
+     */
+    boolean hasGraph();
+    /**
+     * <code>optional .Network graph = 3;</code>
+     */
+    poke.comm.App.Network getGraph();
+    /**
+     * <code>optional .Network graph = 3;</code>
+     */
+    poke.comm.App.NetworkOrBuilder getGraphOrBuilder();
   }
   /**
    * Protobuf type {@code Request}
@@ -16273,6 +16286,19 @@ public final class App {
                 body_ = subBuilder.buildPartial();
               }
               bitField0_ |= 0x00000002;
+              break;
+            }
+            case 26: {
+              poke.comm.App.Network.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                subBuilder = graph_.toBuilder();
+              }
+              graph_ = input.readMessage(poke.comm.App.Network.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(graph_);
+                graph_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000004;
               break;
             }
           }
@@ -16357,9 +16383,31 @@ public final class App {
       return body_;
     }
 
+    public static final int GRAPH_FIELD_NUMBER = 3;
+    private poke.comm.App.Network graph_;
+    /**
+     * <code>optional .Network graph = 3;</code>
+     */
+    public boolean hasGraph() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional .Network graph = 3;</code>
+     */
+    public poke.comm.App.Network getGraph() {
+      return graph_;
+    }
+    /**
+     * <code>optional .Network graph = 3;</code>
+     */
+    public poke.comm.App.NetworkOrBuilder getGraphOrBuilder() {
+      return graph_;
+    }
+
     private void initFields() {
       header_ = poke.comm.App.Header.getDefaultInstance();
       body_ = poke.comm.App.Payload.getDefaultInstance();
+      graph_ = poke.comm.App.Network.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -16383,6 +16431,12 @@ public final class App {
         memoizedIsInitialized = 0;
         return false;
       }
+      if (hasGraph()) {
+        if (!getGraph().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -16395,6 +16449,9 @@ public final class App {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeMessage(2, body_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeMessage(3, graph_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -16412,6 +16469,10 @@ public final class App {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(2, body_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, graph_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -16524,6 +16585,7 @@ public final class App {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
           getHeaderFieldBuilder();
           getBodyFieldBuilder();
+          getGraphFieldBuilder();
         }
       }
       private static Builder create() {
@@ -16544,6 +16606,12 @@ public final class App {
           bodyBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000002);
+        if (graphBuilder_ == null) {
+          graph_ = poke.comm.App.Network.getDefaultInstance();
+        } else {
+          graphBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -16588,6 +16656,14 @@ public final class App {
         } else {
           result.body_ = bodyBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        if (graphBuilder_ == null) {
+          result.graph_ = graph_;
+        } else {
+          result.graph_ = graphBuilder_.build();
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -16610,6 +16686,9 @@ public final class App {
         if (other.hasBody()) {
           mergeBody(other.getBody());
         }
+        if (other.hasGraph()) {
+          mergeGraph(other.getGraph());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
@@ -16630,6 +16709,12 @@ public final class App {
         if (!getBody().isInitialized()) {
           
           return false;
+        }
+        if (hasGraph()) {
+          if (!getGraph().isInitialized()) {
+            
+            return false;
+          }
         }
         return true;
       }
@@ -16885,6 +16970,122 @@ public final class App {
         return bodyBuilder_;
       }
 
+      private poke.comm.App.Network graph_ = poke.comm.App.Network.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          poke.comm.App.Network, poke.comm.App.Network.Builder, poke.comm.App.NetworkOrBuilder> graphBuilder_;
+      /**
+       * <code>optional .Network graph = 3;</code>
+       */
+      public boolean hasGraph() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional .Network graph = 3;</code>
+       */
+      public poke.comm.App.Network getGraph() {
+        if (graphBuilder_ == null) {
+          return graph_;
+        } else {
+          return graphBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .Network graph = 3;</code>
+       */
+      public Builder setGraph(poke.comm.App.Network value) {
+        if (graphBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          graph_ = value;
+          onChanged();
+        } else {
+          graphBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>optional .Network graph = 3;</code>
+       */
+      public Builder setGraph(
+          poke.comm.App.Network.Builder builderForValue) {
+        if (graphBuilder_ == null) {
+          graph_ = builderForValue.build();
+          onChanged();
+        } else {
+          graphBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>optional .Network graph = 3;</code>
+       */
+      public Builder mergeGraph(poke.comm.App.Network value) {
+        if (graphBuilder_ == null) {
+          if (((bitField0_ & 0x00000004) == 0x00000004) &&
+              graph_ != poke.comm.App.Network.getDefaultInstance()) {
+            graph_ =
+              poke.comm.App.Network.newBuilder(graph_).mergeFrom(value).buildPartial();
+          } else {
+            graph_ = value;
+          }
+          onChanged();
+        } else {
+          graphBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>optional .Network graph = 3;</code>
+       */
+      public Builder clearGraph() {
+        if (graphBuilder_ == null) {
+          graph_ = poke.comm.App.Network.getDefaultInstance();
+          onChanged();
+        } else {
+          graphBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+      /**
+       * <code>optional .Network graph = 3;</code>
+       */
+      public poke.comm.App.Network.Builder getGraphBuilder() {
+        bitField0_ |= 0x00000004;
+        onChanged();
+        return getGraphFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .Network graph = 3;</code>
+       */
+      public poke.comm.App.NetworkOrBuilder getGraphOrBuilder() {
+        if (graphBuilder_ != null) {
+          return graphBuilder_.getMessageOrBuilder();
+        } else {
+          return graph_;
+        }
+      }
+      /**
+       * <code>optional .Network graph = 3;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          poke.comm.App.Network, poke.comm.App.Network.Builder, poke.comm.App.NetworkOrBuilder> 
+          getGraphFieldBuilder() {
+        if (graphBuilder_ == null) {
+          graphBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              poke.comm.App.Network, poke.comm.App.Network.Builder, poke.comm.App.NetworkOrBuilder>(
+                  getGraph(),
+                  getParentForChildren(),
+                  isClean());
+          graph_ = null;
+        }
+        return graphBuilder_;
+      }
+
       // @@protoc_insertion_point(builder_scope:Request)
     }
 
@@ -16894,6 +17095,497 @@ public final class App {
     }
 
     // @@protoc_insertion_point(class_scope:Request)
+  }
+
+  public interface NetworkOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:Network)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required int32 from_node_id = 1;</code>
+     */
+    boolean hasFromNodeId();
+    /**
+     * <code>required int32 from_node_id = 1;</code>
+     */
+    int getFromNodeId();
+
+    /**
+     * <code>required int32 to_node_id = 2;</code>
+     */
+    boolean hasToNodeId();
+    /**
+     * <code>required int32 to_node_id = 2;</code>
+     */
+    int getToNodeId();
+  }
+  /**
+   * Protobuf type {@code Network}
+   */
+  public static final class Network extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:Network)
+      NetworkOrBuilder {
+    // Use Network.newBuilder() to construct.
+    private Network(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private Network(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final Network defaultInstance;
+    public static Network getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public Network getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Network(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              fromNodeId_ = input.readInt32();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              toNodeId_ = input.readInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return poke.comm.App.internal_static_Network_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return poke.comm.App.internal_static_Network_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              poke.comm.App.Network.class, poke.comm.App.Network.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<Network> PARSER =
+        new com.google.protobuf.AbstractParser<Network>() {
+      public Network parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new Network(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Network> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int FROM_NODE_ID_FIELD_NUMBER = 1;
+    private int fromNodeId_;
+    /**
+     * <code>required int32 from_node_id = 1;</code>
+     */
+    public boolean hasFromNodeId() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required int32 from_node_id = 1;</code>
+     */
+    public int getFromNodeId() {
+      return fromNodeId_;
+    }
+
+    public static final int TO_NODE_ID_FIELD_NUMBER = 2;
+    private int toNodeId_;
+    /**
+     * <code>required int32 to_node_id = 2;</code>
+     */
+    public boolean hasToNodeId() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required int32 to_node_id = 2;</code>
+     */
+    public int getToNodeId() {
+      return toNodeId_;
+    }
+
+    private void initFields() {
+      fromNodeId_ = 0;
+      toNodeId_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasFromNodeId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasToNodeId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeInt32(1, fromNodeId_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeInt32(2, toNodeId_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, fromNodeId_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, toNodeId_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static poke.comm.App.Network parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static poke.comm.App.Network parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static poke.comm.App.Network parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static poke.comm.App.Network parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static poke.comm.App.Network parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static poke.comm.App.Network parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static poke.comm.App.Network parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static poke.comm.App.Network parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static poke.comm.App.Network parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static poke.comm.App.Network parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(poke.comm.App.Network prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code Network}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:Network)
+        poke.comm.App.NetworkOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return poke.comm.App.internal_static_Network_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return poke.comm.App.internal_static_Network_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                poke.comm.App.Network.class, poke.comm.App.Network.Builder.class);
+      }
+
+      // Construct using poke.comm.App.Network.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        fromNodeId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        toNodeId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return poke.comm.App.internal_static_Network_descriptor;
+      }
+
+      public poke.comm.App.Network getDefaultInstanceForType() {
+        return poke.comm.App.Network.getDefaultInstance();
+      }
+
+      public poke.comm.App.Network build() {
+        poke.comm.App.Network result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public poke.comm.App.Network buildPartial() {
+        poke.comm.App.Network result = new poke.comm.App.Network(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.fromNodeId_ = fromNodeId_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.toNodeId_ = toNodeId_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof poke.comm.App.Network) {
+          return mergeFrom((poke.comm.App.Network)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(poke.comm.App.Network other) {
+        if (other == poke.comm.App.Network.getDefaultInstance()) return this;
+        if (other.hasFromNodeId()) {
+          setFromNodeId(other.getFromNodeId());
+        }
+        if (other.hasToNodeId()) {
+          setToNodeId(other.getToNodeId());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasFromNodeId()) {
+          
+          return false;
+        }
+        if (!hasToNodeId()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        poke.comm.App.Network parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (poke.comm.App.Network) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int fromNodeId_ ;
+      /**
+       * <code>required int32 from_node_id = 1;</code>
+       */
+      public boolean hasFromNodeId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required int32 from_node_id = 1;</code>
+       */
+      public int getFromNodeId() {
+        return fromNodeId_;
+      }
+      /**
+       * <code>required int32 from_node_id = 1;</code>
+       */
+      public Builder setFromNodeId(int value) {
+        bitField0_ |= 0x00000001;
+        fromNodeId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 from_node_id = 1;</code>
+       */
+      public Builder clearFromNodeId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        fromNodeId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int toNodeId_ ;
+      /**
+       * <code>required int32 to_node_id = 2;</code>
+       */
+      public boolean hasToNodeId() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required int32 to_node_id = 2;</code>
+       */
+      public int getToNodeId() {
+        return toNodeId_;
+      }
+      /**
+       * <code>required int32 to_node_id = 2;</code>
+       */
+      public Builder setToNodeId(int value) {
+        bitField0_ |= 0x00000002;
+        toNodeId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 to_node_id = 2;</code>
+       */
+      public Builder clearToNodeId() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        toNodeId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:Network)
+    }
+
+    static {
+      defaultInstance = new Network(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:Network)
   }
 
   public interface ClientMessageOrBuilder extends
@@ -18905,6 +19597,11 @@ public final class App {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_Request_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_Network_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_Network_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_ClientMessage_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -18976,22 +19673,24 @@ public final class App {
       "JobStatus\022&\n\014space_status\030\014 \001(\0132\020.NameSp" +
       "aceStatus\022(\n\017cluster_message\030\004 \001(\0132\017.Clu" +
       "sterMessage\022&\n\016client_message\030\005 \001(\0132\016.Cl" +
-      "ientMessage\":\n\007Request\022\027\n\006header\030\001 \002(\0132\007" +
-      ".Header\022\026\n\004body\030\002 \002(\0132\010.Payload\"\253\002\n\rClie" +
-      "ntMessage\022\r\n\005msgId\030\001 \001(\t\022\026\n\016senderUserNa" +
-      "me\030\002 \001(\005\022\030\n\020receiverUserName\030\003 \001(\005\022\017\n\007ms" +
-      "gText\030\004 \001(\t\022\024\n\014msgImageName\030\005 \001(\t\022\024\n\014msg" +
-      "ImageBits\030\006 \001(\014\0228\n\013messageType\030\007 \001(\0162\032.C" +
-      "lientMessage.MessageType:\007SUCCESS\022\027\n\010isC",
-      "lient\030\010 \001(\010:\005false\022 \n\021broadcastInternal\030" +
-      "\t \001(\010:\005false\"\'\n\013MessageType\022\013\n\007REQUEST\020\000" +
-      "\022\013\n\007SUCCESS\020\001\"L\n\016ClusterMessage\022&\n\016clien" +
-      "t_message\030\001 \001(\0132\016.ClientMessage\022\022\n\nclust" +
-      "er_id\030\002 \001(\005*\221\001\n\nPokeStatus\022\n\n\006UKNOWN\020\001\022\013" +
-      "\n\007SUCCESS\020\002\022\013\n\007NOFOUND\020d\022\020\n\014NOINCOMPLETE" +
-      "\020e\022\n\n\006NOAUTH\020f\022\020\n\014NOCONNECTION\020g\022\017\n\013NORE" +
-      "ACHABLE\020h\022\016\n\nNORESOURCE\020i\022\014\n\007FAILURE\020\307\001B" +
-      "\r\n\tpoke.commH\001"
+      "ientMessage\"S\n\007Request\022\027\n\006header\030\001 \002(\0132\007" +
+      ".Header\022\026\n\004body\030\002 \002(\0132\010.Payload\022\027\n\005graph" +
+      "\030\003 \001(\0132\010.Network\"3\n\007Network\022\024\n\014from_node" +
+      "_id\030\001 \002(\005\022\022\n\nto_node_id\030\002 \002(\005\"\253\002\n\rClient" +
+      "Message\022\r\n\005msgId\030\001 \001(\t\022\026\n\016senderUserName" +
+      "\030\002 \001(\005\022\030\n\020receiverUserName\030\003 \001(\005\022\017\n\007msgT" +
+      "ext\030\004 \001(\t\022\024\n\014msgImageName\030\005 \001(\t\022\024\n\014msgIm",
+      "ageBits\030\006 \001(\014\0228\n\013messageType\030\007 \001(\0162\032.Cli" +
+      "entMessage.MessageType:\007SUCCESS\022\027\n\010isCli" +
+      "ent\030\010 \001(\010:\005false\022 \n\021broadcastInternal\030\t " +
+      "\001(\010:\005false\"\'\n\013MessageType\022\013\n\007REQUEST\020\000\022\013" +
+      "\n\007SUCCESS\020\001\"L\n\016ClusterMessage\022&\n\016client_" +
+      "message\030\001 \001(\0132\016.ClientMessage\022\022\n\ncluster" +
+      "_id\030\002 \001(\005*\221\001\n\nPokeStatus\022\n\n\006UKNOWN\020\001\022\013\n\007" +
+      "SUCCESS\020\002\022\013\n\007NOFOUND\020d\022\020\n\014NOINCOMPLETE\020e" +
+      "\022\n\n\006NOAUTH\020f\022\020\n\014NOCONNECTION\020g\022\017\n\013NOREAC" +
+      "HABLE\020h\022\016\n\nNORESOURCE\020i\022\014\n\007FAILURE\020\307\001B\r\n",
+      "\tpoke.commH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -19088,15 +19787,21 @@ public final class App {
     internal_static_Request_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_Request_descriptor,
-        new java.lang.String[] { "Header", "Body", });
-    internal_static_ClientMessage_descriptor =
+        new java.lang.String[] { "Header", "Body", "Graph", });
+    internal_static_Network_descriptor =
       getDescriptor().getMessageTypes().get(14);
+    internal_static_Network_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_Network_descriptor,
+        new java.lang.String[] { "FromNodeId", "ToNodeId", });
+    internal_static_ClientMessage_descriptor =
+      getDescriptor().getMessageTypes().get(15);
     internal_static_ClientMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_ClientMessage_descriptor,
         new java.lang.String[] { "MsgId", "SenderUserName", "ReceiverUserName", "MsgText", "MsgImageName", "MsgImageBits", "MessageType", "IsClient", "BroadcastInternal", });
     internal_static_ClusterMessage_descriptor =
-      getDescriptor().getMessageTypes().get(15);
+      getDescriptor().getMessageTypes().get(16);
     internal_static_ClusterMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_ClusterMessage_descriptor,
