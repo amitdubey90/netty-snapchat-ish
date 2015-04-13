@@ -93,7 +93,7 @@ public class SnapchatClientCommand {
 
 	public void sendImage(String filePath) {
 		File file = null;
-
+		System.out.println("Sending msg");
 		//create client message for payload
 		ClientMessage.Builder clientMessage = ClientMessage.newBuilder();
 		try {
@@ -141,7 +141,7 @@ public class SnapchatClientCommand {
 
 	public static void main(String[] args) {
 
-		SnapchatClientCommand sc = new SnapchatClientCommand("localhost", 5570);
+		SnapchatClientCommand sc = new SnapchatClientCommand("localhost", 5571);
 		int option = 0;
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 

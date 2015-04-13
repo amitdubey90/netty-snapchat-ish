@@ -30,40 +30,68 @@ import poke.server.resources.Resource;
 
 public class JobResource implements Resource {
 	protected static Logger logger = LoggerFactory.getLogger("job resource");
-
+	private boolean isRespSent=false;
 	@Override
 	public Request process(Request request,Channel ch) {
 		int senderClient=request.getBody().getClientMessage().getSenderUserName();
 		boolean isClient = request.getBody().getClientMessage().getIsClient();
 		boolean isBroadcastInternal = request.getBody().getClientMessage().getBroadcastInternal();
 		if(isClient && isBroadcastInternal){
-			//send to all clients on this node and to all other nodes. Make broadcast internal to false and client to false
+			//broadcast to other clients
 			ConnectionManager.broadcastToClients(request, senderClient);
 			
-			ConnectionManager.broadcast(request);
+			//broadcast to other servers and set broadcast to false
+			ClientMessage.Builder clientMsg  = ClientMessage.newBuilder();
+			ClientMessage reqClientMsg=request.getBody().getClientMessage();
+			clientMsg.setIsClient(true);
+			clientMsg.setBroadcastInternal(false);
+			clientMsg.setMsgId(reqClientMsg.getMsgId());
+			clientMsg.setMessageType(reqClientMsg.getMessageType());
+			clientMsg.setMsgImageName(reqClientMsg.getMsgImageName());
+			clientMsg.setMsgImageBits(reqClientMsg.getMsgImageBits());
+			clientMsg.setMsgText(reqClientMsg.getMsgText());
+			//add client msg to body
+			Payload.Builder payload = Payload.newBuilder();
+			payload.setClientMessage(clientMsg);
 			
-			//send reply to the sender client that msg is sent
-			//client msg for payload
-			ClientMessage.Builder clientMessage = ClientMessage.newBuilder();
-			clientMessage.setMessageType(MessageType.SUCCESS);
+			//header for request
+			Header.Builder head = Header.newBuilder();
+			head.setOriginator(1000);
+			head.setTag("Image");
+			head.setTime(System.currentTimeMillis());
+			head.setRoutingId(Header.Routing.JOBS);
 			
-			//payload
-			Payload.Builder body = Payload.newBuilder();
-			body.setClientMessage(clientMessage);
-			
-			//header
-			Header.Builder header= Header.newBuilder();
-			header.setOriginator(1);
-			
-			//reply
-			Request.Builder reply =Request.newBuilder();
-			reply.setBody(body);
-			reply.setHeader(header);
-			return reply.build();
-		}else{
-			//send to other servers only
-			return null;
+			//add body to request
+			Request.Builder req = Request.newBuilder();
+			req.setBody(payload);
+			req.setHeader(head);
+			ConnectionManager.broadcast(req.build());
+		}else if(isClient && !isBroadcastInternal){
+			//logger.info("Got req from other server>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+			ConnectionManager.broadcastToClients(request, senderClient);
 		}
+		//check if response to client sent. If not, send reply to the sender client that msg is broadcast to all
+		if(isRespSent){
+		//client msg for payload
+		ClientMessage.Builder clientMessage = ClientMessage.newBuilder();
+		clientMessage.setMessageType(MessageType.SUCCESS);
+		
+		//payload
+		Payload.Builder body = Payload.newBuilder();
+		body.setClientMessage(clientMessage);
+		
+		//header
+		Header.Builder header= Header.newBuilder();
+		header.setOriginator(1);
+		
+		//reply
+		Request.Builder reply =Request.newBuilder();
+		reply.setBody(body);
+		reply.setHeader(header);
+		isRespSent=true;
+		return reply.build();
+		}else
+			return null;
 	}
 
 }
