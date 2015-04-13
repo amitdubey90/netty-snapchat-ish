@@ -19,7 +19,6 @@ import io.netty.channel.Channel;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -71,33 +70,53 @@ public class ConnectionManager {
 		else
 			connections.put(nodeId, channel);
 */	
-	switch (connState) {
-	case MGMT:
-		mgmtConnections.put(nodeId, channel);
-		break;
-	
-	case APP:
-		logger.info("Added app connnection for "+nodeId);
-		connections.put(nodeId, channel);
-		break;
-	
-	case CLIENT:
-		clientConnections.put(nodeId, channel);
-		break;
 
+		switch (connState) {
+		case MGMT:
+			mgmtConnections.put(nodeId, channel);
+			break;
 		
-	default:
-		break;
-	}
+		case APP:
+			connections.put(nodeId, channel);
+			break;
 		
+		case CLIENT:
+			clientConnections.put(nodeId, channel);
+			break;
+	
+			
+		default:
+			break;
+		}
+	
 	}
 
-	public static Channel getConnection(Integer nodeId, boolean isMgmt) {
+	public static Channel getConnection(Integer nodeId, connectionState connState) {
 
-		if (isMgmt)
+		/*if (isMgmt)
 			return mgmtConnections.get(nodeId);
 		else
+			return connections.get(nodeId);*/
+		switch (connState) {
+		case MGMT:
+			return mgmtConnections.get(nodeId);
+			
+		
+		case APP:
 			return connections.get(nodeId);
+			
+		case CLIENT:
+			return clientConnections.get(nodeId);
+			
+			
+		default:
+			return null;
+		}
+		
+	}
+	
+	public static Collection<Channel> getClientConnections(){
+		return clientConnections.values();
 	}
 	
 	public static Collection<Channel> getMgmtConnections(){
@@ -112,16 +131,41 @@ public class ConnectionManager {
 		return connections.keySet();
 	}
 
+	public static Set<Integer> getClientConnectionsKeySet(){
+		return clientConnections.keySet();
+	}
+	
+	public static Set<Integer> getClientConnectedNodes(){
+		return clientConnections.keySet();
+	}
+	
 	public static Set<Integer> getConnectedNodes(){
 		return mgmtConnections.keySet();
 	}
 	
+	
 	public synchronized static void removeConnection(Integer nodeId,
-			boolean isMgmt) {
-		if (isMgmt)
+			connectionState connState) {
+		/*if (isMgmt)
 			mgmtConnections.remove(nodeId);
 		else
+			connections.remove(nodeId);*/
+		switch (connState) {
+		case MGMT:
+			mgmtConnections.remove(nodeId);
+			break;	
+		
+		case APP:
 			connections.remove(nodeId);
+			break;
+		case CLIENT:
+			clientConnections.remove(nodeId);
+			break;
+			
+		default:
+			break;
+		}
+			
 	}
 
 	public synchronized static void removeConnection(Channel channel,
@@ -152,22 +196,13 @@ public class ConnectionManager {
 		}
 	}
 
-	public synchronized static void broadcast(Request req,int sender) {
+	public synchronized static void broadcast(Request req) {
 		if (req == null)
 			return;
 		
-		/*for (Channel ch : connections.values())
-			
-			ch.writeAndFlush(req);*/
-		Iterator<Integer> it = connections.keySet().iterator();
-		while (it.hasNext()) {
-	        Integer key = it.next();
-	        System.out.println(key + " = " + connections.get(key));
-	        if(key!= sender){
-	        	Channel ch = (Channel)connections.get(key);
-	        	ch.writeAndFlush(req);
-	        }
-		}
+		for (Channel ch : connections.values())
+			ch.writeAndFlush(req);
+		
 	}
 
 	public synchronized static void broadcastToClients(Request req, int fromClient){

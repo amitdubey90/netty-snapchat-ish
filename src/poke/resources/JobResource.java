@@ -38,7 +38,9 @@ public class JobResource implements Resource {
 		boolean isBroadcastInternal = request.getBody().getClientMessage().getBroadcastInternal();
 		if(isClient && isBroadcastInternal){
 			//send to all clients on this node and to all other nodes. Make broadcast internal to false and client to false
-			ConnectionManager.broadcast(request,senderClient);
+			ConnectionManager.broadcastToClients(request, senderClient);
+			
+			ConnectionManager.broadcast(request);
 			
 			//send reply to the sender client that msg is sent
 			//client msg for payload

@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 
 import poke.comm.App.Request;
 import poke.server.managers.ConnectionManager;
+import poke.server.managers.ConnectionManager.connectionState;
 import poke.server.queue.ChannelQueue;
 import poke.server.queue.QueueFactory;
 
@@ -138,6 +139,6 @@ public class ServerHandler extends SimpleChannelInboundHandler<Request> {
 		String remoteAddr = String.valueOf(ctx.channel().remoteAddress());
 		String port = remoteAddr.split(":")[1];
 		System.out.println("Client port "+port);
-		ConnectionManager.removeConnection(Integer.parseInt(port), false);
+		ConnectionManager.removeConnection(Integer.parseInt(port), connectionState.APP);
 	}
 }

@@ -5,6 +5,7 @@ import java.util.Collection;
 import io.netty.channel.Channel;
 import poke.core.Mgmt.Management;
 import poke.server.managers.ConnectionManager;
+import poke.server.managers.ConnectionManager.connectionState;
 
 public class ManagementAdapter {
 	
@@ -13,7 +14,7 @@ public class ManagementAdapter {
 		if (mgmt == null)
 			return;
 		
-		Channel ch = ConnectionManager.getConnection(dest, true);
+		Channel ch = ConnectionManager.getConnection(dest, connectionState.MGMT);
 		
 		if(ch!=null){
 			ManagementQueue.enqueueResponse(mgmt, ch);
