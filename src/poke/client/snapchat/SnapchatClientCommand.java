@@ -141,7 +141,7 @@ public class SnapchatClientCommand {
 
 	public static void main(String[] args) {
 
-		SnapchatClientCommand sc = new SnapchatClientCommand("localhost", 5571);
+		SnapchatClientCommand sc = new SnapchatClientCommand("localhost", 5570);
 		int option = 0;
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
