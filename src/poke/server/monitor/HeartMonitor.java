@@ -30,6 +30,11 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import poke.comm.App.ClientMessage;
+import poke.comm.App.Header;
+import poke.comm.App.Payload;
+import poke.comm.App.Request;
+import poke.comm.App.Header.Routing;
 import poke.core.Mgmt.Management;
 import poke.core.Mgmt.MgmtHeader;
 import poke.core.Mgmt.Network;
@@ -61,6 +66,7 @@ public class HeartMonitor {
 	private int toNodeId;
 	private String host;
 	private int port;
+	private boolean isMgmt;
 
 	// this list is only used if the connection cannot be established - it holds
 	// the listeners to be added.
@@ -76,12 +82,14 @@ public class HeartMonitor {
 	 * @param port
 	 *            This is the management port
 	 */
-	public HeartMonitor(int iamNode, String host, int port, int toNodeId) {
+	public HeartMonitor(int iamNode, String host, int port, int toNodeId,
+			boolean isMgmt) {
 		this.iamNode = iamNode;
 		this.toNodeId = toNodeId;
 		this.whoami = "mgmt-" + iamNode;
 		this.host = host;
 		this.port = port;
+		this.isMgmt = isMgmt;
 		this.group = new NioEventLoopGroup();
 
 		logger.info("Creating heartbeat monitor for " + host + "(" + port + ")");
@@ -148,7 +156,8 @@ public class HeartMonitor {
 				// Make the connection attempt.
 				channel = b.connect(host, port).syncUninterruptibly();
 				channel.awaitUninterruptibly(5000l);
-				channel.channel().closeFuture().addListener(new MonitorClosedListener(this));
+				channel.channel().closeFuture()
+						.addListener(new MonitorClosedListener(this));
 
 				if (N == Integer.MAX_VALUE)
 					N = 1;
@@ -163,7 +172,9 @@ public class HeartMonitor {
 				}
 			} catch (Exception ex) {
 				if (logger.isDebugEnabled())
-					logger.debug("HeartMonitor: failed to initialize the heartbeat connection", ex);
+					logger.debug(
+							"HeartMonitor: failed to initialize the heartbeat connection",
+							ex);
 				// logger.error("failed to initialize the heartbeat connection",
 				// ex);
 			}
@@ -172,7 +183,8 @@ public class HeartMonitor {
 		if (channel != null && channel.isDone() && channel.isSuccess())
 			return channel.channel();
 		else
-			throw new RuntimeException("Not able to establish connection to server");
+			throw new RuntimeException(
+					"Not able to establish connection to server");
 	}
 
 	public boolean isConnected() {
@@ -206,29 +218,57 @@ public class HeartMonitor {
 			}
 
 			logger.info("HeartMonitor sending join message to " + toNodeId);
-			Network.Builder n = Network.newBuilder();
+			
 
-			// 'N' allows us to track the connection restarts and to provide
-			// uniqueness
-			n.setFromNodeId(iamNode);
-			n.setToNodeId(toNodeId);
-			n.setAction(NetworkAction.NODEJOIN);
+			if (isMgmt) {
+				Network.Builder n = Network.newBuilder();
 
-			MgmtHeader.Builder mhb = MgmtHeader.newBuilder();
-			mhb.setOriginator(iamNode);
-			mhb.setTime(System.currentTimeMillis());
+				// 'N' allows us to track the connection restarts and to provide
+				// uniqueness
+				n.setFromNodeId(iamNode);
+				n.setToNodeId(toNodeId);
+				n.setAction(NetworkAction.NODEJOIN);
+				MgmtHeader.Builder mhb = MgmtHeader.newBuilder();
+				mhb.setOriginator(iamNode);
+				mhb.setTime(System.currentTimeMillis());
 
-			// TODO the security code is an authentication token to joint the
-			// cluster, all nodes in the cluster should share the same token or
-			// know how to authenticate a node.
-			mhb.setSecurityCode(-999);
+				// TODO the security code is an authentication token to joint
+				// the
+				// cluster, all nodes in the cluster should share the same token
+				// or
+				// know how to authenticate a node.
+				mhb.setSecurityCode(-999);
 
-			Management.Builder m = Management.newBuilder();
-			m.setHeader(mhb.build());
-			m.setGraph(n.build());
+				Management.Builder m = Management.newBuilder();
+				m.setHeader(mhb.build());
+				m.setGraph(n.build());
+				ch.writeAndFlush(m.build());
+				rtn = true;
+			} else {
+				logger.info("Sending app join ");
 
-			ch.writeAndFlush(m.build());
-			rtn = true;
+				Header.Builder header = Header.newBuilder();
+//				header.setRoutingId(Routing.REGISTER);
+				header.setOriginator(iamNode);
+				// payload for request
+				Payload.Builder body = Payload.newBuilder();
+				// Request
+				Request.Builder request = Request.newBuilder();
+				request.setHeader(header);
+				request.setBody(body);
+				
+				poke.comm.App.Network.Builder n = poke.comm.App.Network.newBuilder();
+
+				// 'N' allows us to track the connection restarts and to provide
+				// uniqueness
+				n.setFromNodeId(iamNode);
+				n.setToNodeId(toNodeId);
+				
+				request.setGraph(n.build());
+				ch.writeAndFlush(request.build());
+				rtn = true;
+			}
+
 		} catch (Exception e) {
 			// normal to get this exception as a node may not be reachable
 			logger.debug("could not send connect to node " + toNodeId);

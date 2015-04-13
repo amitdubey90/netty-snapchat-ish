@@ -22,6 +22,8 @@ import org.slf4j.LoggerFactory;
 
 import poke.comm.App.PokeStatus;
 import poke.comm.App.Request;
+import poke.core.Mgmt.Management;
+import poke.server.managers.ConnectionManager;
 import poke.server.resources.Resource;
 import poke.server.resources.ResourceFactory;
 import poke.server.resources.ResourceUtil;
@@ -37,7 +39,6 @@ public class InboundAppWorker extends Thread {
 
 	public InboundAppWorker(ThreadGroup tgrp, int workerId, PerChannelQueue sq) {
 		super(tgrp, "inbound-" + workerId);
-		logger.info("<<<<<<<<<<<Starting up inbound app worker>>>>>>>>>>>>");
 		this.workerId = workerId;
 		this.sq = sq;
 
@@ -59,39 +60,52 @@ public class InboundAppWorker extends Thread {
 				break;
 
 			try {
-				logger.info("waiting for a message on server");
+				// logger.info("waiting for a message on server");
 				// block until a message is enqueued
 				GeneratedMessage msg = sq.inbound.take();
-				logger.info("Received message on server");
+				// logger.info("Received message on server");
 				// process request and enqueue response
+				try {
+					logger.info("Got an incoming message"
+							+ ((Management) msg).toString());
+				} catch (Exception e) {
+
+				}
+
 				if (msg instanceof Request) {
-					logger.info("Got an incoming message");
 					Request req = ((Request) msg);
-
-					// HEY! if you find yourself here and are tempted to add
-					// code to process state or requests then you are in the
-					// WRONG place! This is a general routing class, all
-					// request specific actions should take place in the
-					// resource!
-
-					// handle it locally - we create a new resource per
-					// request. This helps in thread isolation however, it
-					// creates creation burdens on the server. If
-					// we use a pool instead, we can gain some relief.
-
-					Resource rsc = ResourceFactory.getInstance()
-							.resourceInstance(req.getHeader());
-
 					Request reply = null;
-					if (rsc == null) {
-						logger.error("failed to obtain resource for " + req);
-						reply = ResourceUtil.buildError(req.getHeader(),
-								PokeStatus.NORESOURCE, "Request not processed");
+
+					if (req.hasGraph()) {
+						ConnectionManager.addConnection(req.getGraph()
+								.getFromNodeId(), sq.channel,
+								ConnectionManager.connectionState.APP);
 					} else {
-						// message communication can be two-way or one-way.
-						// One-way communication will not produce a response
-						// (reply).
-						reply = rsc.process(req,sq.channel);
+						// HEY! if you find yourself here and are tempted to add
+						// code to process state or requests then you are in the
+						// WRONG place! This is a general routing class, all
+						// request specific actions should take place in the
+						// resource!
+
+						// handle it locally - we create a new resource per
+						// request. This helps in thread isolation however, it
+						// creates creation burdens on the server. If
+						// we use a pool instead, we can gain some relief.
+
+						Resource rsc = ResourceFactory.getInstance()
+								.resourceInstance(req.getHeader());
+
+						if (rsc == null) {
+							logger.error("failed to obtain resource for " + req);
+							reply = ResourceUtil.buildError(req.getHeader(),
+									PokeStatus.NORESOURCE,
+									"Request not processed");
+						} else {
+							// message communication can be two-way or one-way.
+							// One-way communication will not produce a response
+							// (reply).
+							reply = rsc.process(req, sq.channel);
+						}
 					}
 
 					if (reply != null)

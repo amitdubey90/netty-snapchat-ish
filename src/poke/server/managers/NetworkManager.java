@@ -88,8 +88,8 @@ public class NetworkManager {
 					// this node will send messages to the requesting client
 					InetSocketAddress isa = (InetSocketAddress) socka;
 					logger.info("NODEJOIN: " + isa.getHostName() + ", " + isa.getPort());
-					HeartbeatManager.getInstance().addOutgoingChannel(req.getFromNodeId(), isa.getHostName(),
-							isa.getPort(), channel, socka);
+						HeartbeatManager.getInstance().addOutgoingChannel(req.getFromNodeId(), isa.getHostName(),
+								isa.getPort(), channel, socka);
 				}
 			} else
 				logger.warn(req.getFromNodeId() + " not writable");
