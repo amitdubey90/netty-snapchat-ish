@@ -81,7 +81,7 @@ public class HeartbeatData {
 	 * @return
 	 */
 	public Channel getChannel() {
-		return ConnectionManager.getConnection(nodeId, true);
+		return ConnectionManager.getConnection(nodeId, connectionState.MGMT);
 	}
 
 	/**
@@ -170,10 +170,10 @@ public class HeartbeatData {
 	public void clearHeartData() {
 		// TODO close the request/public channels
 		// TODO if we attempt o reconnect this should be removed
-		if (ConnectionManager.getConnection(nodeId, true) != null)
-			ConnectionManager.getConnection(nodeId, true).close();
+		if (ConnectionManager.getConnection(nodeId, connectionState.MGMT) != null)
+			ConnectionManager.getConnection(nodeId, connectionState.MGMT).close();
 
-		ConnectionManager.removeConnection(nodeId, true);
+		ConnectionManager.removeConnection(nodeId, connectionState.MGMT);
 		sa = null;
 	}
 
@@ -185,7 +185,7 @@ public class HeartbeatData {
 	 */
 	public boolean isGood() {
 		if (status == BeatStatus.Active || status == BeatStatus.Weak) {
-			Channel ch = ConnectionManager.getConnection(nodeId, true);
+			Channel ch = ConnectionManager.getConnection(nodeId, connectionState.MGMT);
 			boolean rtn = ch.isOpen() && ch.isWritable();
 			if (!rtn) {
 				// TODO how to use the weakThreshold and status
