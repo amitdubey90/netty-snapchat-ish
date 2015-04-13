@@ -2,6 +2,7 @@ package poke.server.managers.Raft;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -33,44 +34,44 @@ public class LeaderState implements RaftState {
 
 	public LeaderState() {
 		raftMgmt = RaftManager.getInstance();
+		Thread t = new Thread(new MatchIndexChecker());
+		t.start();
 	}
 
 	public void sendAppendNotice() {
-		// if the leader is sending append RPCs for the first time, send new
-		// entries (index + 1)
-		LogEntry entry = LogManager.getLastLogEntry();
-		Management.Builder m = raftMgmt.buildRaftMessage(ElectionAction.APPEND);
+		for (Integer node : nextIndex.keySet()) {
+			LogEntry entry = LogManager.getLogEntry(nextIndex.get(node));
+			Management.Builder m = raftMgmt
+					.buildMgmtMessage(ElectionAction.APPEND);
+			//logger.info("Sending data for" + nextIndex.get(node));
+			AppendMessage.Builder am = AppendMessage.newBuilder();
 
-		AppendMessage.Builder am = AppendMessage.newBuilder();
-
-		am.setPrevLogIndex(entry.getPrevLogIndex());
-		am.setPrevLogTerm(entry.getPrevLogTerm());
-		am.setLogIndex(entry.logIndex);
-		am.setLeaderCommit(LogManager.commitIndex);
-		am.setLeaderId(raftMgmt.leaderID);
-		am.setTerm(raftMgmt.term);
-
-		LogEntries.Builder log = LogEntries.newBuilder();
-		if (entry != null) {
-			// System.out.println(entry.toString());
-			log.setLogIndex(entry.getLogIndex());
-			log.setLogData(entry.getLogData());
+			LogEntries.Builder log = LogEntries.newBuilder();
+			if (entry != null) {
+				am.setPrevLogIndex(entry.getPrevLogIndex());
+				am.setPrevLogTerm(entry.getPrevLogTerm());
+				am.setLogIndex(entry.logIndex);
+				am.setLeaderCommit(LogManager.commitIndex);
+				am.setLeaderId(raftMgmt.leaderID);
+				am.setTerm(raftMgmt.term);
+				log.setLogIndex(entry.getLogIndex());
+				log.setLogData(entry.getLogData());
+			}
+			am.addEntries(log);
+			m.getRaftMessageBuilder().setAppendMessage(am.build());
+			ConnectionManager.sendToNode(m.build(), node);
 		}
-		// TODO add entries
-		am.addEntries(log);
-		m.getRaftMessageBuilder().setAppendMessage(am.build());
-		ConnectionManager.flushBroadcast(m.build());
 	}
 
 	public void reInitializeLeader() {
 		matchIndex = new ConcurrentHashMap<Integer, Integer>();
-		// TODO reset nextIndex
 		nextIndex = new ConcurrentHashMap<Integer, Integer>();
-		// TODO check exact index to re-initiate
-		int index = LogManager.getCurrentLogIndex();
-		for (int i = 0; i < RaftManager.totalNodes; i++)
-			nextIndex.put(0, index);
-		isNewLeader = true;
+		Set<Integer> nodes = ConnectionManager.getConnectedNodes();
+		int currentIndex = LogManager.getCurrentLogIndex();
+		for (Integer n : nodes) {
+			nextIndex.put(n, currentIndex + 1);
+			matchIndex.put(n, 0);
+		}
 	}
 
 	@Override
@@ -82,14 +83,76 @@ public class LeaderState implements RaftState {
 		switch (action) {
 
 		case APPEND:
-			// TODO handle append responses
-			logger.info("Response received from" + mgmt.getHeader().getOriginator());
+			Integer sourceNode = mgmt.getHeader().getOriginator();
+			AppendMessage response = mgmt.getRaftMessage().getAppendMessage();
+			Integer mIdx = matchIndex.get(sourceNode);
+			Integer nIdx = nextIndex.get(sourceNode);
+
+			if (logger.isDebugEnabled())
+				logger.debug("Response: " + response.toString());
+
+			if (response.hasSuccess()) {
+				logger.info("has success");
+				if (response.getSuccess()) {
+					if (nIdx != null) {
+						nextIndex.put(sourceNode, nIdx + 1);
+						if (logger.isDebugEnabled())
+							logger.debug("Next index for " + sourceNode
+									+ " is " + (nIdx + 1));
+					} // else
+					if (mIdx != null) {
+						matchIndex.put(sourceNode, mIdx + 1);
+						if (logger.isDebugEnabled())
+							logger.debug("Match index for " + sourceNode
+									+ " is " + (mIdx + 1));
+					}// else
+
+				} else {
+					logger.info("False response, decrementing");
+					nextIndex.put(sourceNode, nIdx - 1);
+				}
+			}
 			break;
 		case REQUESTVOTE:
 			break;
 		default:
 
 		}
-
 	}
+
+	public class MatchIndexChecker extends Thread {
+
+		boolean forever = true;
+		HashMap<Integer, Integer> countMap = new HashMap<Integer, Integer>();
+		int commitIndex = 0;
+
+		@Override
+		public void run() {
+			
+			while(true){
+				if (raftMgmt.isLeader) {
+					//logger.info("<<<Leader match index checker running>>>>");
+					int count = 0;
+					commitIndex = LogManager.commitIndex + 1;
+					for (Integer i : matchIndex.values()) {
+						if (i >= commitIndex)
+							count += 1;
+					}
+
+					if (count > ((matchIndex.keySet().size() +1)/ 2)){
+						LogManager.commitIndex = commitIndex;
+						logger.info("Updating log index");
+					}
+				}
+				
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			
+		}
+	}
+
 }

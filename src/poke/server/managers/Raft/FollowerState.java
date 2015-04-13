@@ -51,6 +51,7 @@ public class FollowerState implements RaftState {
 			raftMgmt.leaderID = am.getLeaderId();
 			boolean success = false;
 			raftMgmt.resetTimeOut();
+			//logger.info("Got HB");
 			if (am.hasPrevLogIndex() && am.hasPrevLogTerm()) {
 				if (am.getEntriesCount() > 0) {
 					logger.info("appending " + am.getEntries(0));
@@ -66,20 +67,24 @@ public class FollowerState implements RaftState {
 							prevLogTerm, prevLogIndex, logData);
 					success = LogManager.appendLogs(leaderLog,
 							am.getLeaderCommit());
+					
+					AppendMessage.Builder amResponse = AppendMessage.newBuilder();
+					amResponse.setSuccess(success);
+					amResponse.setTerm(raftMgmt.term);
+					amResponse.setLogIndex(am.getLogIndex());
+					
+					Management.Builder response = raftMgmt
+							.buildMgmtMessage(ElectionAction.APPEND);
+					response.getRaftMessageBuilder().setAppendMessage(
+							amResponse.build());
 
+					// logger.info("Response: " + response.build().toString());
+					// TODO send rsponse
+					ConnectionManager.sendToNode(response.build(), am.getLeaderId());
 				}
+			} else {
+				return;
 			}
-
-			AppendMessage.Builder amResponse = am.toBuilder();
-			amResponse.setSuccess(success);
-			amResponse.setTerm(raftMgmt.term);
-
-			Management.Builder response = mgmt.toBuilder();
-			response.getRaftMessage().toBuilder()
-					.setAppendMessage(amResponse.build());
-
-			// TODO send rsponse
-			ConnectionManager.sendToNode(response.build(), am.getLeaderId());
 
 			break;
 		case REQUESTVOTE:

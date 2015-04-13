@@ -1,12 +1,15 @@
 package poke.server.managers.Raft;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public final class LogManager implements Runnable {
+public final class LogManager {
 
 	static LinkedHashMap<Integer, LogEntry> logs = new LinkedHashMap<Integer, LogEntry>();
 	protected static AtomicReference<LogManager> instance = new AtomicReference<LogManager>();
@@ -22,11 +25,20 @@ public final class LogManager implements Runnable {
 	static int prevIndex;
 	static int prevTerm;
 
-	public static LogManager initManager() {
-		instance.compareAndSet(null, new LogManager());
+	static LogPersistence pWorker;
+	static StateMachine sMachine;
+
+	public static void initManager() {
+		//instance.compareAndSet(null, new LogManager());
 		commitIndex = 0;
 		currentLogIndex = 0;
-		return instance.get();
+		//pWorker = new LogPersistence();
+		sMachine = new StateMachine();
+//		Thread t = new Thread(pWorker);
+//		t.start();
+		Thread t2 = new Thread(sMachine);
+		t2.start();
+		//return instance.get();
 	}
 
 	public static LogManager getInstance() {
@@ -43,6 +55,9 @@ public final class LogManager implements Runnable {
 
 	// called by leader.
 	public static LogEntry createEntry(int term, String logData) {
+		prevIndex = currentLogIndex;
+		prevTerm = currentLogTerm;
+		currentLogTerm = term;
 		LogEntry entry = new LogEntry(term, ++currentLogIndex, prevTerm,
 				prevIndex, logData);
 		logs.put(currentLogIndex, entry);
@@ -60,7 +75,8 @@ public final class LogManager implements Runnable {
 	public static boolean appendLogs(LogEntry leaderLog, int leaderCommitIndex) {
 
 		boolean result = false;
-
+		logger.info("logger : " + leaderLog.toString() + " commit:"
+				+ leaderCommitIndex);
 		// Consistency Check.
 		if (leaderLog.prevLogTerm == currentLogTerm
 				&& leaderLog.prevLogIndex == currentLogIndex) {
@@ -82,27 +98,8 @@ public final class LogManager implements Runnable {
 		return result;
 	}
 
-	public void stateMachine() {
-		if (leaderCommitIndex > commitIndex) {
-			lastApplied = Math.min(currentLogIndex, commitIndex);
-			logger.info("Applying " + lastApplied + " to state");
-		}
-
-	}
-
-	@Override
-	public void run() {
-
-		while (true) {
-
-			try {
-				stateMachine();
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-
+	public static LogEntry getLog(int logIndex) {
+		return logs.get(logIndex);
 	}
 
 	public static LogEntry getLastLogEntry() {
@@ -115,5 +112,41 @@ public final class LogManager implements Runnable {
 
 	public static int getPrevLogTerm() {
 		return prevTerm;
+	}
+
+	public List<LogEntry> getLogsForPersistence(int size) {
+		Iterator<Integer> it = logs.keySet().iterator();
+		List<LogEntry> list = new ArrayList<LogEntry>();
+		while (it.hasNext()) {
+			Integer key = it.next();
+			list.add(logs.get(key));
+			if (size-- == 0)
+				break;
+		}
+
+		return list;
+	}
+
+	public static class StateMachine extends Thread {
+		public void stateMachine() {
+			if (commitIndex > lastApplied) {
+				lastApplied = Math.min(currentLogIndex, commitIndex);
+				logger.info("Applying " + lastApplied + " to state");
+			}
+		}
+
+		@Override
+		public void run() {
+
+			while (true) {
+				try {
+					stateMachine();
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+
+		}
 	}
 }
