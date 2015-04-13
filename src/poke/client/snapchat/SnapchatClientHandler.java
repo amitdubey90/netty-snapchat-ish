@@ -21,7 +21,7 @@ public class SnapchatClientHandler extends SimpleChannelInboundHandler<Request> 
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, Request request)
 			throws Exception {
-		System.out.println("Message received");
+		//System.out.println("Message received");
 		for (CommListener l : listeners.values()) {
 			l.onMessage(request);
 		}

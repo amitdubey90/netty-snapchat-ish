@@ -91,7 +91,7 @@ public class InboundAppWorker extends Thread {
 						// message communication can be two-way or one-way.
 						// One-way communication will not produce a response
 						// (reply).
-						reply = rsc.process(req);
+						reply = rsc.process(req,sq.channel);
 					}
 
 					if (reply != null)

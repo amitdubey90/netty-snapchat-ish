@@ -173,7 +173,7 @@ message RoutingPath {
 }
 
 message Header {  
-    required Routing routing_id = 1;
+    optional Routing routing_id = 1;
     required int32 originator = 2;
     optional string tag = 3;
     optional int64 time = 4;
@@ -200,7 +200,11 @@ message Header {
         JOBS = 4;
         REPORTS = 10;
         MANAGE = 100;
+        REGISTER = 5;
         }
+
+    //check if cluster message or client msg
+    required bool isClusterMsg = 10;
 }
 
 // these are commands from external (and possible internal) clients
@@ -218,6 +222,7 @@ message Payload {
     optional NameSpaceStatus space_status = 12;
    
     optional ClusterMessage cluster_message = 4;
+    optional ClientMessage client_message = 5;
     // TBD
     // reports
 }
@@ -227,10 +232,10 @@ message Request {
     required Payload body = 2;
 }
 
-message ClusterMessage{
+message ClientMessage{
   optional string msgId = 1;
-  optional string senderUserName = 2;
-  optional string receiverUserName = 3;
+  optional int32 senderUserName = 2;
+  optional int32 receiverUserName = 3;
   optional string msgText = 4;
   optional string msgImageName = 5;
   optional bytes msgImageBits = 6;
@@ -243,4 +248,9 @@ message ClusterMessage{
 
     }
    
+}
+
+message ClusterMessage{
+  optional ClientMessage client_message = 1;
+  optional int32 cluster_id=2;
 }

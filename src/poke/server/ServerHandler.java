@@ -124,11 +124,11 @@ public class ServerHandler extends SimpleChannelInboundHandler<Request> {
 	@Override
 	public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
 		super.handlerAdded(ctx);
-		System.out.println("conection added on server");
+		/*System.out.println("conection added on server");
 		String remoteAdd = String.valueOf(ctx.channel().remoteAddress());
 		String port = remoteAdd.split(":")[1];
 		System.out.println("Client port "+port);
-		ConnectionManager.addConnection(Integer.parseInt(port), ctx.channel(), false);
+		ConnectionManager.addConnection(Integer.parseInt(port), ctx.channel(), false);*/
 	}
 	
 	@Override
