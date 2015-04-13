@@ -19,6 +19,8 @@ import io.netty.channel.Channel;
 
 import java.net.SocketAddress;
 
+import poke.server.managers.ConnectionManager.connectionState;
+
 /**
  * This class contains the connection information for establishing a connection
  * to the specified host/port and the status of the heartbeats.
@@ -114,7 +116,7 @@ public class HeartbeatData {
 	 */
 	public void setConnection(Channel channel, SocketAddress sa, Integer nodeId) {
 		//System.out.println("---> setConnecton() to " + nodeId + ", i have " + this.nodeId);
-		ConnectionManager.addConnection(nodeId, channel, true);
+		ConnectionManager.addConnection(nodeId, channel, connectionState.MGMT);
 		this.sa = sa;
 	}
 

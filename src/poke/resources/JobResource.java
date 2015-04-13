@@ -33,16 +33,13 @@ public class JobResource implements Resource {
 
 	@Override
 	public Request process(Request request,Channel ch) {
-		// TODO Auto-generated method stub
-		logger.info("Processing input JOB request");
-		boolean isClusterMsg=request.getHeader().getIsClusterMsg();
-		if(isClusterMsg){
-			return null;
-		}else{
-			//not a cluster msg. Client msg so broadcast to all OTHER internal nodes
-			int senderClient=request.getBody().getClientMessage().getSenderUserName();
+		int senderClient=request.getBody().getClientMessage().getSenderUserName();
+		boolean isClient = request.getBody().getClientMessage().getIsClient();
+		boolean isBroadcastInternal = request.getBody().getClientMessage().getBroadcastInternal();
+		if(isClient && isBroadcastInternal){
+			//send to all clients on this node and to all other nodes. Make broadcast internal to false and client to false
 			ConnectionManager.broadcast(request,senderClient);
-		
+			
 			//send reply to the sender client that msg is sent
 			//client msg for payload
 			ClientMessage.Builder clientMessage = ClientMessage.newBuilder();
@@ -55,15 +52,16 @@ public class JobResource implements Resource {
 			//header
 			Header.Builder header= Header.newBuilder();
 			header.setOriginator(1);
-			header.setIsClusterMsg(false);
 			
 			//reply
 			Request.Builder reply =Request.newBuilder();
 			reply.setBody(body);
 			reply.setHeader(header);
 			return reply.build();
+		}else{
+			//send to other servers only
+			return null;
 		}
-		
 	}
 
 }

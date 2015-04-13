@@ -38,17 +38,18 @@ public class SnapchatClientCommand {
 		Header.Builder header = Header.newBuilder();
 		header.setRoutingId(Routing.REGISTER);
 		header.setOriginator(1000);
-		header.setIsClusterMsg(false);
 		//client message for payload
 		ClientMessage.Builder clientMessage = ClientMessage.newBuilder();
 		clientMessage.setSenderUserName(clientId);
-	//payload for request
-	Payload.Builder body = Payload.newBuilder();
-	body.setClientMessage(clientMessage);	
-	//Request 
-	Request.Builder request = Request.newBuilder();
-	request.setHeader(header);
-	request.setBody(body);
+	
+		//payload for request
+		Payload.Builder body = Payload.newBuilder();
+		body.setClientMessage(clientMessage);
+	
+		//Request 
+		Request.Builder request = Request.newBuilder();
+		request.setHeader(header);
+		request.setBody(body);
 	
 	//send to server
 	try {
@@ -102,6 +103,8 @@ public class SnapchatClientCommand {
 			//f.setReceiverUserName("receiver");
 			clientMessage.setMsgText("hello");
 			clientMessage.setMessageType(MessageType.REQUEST);
+			clientMessage.setIsClient(true);
+			clientMessage.setBroadcastInternal(true);
 			// FileInputStream fs = new FileInputStream(file);
 			byte[] bytes = Files.readAllBytes(Paths.get(filePath));
 			//System.out.println("Sending file of length" + bytes.length);
@@ -121,7 +124,6 @@ public class SnapchatClientCommand {
 				header.setTag("Image");
 				header.setTime(System.currentTimeMillis());
 				header.setRoutingId(Header.Routing.JOBS);
-				header.setIsClusterMsg(false);
 				
 		//request
 		Request.Builder request = Request.newBuilder();

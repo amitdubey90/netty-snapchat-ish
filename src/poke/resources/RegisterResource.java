@@ -12,6 +12,7 @@ import poke.comm.App.Header.Routing;
 import poke.comm.App.Payload;
 import poke.comm.App.Request;
 import poke.server.managers.ConnectionManager;
+import poke.server.managers.ConnectionManager.connectionState;
 import poke.server.resources.Resource;
 
 public class RegisterResource implements Resource {
@@ -21,13 +22,12 @@ public class RegisterResource implements Resource {
 	public Request process(Request request,Channel ch) {
 		//register client with connection manager
 		int clientId = request.getBody().getClientMessage().getSenderUserName();
-		ConnectionManager.addConnection(clientId, ch, false);
+		ConnectionManager.addConnection(clientId, ch, connectionState.APP);
 		
 		//Header
 		Header.Builder header = Header.newBuilder();
 		header.setRoutingId(Routing.REGISTER);
 		header.setOriginator(1000);
-		header.setIsClusterMsg(false);
 		//cluster msg
 		ClientMessage.Builder clientMessage = ClientMessage.newBuilder();
 		clientMessage.setMessageType(MessageType.SUCCESS);

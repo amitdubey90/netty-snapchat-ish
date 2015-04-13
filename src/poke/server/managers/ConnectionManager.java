@@ -47,7 +47,9 @@ public class ConnectionManager {
 	/** node ID to channel */
 	private static HashMap<Integer, Channel> connections = new HashMap<Integer, Channel>();
 	private static HashMap<Integer, Channel> mgmtConnections = new HashMap<Integer, Channel>();
-
+	private static HashMap<Integer, Channel> clientConnections = new HashMap<Integer, Channel>();
+	public static enum connectionState {APP, MGMT, CLIENT};
+	
 	public synchronized static void sendToNode(Management mgmt,
 			Integer destination) {
 		if (mgmt == null)
@@ -61,13 +63,32 @@ public class ConnectionManager {
 	
 	
 	public static void addConnection(Integer nodeId, Channel channel,
-			boolean isMgmt) {
+			connectionState connState) {
 		logger.info("ConnectionManager adding connection to " + nodeId);
 
-		if (isMgmt)
+/*		if (isMgmt)
 			mgmtConnections.put(nodeId, channel);
 		else
 			connections.put(nodeId, channel);
+*/	
+	switch (connState) {
+	case MGMT:
+		mgmtConnections.put(nodeId, channel);
+		break;
+	
+	case APP:
+		connections.put(nodeId, channel);
+		break;
+	
+	case CLIENT:
+		clientConnections.put(nodeId, channel);
+		break;
+
+		
+	default:
+		break;
+	}
+		
 	}
 
 	public static Channel getConnection(Integer nodeId, boolean isMgmt) {

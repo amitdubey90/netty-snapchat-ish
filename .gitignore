@@ -9,7 +9,7 @@ ehthumbs.db
 Thumbs.db
 
 #Runtime files
-/runtime
+runtime
 /classes
 *~
 .settings/
