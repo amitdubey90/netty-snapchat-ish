@@ -229,6 +229,12 @@ message Payload {
 message Request {
     required Header header = 1;
     required Payload body = 2;
+    optional Network  graph = 3;
+}
+
+message Network {
+    required int32 from_node_id = 1;
+    required int32 to_node_id = 2;
 }
 
 message ClientMessage{
