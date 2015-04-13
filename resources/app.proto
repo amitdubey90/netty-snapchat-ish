@@ -240,7 +240,8 @@ message ClientMessage{
   optional string msgImageName = 5;
   optional bytes msgImageBits = 6;
   optional MessageType messageType = 7 [default = SUCCESS];
-  
+  optional bool isClient = 8 [default = FALSE];
+  optional bool broadcastInternal = 9 [default = FALSE];
   enum MessageType
   {
     REQUEST = 0;
