@@ -35,6 +35,7 @@ public class LogPersistence extends Thread{
 		temp = "PrevLogTerm:" + log.prevLogTerm + "  PrevLogIndex:" + log.prevLogIndex + "  LogTerm:"+log.term+ "  LogIndex:"+log.logIndex +"  ClientRequest:"+log.logData;
 		j.set(Integer.toString(log.logIndex), temp);
 		lastWrittenLogIndex = log.logIndex;
+		LogManager.logs.remove(log.logIndex);
 	}
 	
 	@Override
