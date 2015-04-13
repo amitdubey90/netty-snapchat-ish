@@ -77,6 +77,7 @@ public class ConnectionManager {
 		break;
 	
 	case APP:
+		logger.info("Added app connnection for "+nodeId);
 		connections.put(nodeId, channel);
 		break;
 	
@@ -158,12 +159,12 @@ public class ConnectionManager {
 		/*for (Channel ch : connections.values())
 			
 			ch.writeAndFlush(req);*/
-		Iterator it = connections.entrySet().iterator();
+		Iterator<Integer> it = connections.keySet().iterator();
 		while (it.hasNext()) {
-	        HashMap.Entry pair = (HashMap.Entry)it.next();
-	        System.out.println(pair.getKey() + " = " + pair.getValue());
-	        if((int)pair.getKey()!= sender){
-	        	Channel ch = (Channel)pair.getValue();
+	        Integer key = it.next();
+	        System.out.println(key + " = " + connections.get(key));
+	        if(key!= sender){
+	        	Channel ch = (Channel)connections.get(key);
 	        	ch.writeAndFlush(req);
 	        }
 		}
