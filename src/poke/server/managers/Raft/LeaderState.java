@@ -139,7 +139,7 @@ public class LeaderState implements RaftState {
 							count += 1;
 					}
 
-					if (count > (matchIndex.keySet().size() / 2)){
+					if (count > ((matchIndex.keySet().size() +1)/ 2)){
 						LogManager.commitIndex = commitIndex;
 						logger.info("Updating log index");
 					}
