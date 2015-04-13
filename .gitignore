@@ -12,3 +12,5 @@ Thumbs.db
 /runtime
 /classes
 *~
+.settings/
+
