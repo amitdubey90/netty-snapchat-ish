@@ -12205,23 +12205,6 @@ public final class App {
      */
     poke.comm.App.NameValueSetOrBuilder getOptionsOrBuilder(
         int index);
-
-    /**
-     * <code>required bool isClusterMsg = 10;</code>
-     *
-     * <pre>
-     *check if cluster message or client msg
-     * </pre>
-     */
-    boolean hasIsClusterMsg();
-    /**
-     * <code>required bool isClusterMsg = 10;</code>
-     *
-     * <pre>
-     *check if cluster message or client msg
-     * </pre>
-     */
-    boolean getIsClusterMsg();
   }
   /**
    * Protobuf type {@code Header}
@@ -12338,11 +12321,6 @@ public final class App {
                 mutable_bitField0_ |= 0x00000100;
               }
               options_.add(input.readMessage(poke.comm.App.NameValueSet.PARSER, extensionRegistry));
-              break;
-            }
-            case 80: {
-              bitField0_ |= 0x00000080;
-              isClusterMsg_ = input.readBool();
               break;
             }
           }
@@ -12786,29 +12764,6 @@ public final class App {
       return options_.get(index);
     }
 
-    public static final int ISCLUSTERMSG_FIELD_NUMBER = 10;
-    private boolean isClusterMsg_;
-    /**
-     * <code>required bool isClusterMsg = 10;</code>
-     *
-     * <pre>
-     *check if cluster message or client msg
-     * </pre>
-     */
-    public boolean hasIsClusterMsg() {
-      return ((bitField0_ & 0x00000080) == 0x00000080);
-    }
-    /**
-     * <code>required bool isClusterMsg = 10;</code>
-     *
-     * <pre>
-     *check if cluster message or client msg
-     * </pre>
-     */
-    public boolean getIsClusterMsg() {
-      return isClusterMsg_;
-    }
-
     private void initFields() {
       routingId_ = poke.comm.App.Header.Routing.PING;
       originator_ = 0;
@@ -12819,7 +12774,6 @@ public final class App {
       path_ = java.util.Collections.emptyList();
       toNode_ = 0;
       options_ = java.util.Collections.emptyList();
-      isClusterMsg_ = false;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -12828,10 +12782,6 @@ public final class App {
       if (isInitialized == 0) return false;
 
       if (!hasOriginator()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasIsClusterMsg()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -12881,9 +12831,6 @@ public final class App {
       for (int i = 0; i < options_.size(); i++) {
         output.writeMessage(9, options_.get(i));
       }
-      if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        output.writeBool(10, isClusterMsg_);
-      }
       getUnknownFields().writeTo(output);
     }
 
@@ -12928,10 +12875,6 @@ public final class App {
       for (int i = 0; i < options_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(9, options_.get(i));
-      }
-      if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(10, isClusterMsg_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -13078,8 +13021,6 @@ public final class App {
         } else {
           optionsBuilder_.clear();
         }
-        isClusterMsg_ = false;
-        bitField0_ = (bitField0_ & ~0x00000200);
         return this;
       }
 
@@ -13154,10 +13095,6 @@ public final class App {
         } else {
           result.options_ = optionsBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
-          to_bitField0_ |= 0x00000080;
-        }
-        result.isClusterMsg_ = isClusterMsg_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -13251,19 +13188,12 @@ public final class App {
             }
           }
         }
-        if (other.hasIsClusterMsg()) {
-          setIsClusterMsg(other.getIsClusterMsg());
-        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
 
       public final boolean isInitialized() {
         if (!hasOriginator()) {
-          
-          return false;
-        }
-        if (!hasIsClusterMsg()) {
           
           return false;
         }
@@ -14257,54 +14187,6 @@ public final class App {
           options_ = null;
         }
         return optionsBuilder_;
-      }
-
-      private boolean isClusterMsg_ ;
-      /**
-       * <code>required bool isClusterMsg = 10;</code>
-       *
-       * <pre>
-       *check if cluster message or client msg
-       * </pre>
-       */
-      public boolean hasIsClusterMsg() {
-        return ((bitField0_ & 0x00000200) == 0x00000200);
-      }
-      /**
-       * <code>required bool isClusterMsg = 10;</code>
-       *
-       * <pre>
-       *check if cluster message or client msg
-       * </pre>
-       */
-      public boolean getIsClusterMsg() {
-        return isClusterMsg_;
-      }
-      /**
-       * <code>required bool isClusterMsg = 10;</code>
-       *
-       * <pre>
-       *check if cluster message or client msg
-       * </pre>
-       */
-      public Builder setIsClusterMsg(boolean value) {
-        bitField0_ |= 0x00000200;
-        isClusterMsg_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required bool isClusterMsg = 10;</code>
-       *
-       * <pre>
-       *check if cluster message or client msg
-       * </pre>
-       */
-      public Builder clearIsClusterMsg() {
-        bitField0_ = (bitField0_ & ~0x00000200);
-        isClusterMsg_ = false;
-        onChanged();
-        return this;
       }
 
       // @@protoc_insertion_point(builder_scope:Header)
@@ -17095,6 +16977,24 @@ public final class App {
      * <code>optional .ClientMessage.MessageType messageType = 7 [default = SUCCESS];</code>
      */
     poke.comm.App.ClientMessage.MessageType getMessageType();
+
+    /**
+     * <code>optional bool isClient = 8 [default = false];</code>
+     */
+    boolean hasIsClient();
+    /**
+     * <code>optional bool isClient = 8 [default = false];</code>
+     */
+    boolean getIsClient();
+
+    /**
+     * <code>optional bool broadcastInternal = 9 [default = false];</code>
+     */
+    boolean hasBroadcastInternal();
+    /**
+     * <code>optional bool broadcastInternal = 9 [default = false];</code>
+     */
+    boolean getBroadcastInternal();
   }
   /**
    * Protobuf type {@code ClientMessage}
@@ -17190,6 +17090,16 @@ public final class App {
                 bitField0_ |= 0x00000040;
                 messageType_ = value;
               }
+              break;
+            }
+            case 64: {
+              bitField0_ |= 0x00000080;
+              isClient_ = input.readBool();
+              break;
+            }
+            case 72: {
+              bitField0_ |= 0x00000100;
+              broadcastInternal_ = input.readBool();
               break;
             }
           }
@@ -17500,6 +17410,36 @@ public final class App {
       return messageType_;
     }
 
+    public static final int ISCLIENT_FIELD_NUMBER = 8;
+    private boolean isClient_;
+    /**
+     * <code>optional bool isClient = 8 [default = false];</code>
+     */
+    public boolean hasIsClient() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>optional bool isClient = 8 [default = false];</code>
+     */
+    public boolean getIsClient() {
+      return isClient_;
+    }
+
+    public static final int BROADCASTINTERNAL_FIELD_NUMBER = 9;
+    private boolean broadcastInternal_;
+    /**
+     * <code>optional bool broadcastInternal = 9 [default = false];</code>
+     */
+    public boolean hasBroadcastInternal() {
+      return ((bitField0_ & 0x00000100) == 0x00000100);
+    }
+    /**
+     * <code>optional bool broadcastInternal = 9 [default = false];</code>
+     */
+    public boolean getBroadcastInternal() {
+      return broadcastInternal_;
+    }
+
     private void initFields() {
       msgId_ = "";
       senderUserName_ = 0;
@@ -17508,6 +17448,8 @@ public final class App {
       msgImageName_ = "";
       msgImageBits_ = com.google.protobuf.ByteString.EMPTY;
       messageType_ = poke.comm.App.ClientMessage.MessageType.SUCCESS;
+      isClient_ = false;
+      broadcastInternal_ = false;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -17542,6 +17484,12 @@ public final class App {
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         output.writeEnum(7, messageType_.getNumber());
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeBool(8, isClient_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        output.writeBool(9, broadcastInternal_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -17579,6 +17527,14 @@ public final class App {
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(7, messageType_.getNumber());
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(8, isClient_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(9, broadcastInternal_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -17711,6 +17667,10 @@ public final class App {
         bitField0_ = (bitField0_ & ~0x00000020);
         messageType_ = poke.comm.App.ClientMessage.MessageType.SUCCESS;
         bitField0_ = (bitField0_ & ~0x00000040);
+        isClient_ = false;
+        bitField0_ = (bitField0_ & ~0x00000080);
+        broadcastInternal_ = false;
+        bitField0_ = (bitField0_ & ~0x00000100);
         return this;
       }
 
@@ -17767,6 +17727,14 @@ public final class App {
           to_bitField0_ |= 0x00000040;
         }
         result.messageType_ = messageType_;
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.isClient_ = isClient_;
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000100;
+        }
+        result.broadcastInternal_ = broadcastInternal_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -17809,6 +17777,12 @@ public final class App {
         }
         if (other.hasMessageType()) {
           setMessageType(other.getMessageType());
+        }
+        if (other.hasIsClient()) {
+          setIsClient(other.getIsClient());
+        }
+        if (other.hasBroadcastInternal()) {
+          setBroadcastInternal(other.getBroadcastInternal());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -18195,6 +18169,70 @@ public final class App {
       public Builder clearMessageType() {
         bitField0_ = (bitField0_ & ~0x00000040);
         messageType_ = poke.comm.App.ClientMessage.MessageType.SUCCESS;
+        onChanged();
+        return this;
+      }
+
+      private boolean isClient_ ;
+      /**
+       * <code>optional bool isClient = 8 [default = false];</code>
+       */
+      public boolean hasIsClient() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional bool isClient = 8 [default = false];</code>
+       */
+      public boolean getIsClient() {
+        return isClient_;
+      }
+      /**
+       * <code>optional bool isClient = 8 [default = false];</code>
+       */
+      public Builder setIsClient(boolean value) {
+        bitField0_ |= 0x00000080;
+        isClient_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool isClient = 8 [default = false];</code>
+       */
+      public Builder clearIsClient() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        isClient_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean broadcastInternal_ ;
+      /**
+       * <code>optional bool broadcastInternal = 9 [default = false];</code>
+       */
+      public boolean hasBroadcastInternal() {
+        return ((bitField0_ & 0x00000100) == 0x00000100);
+      }
+      /**
+       * <code>optional bool broadcastInternal = 9 [default = false];</code>
+       */
+      public boolean getBroadcastInternal() {
+        return broadcastInternal_;
+      }
+      /**
+       * <code>optional bool broadcastInternal = 9 [default = false];</code>
+       */
+      public Builder setBroadcastInternal(boolean value) {
+        bitField0_ |= 0x00000100;
+        broadcastInternal_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool broadcastInternal = 9 [default = false];</code>
+       */
+      public Builder clearBroadcastInternal() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        broadcastInternal_ = false;
         onChanged();
         return this;
       }
@@ -18924,35 +18962,36 @@ public final class App {
       "\002 \002(\0162\013.PokeStatus\022#\n\tjob_state\030\003 \002(\0162\020." +
       "JobDesc.JobCode\022\026\n\004data\030\004 \003(\0132\010.JobDesc\"" +
       ",\n\013RoutingPath\022\017\n\007node_id\030\001 \002(\005\022\014\n\004time\030" +
-      "\002 \002(\003\"\310\002\n\006Header\022#\n\nrouting_id\030\001 \001(\0162\017.H",
+      "\002 \002(\003\"\262\002\n\006Header\022#\n\nrouting_id\030\001 \001(\0162\017.H",
       "eader.Routing\022\022\n\noriginator\030\002 \002(\005\022\013\n\003tag" +
       "\030\003 \001(\t\022\014\n\004time\030\004 \001(\003\022\037\n\nreply_code\030\005 \001(\016" +
       "2\013.PokeStatus\022\021\n\treply_msg\030\006 \001(\t\022\032\n\004path" +
       "\030\007 \003(\0132\014.RoutingPath\022\016\n\006toNode\030\010 \001(\005\022\036\n\007" +
-      "options\030\t \003(\0132\r.NameValueSet\022\024\n\014isCluste" +
-      "rMsg\030\n \002(\010\"T\n\007Routing\022\010\n\004PING\020\002\022\016\n\nNAMES" +
-      "PACES\020\003\022\010\n\004JOBS\020\004\022\013\n\007REPORTS\020\n\022\n\n\006MANAGE" +
-      "\020d\022\014\n\010REGISTER\020\005\"\376\001\n\007Payload\022\023\n\004ping\030\001 \001" +
-      "(\0132\005.Ping\022%\n\010space_op\030\002 \001(\0132\023.NameSpaceO" +
-      "peration\022\035\n\006job_op\030\003 \001(\0132\r.JobOperation\022",
-      "\036\n\njob_status\030\r \001(\0132\n.JobStatus\022&\n\014space" +
-      "_status\030\014 \001(\0132\020.NameSpaceStatus\022(\n\017clust" +
-      "er_message\030\004 \001(\0132\017.ClusterMessage\022&\n\016cli" +
-      "ent_message\030\005 \001(\0132\016.ClientMessage\":\n\007Req" +
-      "uest\022\027\n\006header\030\001 \002(\0132\007.Header\022\026\n\004body\030\002 " +
-      "\002(\0132\010.Payload\"\360\001\n\rClientMessage\022\r\n\005msgId" +
-      "\030\001 \001(\t\022\026\n\016senderUserName\030\002 \001(\005\022\030\n\020receiv" +
-      "erUserName\030\003 \001(\005\022\017\n\007msgText\030\004 \001(\t\022\024\n\014msg" +
-      "ImageName\030\005 \001(\t\022\024\n\014msgImageBits\030\006 \001(\014\0228\n" +
-      "\013messageType\030\007 \001(\0162\032.ClientMessage.Messa",
-      "geType:\007SUCCESS\"\'\n\013MessageType\022\013\n\007REQUES" +
-      "T\020\000\022\013\n\007SUCCESS\020\001\"L\n\016ClusterMessage\022&\n\016cl" +
-      "ient_message\030\001 \001(\0132\016.ClientMessage\022\022\n\ncl" +
-      "uster_id\030\002 \001(\005*\221\001\n\nPokeStatus\022\n\n\006UKNOWN\020" +
-      "\001\022\013\n\007SUCCESS\020\002\022\013\n\007NOFOUND\020d\022\020\n\014NOINCOMPL" +
-      "ETE\020e\022\n\n\006NOAUTH\020f\022\020\n\014NOCONNECTION\020g\022\017\n\013N" +
-      "OREACHABLE\020h\022\016\n\nNORESOURCE\020i\022\014\n\007FAILURE\020" +
-      "\307\001B\r\n\tpoke.commH\001"
+      "options\030\t \003(\0132\r.NameValueSet\"T\n\007Routing\022" +
+      "\010\n\004PING\020\002\022\016\n\nNAMESPACES\020\003\022\010\n\004JOBS\020\004\022\013\n\007R" +
+      "EPORTS\020\n\022\n\n\006MANAGE\020d\022\014\n\010REGISTER\020\005\"\376\001\n\007P" +
+      "ayload\022\023\n\004ping\030\001 \001(\0132\005.Ping\022%\n\010space_op\030" +
+      "\002 \001(\0132\023.NameSpaceOperation\022\035\n\006job_op\030\003 \001" +
+      "(\0132\r.JobOperation\022\036\n\njob_status\030\r \001(\0132\n.",
+      "JobStatus\022&\n\014space_status\030\014 \001(\0132\020.NameSp" +
+      "aceStatus\022(\n\017cluster_message\030\004 \001(\0132\017.Clu" +
+      "sterMessage\022&\n\016client_message\030\005 \001(\0132\016.Cl" +
+      "ientMessage\":\n\007Request\022\027\n\006header\030\001 \002(\0132\007" +
+      ".Header\022\026\n\004body\030\002 \002(\0132\010.Payload\"\253\002\n\rClie" +
+      "ntMessage\022\r\n\005msgId\030\001 \001(\t\022\026\n\016senderUserNa" +
+      "me\030\002 \001(\005\022\030\n\020receiverUserName\030\003 \001(\005\022\017\n\007ms" +
+      "gText\030\004 \001(\t\022\024\n\014msgImageName\030\005 \001(\t\022\024\n\014msg" +
+      "ImageBits\030\006 \001(\014\0228\n\013messageType\030\007 \001(\0162\032.C" +
+      "lientMessage.MessageType:\007SUCCESS\022\027\n\010isC",
+      "lient\030\010 \001(\010:\005false\022 \n\021broadcastInternal\030" +
+      "\t \001(\010:\005false\"\'\n\013MessageType\022\013\n\007REQUEST\020\000" +
+      "\022\013\n\007SUCCESS\020\001\"L\n\016ClusterMessage\022&\n\016clien" +
+      "t_message\030\001 \001(\0132\016.ClientMessage\022\022\n\nclust" +
+      "er_id\030\002 \001(\005*\221\001\n\nPokeStatus\022\n\n\006UKNOWN\020\001\022\013" +
+      "\n\007SUCCESS\020\002\022\013\n\007NOFOUND\020d\022\020\n\014NOINCOMPLETE" +
+      "\020e\022\n\n\006NOAUTH\020f\022\020\n\014NOCONNECTION\020g\022\017\n\013NORE" +
+      "ACHABLE\020h\022\016\n\nNORESOURCE\020i\022\014\n\007FAILURE\020\307\001B" +
+      "\r\n\tpoke.commH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -19037,7 +19076,7 @@ public final class App {
     internal_static_Header_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_Header_descriptor,
-        new java.lang.String[] { "RoutingId", "Originator", "Tag", "Time", "ReplyCode", "ReplyMsg", "Path", "ToNode", "Options", "IsClusterMsg", });
+        new java.lang.String[] { "RoutingId", "Originator", "Tag", "Time", "ReplyCode", "ReplyMsg", "Path", "ToNode", "Options", });
     internal_static_Payload_descriptor =
       getDescriptor().getMessageTypes().get(12);
     internal_static_Payload_fieldAccessorTable = new
@@ -19055,7 +19094,7 @@ public final class App {
     internal_static_ClientMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_ClientMessage_descriptor,
-        new java.lang.String[] { "MsgId", "SenderUserName", "ReceiverUserName", "MsgText", "MsgImageName", "MsgImageBits", "MessageType", });
+        new java.lang.String[] { "MsgId", "SenderUserName", "ReceiverUserName", "MsgText", "MsgImageName", "MsgImageBits", "MessageType", "IsClient", "BroadcastInternal", });
     internal_static_ClusterMessage_descriptor =
       getDescriptor().getMessageTypes().get(15);
     internal_static_ClusterMessage_fieldAccessorTable = new

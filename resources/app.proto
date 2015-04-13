@@ -204,7 +204,6 @@ message Header {
         }
 
     //check if cluster message or client msg
-    required bool isClusterMsg = 10;
 }
 
 // these are commands from external (and possible internal) clients
@@ -240,8 +239,8 @@ message ClientMessage{
   optional string msgImageName = 5;
   optional bytes msgImageBits = 6;
   optional MessageType messageType = 7 [default = SUCCESS];
-  optional bool isClient = 8 [default = FALSE];
-  optional bool broadcastInternal = 9 [default = FALSE];
+  optional bool isClient = 8 [default = false];
+  optional bool broadcastInternal = 9 [default = false];
   enum MessageType
   {
     REQUEST = 0;
