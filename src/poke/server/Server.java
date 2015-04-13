@@ -98,9 +98,9 @@ public class Server {
 	 * 
 	 * @param cfg
 	 */
-	public Server(File cfg) {
+	public Server(File cfg, File clusterCfg) {
 		init(cfg);
-		//initCluster(clusterCfg);
+		initCluster(clusterCfg);
 	}
 
 	private void initCluster(File clusterCfg) {
@@ -112,11 +112,16 @@ public class Server {
 		BufferedInputStream br = null;
 		try {
 			byte[] raw = new byte[(int) clusterCfg.length()];
-			br = new BufferedInputStream(new FileInputStream(clusterCfg));
-			br.read(raw);
+			//The java.io.BufferedInputStream.read() method reads the next byte of data from the input stream.
+			new BufferedInputStream(new FileInputStream(clusterCfg)).read(raw);
+			//br.read(raw);
 			clusterConf = JsonUtil.decode(new String(raw), ClusterConf.class);
-			logger.info("ClusterConf: "+clusterConf.getClusterId());
+			if (!verifyClusterConf(clusterConf))
+				throw new RuntimeException("verification of cluster configuration failed");
+			logger.info("ClusterConf: "+clusterConf.getClusterNodes().get(1).getNodeName());
 			ResourceFactory.initializeCluster(clusterConf);
+			logger.info("Cluster "+clusterConf.getClusterId()+" config initiated");
+			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		} finally {
@@ -172,6 +177,20 @@ public class Server {
 
 		return rtn;
 	}
+
+	private boolean verifyClusterConf(ClusterConf conf) {
+		boolean rtn = true;
+		if (conf == null) {
+			logger.error("Null configuration");
+			return false;
+		} else if (conf.getClusterId()<0) {
+			logger.error("Bad cluster ID, negative values not allowed.");
+			rtn = false;
+		} 
+
+		return rtn;
+	}
+	
 
 	public void release() {
 		if (HeartbeatManager.getInstance() != null)
@@ -371,7 +390,7 @@ public class Server {
 	 */
 	public static void main(String[] args) {
 		System.out.println("args.length: "+args.length);
-		if (args.length!=1) {
+		if (args.length!=2) {
 			System.err.println("Usage: java " + Server.class.getClass().getName() + " conf-file");
 			System.exit(1);
 		}
@@ -382,14 +401,14 @@ public class Server {
 			System.exit(2);
 		}
 		
-		/*File clusterCfg = new File(args[1]);
+		File clusterCfg = new File(args[1]);
 		if (!clusterCfg.exists()) {
 			Server.logger.error("cluster configuration file does not exist: " + cfg);
 			System.exit(2);
-		}*/
+		}
 
-//		Server svr = new Server(cfg,clusterCfg);
-		Server svr = new Server(cfg);
+		Server svr = new Server(cfg,clusterCfg);
+		//Server svr = new Server(cfg);
 		svr.run();
 	}
 }

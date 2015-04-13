@@ -33,8 +33,8 @@ public class ClusterManager {
 		return instance.get();
 	}
 	
-	public static void registerConnections(){
-		TreeMap<Integer, NodeDesc> clusterNodes = clusterCfg.getClusterNodes().getAdjacentNodes();
+	public  void registerConnections(){
+		TreeMap<Integer, NodeDesc> clusterNodes = clusterCfg.getClusterNodes();
 			
 		for(Entry<Integer, NodeDesc> entry : clusterNodes.entrySet()) {
 			  Integer key = entry.getKey();
