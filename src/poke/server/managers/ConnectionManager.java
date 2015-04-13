@@ -18,6 +18,8 @@ package poke.server.managers;
 import io.netty.channel.Channel;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -110,12 +112,22 @@ public class ConnectionManager {
 		}
 	}
 
-	public synchronized static void broadcast(Request req) {
+	public synchronized static void broadcast(Request req,int sender) {
 		if (req == null)
 			return;
-
-		for (Channel ch : connections.values())
-			ch.writeAndFlush(req);
+		
+		/*for (Channel ch : connections.values())
+			
+			ch.writeAndFlush(req);*/
+		Iterator it = connections.entrySet().iterator();
+		while (it.hasNext()) {
+	        HashMap.Entry pair = (HashMap.Entry)it.next();
+	        System.out.println(pair.getKey() + " = " + pair.getValue());
+	        if((int)pair.getKey()!= sender){
+	        	Channel ch = (Channel)pair.getValue();
+	        	ch.writeAndFlush(req);
+	        }
+		}
 	}
 
 	public synchronized static void broadcastToClients(Request req, int fromClient){
