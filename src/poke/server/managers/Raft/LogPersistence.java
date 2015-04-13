@@ -13,7 +13,7 @@ public class LogPersistence extends Thread{
 	
 	int lastWrittenLogIndex;
 	int buffer = 5;
-	Jedis j;
+	static Jedis j;
 	
 	public LogPersistence(){
 		lastWrittenLogIndex = 0;
