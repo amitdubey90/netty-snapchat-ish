@@ -14,15 +14,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import poke.server.ServerInitializer;
-import poke.server.conf.ClusterConf;
+import poke.server.conf.ClusterList;
 import poke.server.conf.NodeDesc;
 
 public class ClusterManager {
 	protected static Logger logger = LoggerFactory.getLogger("cluster");
-	private static ClusterConf clusterCfg;
+	private static ClusterList clusterCfg;
 	protected static AtomicReference<ClusterManager> instance = new AtomicReference<ClusterManager>();
 	
-	public static ClusterManager initManager(ClusterConf conf) {
+	public static ClusterManager initManager(ClusterList conf) {
 		ClusterManager.clusterCfg = conf;
 		instance.compareAndSet(null, new ClusterManager());
 		return instance.get();

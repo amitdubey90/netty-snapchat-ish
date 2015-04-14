@@ -132,7 +132,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<Request> {
 		ConnectionManager.addConnection(Integer.parseInt(port), ctx.channel(), false);*/
 	}
 	
-	@Override
+	/*@Override
 	public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
 		super.handlerRemoved(ctx);
 		// TODO change id here. port number is not safe
@@ -140,5 +140,5 @@ public class ServerHandler extends SimpleChannelInboundHandler<Request> {
 		String port = remoteAddr.split(":")[1];
 		System.out.println("Client port "+port);
 		ConnectionManager.removeConnection(Integer.parseInt(port), connectionState.APP);
-	}
+	}*/
 }

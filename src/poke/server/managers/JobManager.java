@@ -46,11 +46,11 @@ public class JobManager {
 	}
 
 	public static JobManager getInstance() {
-		// TODO throw exception if not initialized!
 		return instance.get();
 	}
 
 	public JobManager() {
+	
 	}
 
 	/**

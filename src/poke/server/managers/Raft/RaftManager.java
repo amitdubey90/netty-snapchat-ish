@@ -1,27 +1,32 @@
 package poke.server.managers.Raft;
 
+import io.netty.channel.Channel;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import poke.comm.App.Request;
 import poke.core.Mgmt.AppendMessage;
 import poke.core.Mgmt.Management;
 import poke.core.Mgmt.MgmtHeader;
 import poke.core.Mgmt.RaftMessage;
 import poke.core.Mgmt.RaftMessage.ElectionAction;
 import poke.core.Mgmt.RequestVoteMessage;
+import poke.server.conf.ClusterConfList;
 import poke.server.conf.ServerConf;
 import poke.server.management.ManagementAdapter;
-import poke.server.managers.ConnectionManager;
 
 public class RaftManager {
 	protected static Logger logger = LoggerFactory.getLogger("raftManager");
 	protected static AtomicReference<RaftManager> instance = new AtomicReference<RaftManager>();
 
 	private static ServerConf conf;
-
+	private static ClusterConfList clusterConfList;
 	protected static RaftState followerInstance;
 	protected static RaftState candidateInstance;
 	protected static RaftState leaderInstance;
@@ -40,12 +45,13 @@ public class RaftManager {
 	protected int votedForCandidateID = -1;
 	protected int leaderID = -1;
 
-	public static RaftManager initManager(ServerConf conf) {
+	public static RaftManager initManager(ServerConf conf,
+			ClusterConfList clusterConfList) {
 		if (logger.isDebugEnabled())
 			logger.info("Initializing RaftManager");
 
 		RaftManager.conf = conf;
-
+		RaftManager.clusterConfList = clusterConfList;
 		instance.compareAndSet(null, new RaftManager());
 		followerInstance = FollowerState.init();
 		candidateInstance = CandidateState.init();
@@ -70,6 +76,11 @@ public class RaftManager {
 		Thread timerThread = new Thread(timer);
 		timerThread.start();
 
+	}
+
+	// Send request to other cluster
+	public void processClientRequest(Request request) {
+		// TODO
 	}
 
 	// current state is responsible for requests
@@ -97,7 +108,7 @@ public class RaftManager {
 
 	// Yay! Got a vote..
 	public void receiveVote() {
-		//logger.info("Vote received");
+		// logger.info("Vote received");
 		if (++voteCount > ((conf.getAdjacent().getAdjacentNodes().size() + 1) / 2)) {
 			converToLeader();
 			sendLeaderNotice();
@@ -119,7 +130,7 @@ public class RaftManager {
 		lastKnownBeat = System.currentTimeMillis();
 	}
 
-	public void converToLeader(){
+	public void converToLeader() {
 		voteCount = 0;
 		currentState = leaderInstance;
 		((LeaderState) currentState).reInitializeLeader();
@@ -127,7 +138,7 @@ public class RaftManager {
 		logger.info("I am the leader " + conf.getNodeId());
 		isLeader = true;
 	}
-	
+
 	public void convertToCandidate(RaftMessage msg) {
 		currentState = candidateInstance;
 		isLeader = false;
@@ -160,7 +171,7 @@ public class RaftManager {
 		mb.setRaftMessage(rlf.build());
 
 		// now send it out to all my edges
-		//ConnectionManager.flushBroadcast(mb.build());
+		// ConnectionManager.flushBroadcast(mb.build());
 		ManagementAdapter.flushBroadcast(mb.build());
 	}
 
@@ -188,13 +199,13 @@ public class RaftManager {
 		votedForTerm = term;
 
 		// now send it out to all my edges
-		//ConnectionManager.sendToNode(mb.build(), destination);
+		// ConnectionManager.sendToNode(mb.build(), destination);
 		ManagementAdapter.sendToNode(mb.build(), destination);
 	}
 
 	public void sendRequestVote() {
 		Management.Builder mb = buildMgmtMessage(ElectionAction.REQUESTVOTE);
-		
+
 		RaftMessage.Builder rlf = mb.getRaftMessageBuilder();
 
 		RequestVoteMessage.Builder rvm = RequestVoteMessage.newBuilder();
@@ -209,15 +220,15 @@ public class RaftManager {
 		mb.setRaftMessage(rlf.build());
 
 		// now send it out to all my edges
-		//ConnectionManager.flushBroadcast(mb.build());
+		// ConnectionManager.flushBroadcast(mb.build());
 		ManagementAdapter.flushBroadcast(mb.build());
 	}
 
 	public void sendAppendNotice(int toNode, Management mgmt) {
 		// now send it out to all my edges
-		//ConnectionManager.sendToNode(mgmt, toNode);
+		// ConnectionManager.sendToNode(mgmt, toNode);
 		ManagementAdapter.sendToNode(mgmt, toNode);
-		
+
 	}
 
 	public Management.Builder buildMgmtMessage(ElectionAction action) {
@@ -265,4 +276,12 @@ public class RaftManager {
 		}
 	}
 
+	public class ClusterConnectionManager extends Thread {
+		private Map<Integer, Channel> clusterMap = new HashMap<Integer, Channel>();
+
+		@Override
+		public void run() {
+			
+		}
+	}
 }

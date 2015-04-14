@@ -22,7 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import poke.comm.App.Header;
-import poke.server.conf.ClusterConf;
+import poke.server.conf.ClusterConfList;
 import poke.server.conf.ServerConf;
 import poke.server.conf.ServerConf.ResourceConf;
 
@@ -47,7 +47,7 @@ public class ResourceFactory {
 	protected static Logger logger = LoggerFactory.getLogger("server");
 
 	private static ServerConf cfg;
-	private static ClusterConf clusterConf;
+	private static ClusterConfList clusterConfList;
 	private static AtomicReference<ResourceFactory> factory = new AtomicReference<ResourceFactory>();
 
 	public static void initialize(ServerConf cfg) {
@@ -59,9 +59,9 @@ public class ResourceFactory {
 		}
 	}
 
-	public static void initializeCluster(ClusterConf clusterCfg) {
+	public static void initializeCluster(ClusterConfList clusterCfgList) {
 		try {
-			ResourceFactory.clusterConf = clusterCfg;
+			ResourceFactory.clusterConfList = clusterCfgList;
 			factory.compareAndSet(null, new ResourceFactory());
 		} catch (Exception e) {
 			logger.error("failed to initialize ResourceFactory", e);

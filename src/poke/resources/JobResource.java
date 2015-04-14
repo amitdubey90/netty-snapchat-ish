@@ -26,11 +26,12 @@ import poke.comm.App.Header;
 import poke.comm.App.Payload;
 import poke.comm.App.Request;
 import poke.server.managers.ConnectionManager;
+import poke.server.managers.Raft.RaftManager;
 import poke.server.resources.Resource;
 
 public class JobResource implements Resource {
 	protected static Logger logger = LoggerFactory.getLogger("job resource");
-	private boolean isRespSent=false;
+	//private boolean isRespSent=false;
 	@Override
 	public Request process(Request request,Channel ch) {
 		int senderClient=request.getBody().getClientMessage().getSenderUserName();
@@ -66,13 +67,17 @@ public class JobResource implements Resource {
 			req.setBody(payload);
 			req.setHeader(head);
 			ConnectionManager.broadcast(req.build());
+			return sendResponseToClient();
 		}else if(isClient && !isBroadcastInternal){
-			//logger.info("Got req from other server>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 			ConnectionManager.broadcastToClients(request, senderClient);
+			
+			//If leader, send to other cluster node.
+			RaftManager.getInstance().processClientRequest(request);
+			return null;
 		}
-		//check if response to client sent. If not, send reply to the sender client that msg is broadcast to all
-		if(isRespSent){
-		//client msg for payload
+		return null;
+	}
+	private Request sendResponseToClient(){
 		ClientMessage.Builder clientMessage = ClientMessage.newBuilder();
 		clientMessage.setMessageType(MessageType.SUCCESS);
 		
@@ -88,10 +93,7 @@ public class JobResource implements Resource {
 		Request.Builder reply =Request.newBuilder();
 		reply.setBody(body);
 		reply.setHeader(header);
-		isRespSent=true;
+		//isRespSent=true;
 		return reply.build();
-		}else
-			return null;
 	}
-
 }

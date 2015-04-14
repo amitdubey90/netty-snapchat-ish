@@ -209,9 +209,9 @@ public class ConnectionManager {
 		if (req == null)
 			return;
 
-		for (Integer clientID : connections.keySet())
+		for (Integer clientID : clientConnections.keySet())
 			if(clientID != fromClient)
-				connections.get(clientID).writeAndFlush(req);
+				clientConnections.get(clientID).writeAndFlush(req);
 	}
 
 	public synchronized static void broadcast(Management mgmt) {

@@ -15,11 +15,14 @@
  */
 package poke.server.queue;
 
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
+import poke.comm.App.Request;
+import poke.resources.RegisterResource;
 
 import com.google.protobuf.GeneratedMessage;
 
@@ -36,14 +39,16 @@ public class OutboundAppWorker extends Thread {
 		this.sq = sq;
 
 		if (sq.outbound == null)
-			throw new RuntimeException("connection worker detected no outbound queue");
+			throw new RuntimeException(
+					"connection worker detected no outbound queue");
 	}
 
 	@Override
 	public void run() {
 		Channel conn = sq.channel;
 		if (conn == null || !conn.isOpen()) {
-			PerChannelQueue.logger.error("connection missing, no outbound communication");
+			PerChannelQueue.logger
+					.error("connection missing, no outbound communication");
 			return;
 		}
 
@@ -54,22 +59,44 @@ public class OutboundAppWorker extends Thread {
 			try {
 				// block until a message is enqueued
 				GeneratedMessage msg = sq.outbound.take();
-				logger.info("<<<<<<Sending response>>>>>>>>>>");
+				// logger.info("<<<<<<Sending response>>>>>>>>>>");
 				if (conn.isWritable()) {
 					boolean rtn = false;
-					if (sq.channel != null && sq.channel.isOpen() && sq.channel.isWritable()) {
+					if (sq.channel != null && sq.channel.isOpen()
+							&& sq.channel.isWritable()) {
 						ChannelFuture cf = sq.channel.writeAndFlush(msg);
 
 						// blocks on write - use listener to be async
 						cf.awaitUninterruptibly();
 						rtn = cf.isSuccess();
-						logger.info("<<response sent!>>"+rtn);
-						if (!rtn)
+						logger.info("<<response sent!>>" + rtn);
+						if (!rtn) {
 							sq.outbound.putFirst(msg);
+
+						}
+
 					}
 
-				} else
-					sq.outbound.putFirst(msg);
+				} else {
+					// sq.outbound.putFirst(msg);
+					try {
+						Request req = (Request) msg;
+						int clientId = -1;
+						if (req.getBody().hasClientMessage()) {
+							clientId = req.getBody().getClientMessage()
+									.getSenderUserName();
+						} else if (req.getBody().hasClusterMessage()) {
+							clientId = req.getBody().getClusterMessage()
+									.getClientMessage().getSenderUserName();
+						}
+						if (clientId != -1)
+							RegisterResource.addMessageToQueue(clientId, req);
+					} catch (ClassCastException cce) {
+						cce.printStackTrace();
+					}
+
+				}
+
 			} catch (InterruptedException ie) {
 				break;
 			} catch (Exception e) {
