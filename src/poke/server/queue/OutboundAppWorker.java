@@ -54,7 +54,7 @@ public class OutboundAppWorker extends Thread {
 			try {
 				// block until a message is enqueued
 				GeneratedMessage msg = sq.outbound.take();
-				logger.info("<<<<<<Sending response>>>>>>>>>>");
+				//logger.info("<<<<<<Sending response>>>>>>>>>>");
 				if (conn.isWritable()) {
 					boolean rtn = false;
 					if (sq.channel != null && sq.channel.isOpen() && sq.channel.isWritable()) {

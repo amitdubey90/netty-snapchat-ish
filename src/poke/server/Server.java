@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import poke.server.conf.ClusterConf;
+import poke.server.conf.ClusterConfList;
 import poke.server.conf.JsonUtil;
 import poke.server.conf.NodeDesc;
 import poke.server.conf.ServerConf;
@@ -68,7 +68,7 @@ public class Server {
 	protected static ChannelGroup allChannels;
 	protected static HashMap<Integer, ServerBootstrap> bootstrap = new HashMap<Integer, ServerBootstrap>();
 	protected ServerConf conf;
-	protected ClusterConf clusterConf;
+	protected ClusterConfList clusterConfList;
 	protected JobManager jobMgr;
 	protected NetworkManager networkMgr;
 	protected ClusterManager clusterMgr;
@@ -107,21 +107,29 @@ public class Server {
 		// TODO Auto-generated method stub
 
 		if (!clusterCfg.exists())
-			throw new RuntimeException(clusterCfg.getAbsolutePath() + " not found");
+			throw new RuntimeException(clusterCfg.getAbsolutePath()
+					+ " not found");
 		// resource initialization - how message are processed
 		BufferedInputStream br = null;
 		try {
 			byte[] raw = new byte[(int) clusterCfg.length()];
-			//The java.io.BufferedInputStream.read() method reads the next byte of data from the input stream.
+			// The java.io.BufferedInputStream.read() method reads the next byte
+			// of data from the input stream.
 			new BufferedInputStream(new FileInputStream(clusterCfg)).read(raw);
-			//br.read(raw);
-			clusterConf = JsonUtil.decode(new String(raw), ClusterConf.class);
-			if (!verifyClusterConf(clusterConf))
-				throw new RuntimeException("verification of cluster configuration failed");
-			logger.info("ClusterConf: "+clusterConf.getClusterNodes().get(1).getNodeName());
-			ResourceFactory.initializeCluster(clusterConf);
-			logger.info("Cluster "+clusterConf.getClusterId()+" config initiated");
-			
+			// br.read(raw);
+			clusterConfList = JsonUtil.decode(new String(raw),
+					ClusterConfList.class);
+
+			if (!verifyClusterConf(clusterConfList))
+				throw new RuntimeException(
+						"verification of cluster configuration failed");
+
+//			logger.info("ClusterConf: "
+//					+ clusterConfList.getClusterNodes().get(1).getNodeName());
+			ResourceFactory.initializeCluster(clusterConfList);
+//			logger.info("Cluster " + clusterConfList.getClusterId()
+//					+ " config initiated");
+
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		} finally {
@@ -133,7 +141,7 @@ public class Server {
 				}
 			}
 		}
-		
+
 	}
 
 	private void init(File cfg) {
@@ -147,7 +155,8 @@ public class Server {
 			br.read(raw);
 			conf = JsonUtil.decode(new String(raw), ServerConf.class);
 			if (!verifyConf(conf))
-				throw new RuntimeException("verification of configuration failed");
+				throw new RuntimeException(
+						"verification of configuration failed");
 			ResourceFactory.initialize(conf);
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -178,19 +187,18 @@ public class Server {
 		return rtn;
 	}
 
-	private boolean verifyClusterConf(ClusterConf conf) {
+	private boolean verifyClusterConf(ClusterConfList conf) {
 		boolean rtn = true;
 		if (conf == null) {
 			logger.error("Null configuration");
 			return false;
-		} else if (conf.getClusterId()<0) {
+		} /*else if (conf.getClusterId() < 0) {
 			logger.error("Bad cluster ID, negative values not allowed.");
 			rtn = false;
-		} 
+		}*/
 
 		return rtn;
 	}
-	
 
 	public void release() {
 		if (HeartbeatManager.getInstance() != null)
@@ -231,7 +239,8 @@ public class Server {
 				b.childHandler(new ServerInitializer(compressComm));
 
 				// Start the server.
-				logger.info("Starting server " + conf.getNodeId() + ", listening on port = " + conf.getPort());
+				logger.info("Starting server " + conf.getNodeId()
+						+ ", listening on port = " + conf.getPort());
 				ChannelFuture f = b.bind(conf.getPort()).syncUninterruptibly();
 
 				// should use a future channel listener to do this step
@@ -291,8 +300,10 @@ public class Server {
 
 				// Start the server.
 
-				logger.info("Starting mgmt " + conf.getNodeId() + ", listening on port = " + conf.getMgmtPort());
-				ChannelFuture f = b.bind(conf.getMgmtPort()).syncUninterruptibly();
+				logger.info("Starting mgmt " + conf.getNodeId()
+						+ ", listening on port = " + conf.getMgmtPort());
+				ChannelFuture f = b.bind(conf.getMgmtPort())
+						.syncUninterruptibly();
 
 				// block until the server socket is closed.
 				f.channel().closeFuture().sync();
@@ -325,26 +336,30 @@ public class Server {
 
 		// create manager for leader election. The number of votes (default 1)
 		// is used to break ties where there are an even number of nodes.
-		//electionMgr = ElectionManager.initManager(conf);
-		//electionMgr.initRaft();
-		
-		raftMgr = RaftManager.initManager(conf);
-		
+		// electionMgr = ElectionManager.initManager(conf);
+		// electionMgr.initRaft();
+
+		raftMgr = RaftManager.initManager(conf, clusterConfList);
+
 		// create manager for accepting jobs
 		jobMgr = JobManager.initManager(conf);
 
 		// create manager for adding cluster connections
-		//clusterMgr = ClusterManager.initManager(clusterConf);
-		//clusterMgr.registerConnections();
-		System.out.println("---> Server.startManagers() expecting " + conf.getAdjacent().getAdjacentNodes().size()
-				+ " connections");
+		// clusterMgr = ClusterManager.initManager(clusterConf);
+		// clusterMgr.registerConnections();
+		System.out
+				.println("---> Server.startManagers() expecting "
+						+ conf.getAdjacent().getAdjacentNodes().size()
+						+ " connections");
 		// establish nearest nodes and start sending heartbeats
 		heartbeatMgr = HeartbeatManager.initManager(conf);
 		for (NodeDesc nn : conf.getAdjacent().getAdjacentNodes().values()) {
-			HeartbeatData node = new HeartbeatData(nn.getNodeId(), nn.getHost(), nn.getPort(), nn.getMgmtPort());
+			HeartbeatData node = new HeartbeatData(nn.getNodeId(),
+					nn.getHost(), nn.getPort(), nn.getMgmtPort());
 
 			// fn(from, to)
-			HeartbeatPusher.getInstance().connectToThisNode(conf.getNodeId(), node);
+			HeartbeatPusher.getInstance().connectToThisNode(conf.getNodeId(),
+					node);
 		}
 		heartbeatMgr.start();
 
@@ -360,7 +375,7 @@ public class Server {
 	 * (management)
 	 */
 	public void run() {
-		if (conf == null ) {
+		if (conf == null) {
 			logger.error("Missing server configuration file");
 			return;
 		}
@@ -381,7 +396,7 @@ public class Server {
 
 		Thread cthread = new Thread(comm);
 		cthread.start();
-		
+
 		raftMgr.initRaftManager();
 	}
 
@@ -389,9 +404,10 @@ public class Server {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		System.out.println("args.length: "+args.length);
-		if (args.length!=2) {
-			System.err.println("Usage: java " + Server.class.getClass().getName() + " conf-file");
+		System.out.println("args.length: " + args.length);
+		if (args.length != 2) {
+			System.err.println("Usage: java "
+					+ Server.class.getClass().getName() + " conf-file");
 			System.exit(1);
 		}
 
@@ -400,15 +416,16 @@ public class Server {
 			Server.logger.error("configuration file does not exist: " + cfg);
 			System.exit(2);
 		}
-		
+
 		File clusterCfg = new File(args[1]);
 		if (!clusterCfg.exists()) {
-			Server.logger.error("cluster configuration file does not exist: " + cfg);
+			Server.logger.error("cluster configuration file does not exist: "
+					+ cfg);
 			System.exit(2);
 		}
 
-		Server svr = new Server(cfg,clusterCfg);
-		//Server svr = new Server(cfg);
+		Server svr = new Server(cfg, clusterCfg);
+		// Server svr = new Server(cfg);
 		svr.run();
 	}
 }

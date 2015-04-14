@@ -1,27 +1,32 @@
 package poke.server.managers.Raft;
 
+import java.util.Iterator;
 import java.util.Random;
+import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import poke.comm.App.Request;
 import poke.core.Mgmt.AppendMessage;
 import poke.core.Mgmt.Management;
 import poke.core.Mgmt.MgmtHeader;
 import poke.core.Mgmt.RaftMessage;
 import poke.core.Mgmt.RaftMessage.ElectionAction;
 import poke.core.Mgmt.RequestVoteMessage;
+import poke.server.conf.ClusterConfList;
+import poke.server.conf.ClusterConfList.ClusterConf;
+import poke.server.conf.NodeDesc;
 import poke.server.conf.ServerConf;
 import poke.server.management.ManagementAdapter;
-import poke.server.managers.ConnectionManager;
 
 public class RaftManager {
 	protected static Logger logger = LoggerFactory.getLogger("raftManager");
 	protected static AtomicReference<RaftManager> instance = new AtomicReference<RaftManager>();
 
 	private static ServerConf conf;
-
+	private static ClusterConfList clusterConfList;
 	protected static RaftState followerInstance;
 	protected static RaftState candidateInstance;
 	protected static RaftState leaderInstance;
@@ -40,12 +45,12 @@ public class RaftManager {
 	protected int votedForCandidateID = -1;
 	protected int leaderID = -1;
 
-	public static RaftManager initManager(ServerConf conf) {
+	public static RaftManager initManager(ServerConf conf,ClusterConfList clusterConfList) {
 		if (logger.isDebugEnabled())
 			logger.info("Initializing RaftManager");
 
 		RaftManager.conf = conf;
-
+		RaftManager.clusterConfList = clusterConfList;
 		instance.compareAndSet(null, new RaftManager());
 		followerInstance = FollowerState.init();
 		candidateInstance = CandidateState.init();
@@ -72,6 +77,17 @@ public class RaftManager {
 
 	}
 
+	//Send request to other cluster
+	public void processClientRequest(Request request){
+		if(isLeader){
+			for (ClusterConf c : clusterConfList.getAllClusterConfs()) {
+				TreeMap<Integer, NodeDesc> nodes = c.getClusterNodes();
+				Iterator<Integer> it = nodes.keySet().iterator();
+				NodeDesc node = nodes.get(it.next());
+				//connectToAdjacentClusterNode(node);
+			}
+		}
+	}
 	// current state is responsible for requests
 	public void processRequest(Management mgmt) {
 		// RaftMessage rm = mgmt.getRaftMessage();

@@ -113,6 +113,8 @@ public class InboundAppWorker extends Thread {
 				}
 
 			} catch (InterruptedException ie) {
+				logger.error("Interrupted exception: "+ie);
+				ie.printStackTrace();
 				break;
 			} catch (Exception e) {
 				logger.error("Unexpected processing failure", e);
