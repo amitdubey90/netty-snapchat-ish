@@ -29,13 +29,13 @@ public final class LogManager {
 	static StateMachine sMachine;
 
 	public static void initManager() {
-		//instance.compareAndSet(null, new LogManager());
-		commitIndex = 0;
-		currentLogIndex = 0;
-		//pWorker = new LogPersistence();
+		
+		logger.info("Log Manager initialization");
+		
+		pWorker = new LogPersistence();
 		sMachine = new StateMachine();
-//		Thread t = new Thread(pWorker);
-//		t.start();
+		Thread t = new Thread(pWorker);
+		t.start();
 		Thread t2 = new Thread(sMachine);
 		t2.start();
 		//return instance.get();
