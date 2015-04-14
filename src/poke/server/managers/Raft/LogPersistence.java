@@ -3,6 +3,10 @@ package poke.server.managers.Raft;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import redis.clients.jedis.Jedis;
 
@@ -14,10 +18,49 @@ public class LogPersistence extends Thread{
 	int lastWrittenLogIndex;
 	int buffer = 5;
 	static Jedis j;
+	//protected static Logger logger = LoggerFactory.getLogger("Persistence");
 	
 	public LogPersistence(){
-		lastWrittenLogIndex = 0;
+		
 		j = new Jedis("localhost", 6379);
+		j.connect();
+		
+		Boolean dbConnected = j.isConnected();
+		
+		if(dbConnected){
+			
+			//logger.info("DB connected: " + dbConnected);
+			int index = LogPersistence.j.keys("*").size();
+			
+			if(index != 0){
+			
+				Set<String> set = j.keys("*");
+				Iterator<String> iterator = set.iterator();
+				
+				Integer max = Integer.parseInt(iterator.next());
+				
+				while(iterator.hasNext()) {
+			        Integer element = Integer.parseInt(iterator.next());
+			        if(element > max)
+			        	max = element;
+			    }
+				
+				LogManager.currentLogIndex = max;
+				LogManager.commitIndex = max;
+				lastWrittenLogIndex = max;
+			
+			}
+			else{
+				LogManager.currentLogIndex = 0;
+				LogManager.commitIndex = 0;
+				lastWrittenLogIndex = 0;
+				
+			}
+			
+			//logger.info("currentLogIndex: " + LogManager.currentLogIndex + "commitIndex: " + LogManager.commitIndex);
+			
+		}
+		
 	}
 	   
 	//Connecting to Redis server on localhost
@@ -37,6 +80,7 @@ public class LogPersistence extends Thread{
 		lastWrittenLogIndex = log.logIndex;
 		LogManager.logs.remove(log.logIndex);
 	}
+	
 	
 	@Override
 	public void run() {
@@ -65,4 +109,5 @@ public class LogPersistence extends Thread{
 		}
 		
 	}
+	
 }
