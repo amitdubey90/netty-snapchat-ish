@@ -9,6 +9,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import poke.resources.RequestProcessor;
+
 public final class LogManager {
 
 	static LinkedHashMap<Integer, LogEntry> logs = new LinkedHashMap<Integer, LogEntry>();
@@ -29,16 +31,16 @@ public final class LogManager {
 	static StateMachine sMachine;
 
 	public static void initManager() {
-		//instance.compareAndSet(null, new LogManager());
+		// instance.compareAndSet(null, new LogManager());
 		commitIndex = 0;
 		currentLogIndex = 0;
-		//pWorker = new LogPersistence();
+		// pWorker = new LogPersistence();
 		sMachine = new StateMachine();
-//		Thread t = new Thread(pWorker);
-//		t.start();
+		// Thread t = new Thread(pWorker);
+		// t.start();
 		Thread t2 = new Thread(sMachine);
 		t2.start();
-		//return instance.get();
+		// return instance.get();
 	}
 
 	public static LogManager getInstance() {
@@ -130,6 +132,14 @@ public final class LogManager {
 	public static class StateMachine extends Thread {
 		public void stateMachine() {
 			if (commitIndex > lastApplied) {
+				for (int i = lastApplied; i < commitIndex + 1; i++) {
+					if (getLogEntry(i) != null) {
+						logger.info("Got a leader log entry");
+						RequestProcessor.processRequest(getLogEntry(i));
+					}else{
+						logger.info("No leader log entry");
+					}
+				}
 				lastApplied = Math.min(currentLogIndex, commitIndex);
 				logger.info("Applying " + lastApplied + " to state");
 			}

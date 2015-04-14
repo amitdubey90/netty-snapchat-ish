@@ -15,6 +15,8 @@
  */
 package poke.resources;
 
+import java.util.ArrayList;
+
 import io.netty.channel.Channel;
 
 import org.slf4j.Logger;
@@ -26,12 +28,14 @@ import poke.comm.App.Header;
 import poke.comm.App.Payload;
 import poke.comm.App.Request;
 import poke.server.managers.ConnectionManager;
+import poke.server.managers.Raft.LogManager;
 import poke.server.managers.Raft.RaftManager;
 import poke.server.resources.Resource;
 
 public class JobResource implements Resource {
 	protected static Logger logger = LoggerFactory.getLogger("job resource");
 	//private boolean isRespSent=false;
+	
 	@Override
 	public Request process(Request request,Channel ch) {
 		int senderClient=request.getBody().getClientMessage().getSenderUserName();
@@ -39,7 +43,7 @@ public class JobResource implements Resource {
 		boolean isBroadcastInternal = request.getBody().getClientMessage().getBroadcastInternal();
 		if(isClient && isBroadcastInternal){
 			//broadcast to other clients
-			ConnectionManager.broadcastToClients(request, senderClient);
+			//ConnectionManager.broadcastToClients(request, senderClient);
 			
 			//broadcast to other servers and set broadcast to false
 			ClientMessage.Builder clientMsg  = ClientMessage.newBuilder();
@@ -67,10 +71,16 @@ public class JobResource implements Resource {
 			req.setBody(payload);
 			req.setHeader(head);
 			ConnectionManager.broadcast(req.build());
+			String msgId=req.getBody().getClientMessage().getMsgId();
+			logger.info("JobResource, msg Id is: "+msgId);
+			RequestProcessor.reqQueue.put(msgId, req.build());
+			RaftManager.getInstance().processClientRequest(request);
+			
 			return sendResponseToClient();
 		}else if(isClient && !isBroadcastInternal){
-			ConnectionManager.broadcastToClients(request, senderClient);
-			
+			//ConnectionManager.broadcastToClients(request, senderClient);
+			String msgId=request.getBody().getClientMessage().getMsgId();
+			RequestProcessor.reqQueue.put(msgId, request);
 			//If leader, send to other cluster node.
 			RaftManager.getInstance().processClientRequest(request);
 			return null;

@@ -80,7 +80,14 @@ public class RaftManager {
 
 	// Send request to other cluster
 	public void processClientRequest(Request request) {
-		// TODO
+		logger.info("Raft Manager processing client request");
+		String msgId=request.getBody().getClientMessage().getMsgId();
+		int senderUserName = request.getBody().getClientMessage().getSenderUserName();
+		int receiverUserName= request.getBody().getClientMessage().getReceiverUserName();
+		String logData=System.currentTimeMillis() +","+msgId+","+senderUserName+","+receiverUserName;
+		if(isLeader){
+			LogManager.createEntry(term,logData);
+		}
 	}
 
 	// current state is responsible for requests
@@ -262,7 +269,7 @@ public class RaftManager {
 					} else {
 						if (now - lastKnownBeat > electionTimeOut / 4) {
 							// TODO remove createLogEntry() when done testing
-							createLogEntry();
+							//createLogEntry();
 							((LeaderState) currentState).sendAppendNotice();
 
 							lastKnownBeat = System.currentTimeMillis();

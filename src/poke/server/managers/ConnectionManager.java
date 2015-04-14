@@ -30,9 +30,8 @@ import poke.core.Mgmt.Management;
 /**
  * the connection map for server-to-server communication.
  * 
- * Note the connections/channels are initialized through the heartbeat manager
+ * Note the connections/channels are initialized through the heart beat manager
  * as it starts (and maintains) the connections through monitoring of processes.
- * 
  * 
  * TODO refactor to make this the consistent form of communication for the rest
  * of the code
@@ -73,6 +72,7 @@ public class ConnectionManager {
 
 		switch (connState) {
 		case MGMT:
+			logger.info("Adding mgmt node");
 			mgmtConnections.put(nodeId, channel);
 			break;
 		
