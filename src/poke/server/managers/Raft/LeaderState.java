@@ -57,10 +57,7 @@ public class LeaderState implements RaftState {
 				log.setLogIndex(entry.getLogIndex());
 				log.setLogData(entry.getLogData());
 			} else {
-				entry = LogManager.getLogEntry(nextIndex.get(node)-1);
-				if(entry != null){
 					am.setLeaderCommit(LogManager.commitIndex);
-				}
 			}
 			am.addEntries(log);
 			m.getRaftMessageBuilder().setAppendMessage(am.build());
@@ -146,7 +143,7 @@ public class LeaderState implements RaftState {
 					count += 1 ;
 					if (count > ((matchIndex.keySet().size() +1)/ 2)){
 						LogManager.commitIndex = commitIndex;
-						logger.info("Updating log index");
+						logger.info("Updating commit index");
 					}
 				}
 				
