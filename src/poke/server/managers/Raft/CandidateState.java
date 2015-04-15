@@ -52,7 +52,7 @@ public class CandidateState implements RaftState {
 				if (rvm.getVoteGranted()
 						&& rvm.getTerm() == raftMgmt.term) {
 					raftMgmt.receiveVote();
-				} else {
+				} else if (rvm.getTerm() > raftMgmt.term) {
 					raftMgmt.term = rvm.getTerm();
 					raftMgmt.currentState = RaftManager.followerInstance;
 				}
