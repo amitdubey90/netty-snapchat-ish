@@ -40,7 +40,6 @@ import poke.server.conf.NodeDesc;
 import poke.server.conf.ServerConf;
 import poke.server.management.ManagementInitializer;
 import poke.server.management.ManagementQueue;
-import poke.server.managers.ClusterManager;
 import poke.server.managers.ElectionManager;
 import poke.server.managers.HeartbeatData;
 import poke.server.managers.HeartbeatManager;
@@ -71,7 +70,6 @@ public class Server {
 	protected ClusterConfList clusterConfList;
 	protected JobManager jobMgr;
 	protected NetworkManager networkMgr;
-	protected ClusterManager clusterMgr;
 	protected HeartbeatManager heartbeatMgr;
 	protected ElectionManager electionMgr;
 	protected RaftManager raftMgr;
@@ -115,8 +113,8 @@ public class Server {
 			byte[] raw = new byte[(int) clusterCfg.length()];
 			// The java.io.BufferedInputStream.read() method reads the next byte
 			// of data from the input stream.
-			new BufferedInputStream(new FileInputStream(clusterCfg)).read(raw);
-			// br.read(raw);
+			br=new BufferedInputStream(new FileInputStream(clusterCfg));
+			br.read(raw);
 			clusterConfList = JsonUtil.decode(new String(raw),
 					ClusterConfList.class);
 
