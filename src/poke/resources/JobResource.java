@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 
 import poke.comm.App.ClientMessage;
 import poke.comm.App.ClientMessage.MessageType;
+import poke.comm.App.ClusterMessage;
 import poke.comm.App.Header;
 import poke.comm.App.Payload;
 import poke.comm.App.Request;
@@ -34,20 +35,69 @@ import poke.server.resources.Resource;
 
 public class JobResource implements Resource {
 	protected static Logger logger = LoggerFactory.getLogger("job resource");
-	//private boolean isRespSent=false;
-	
+
+	// private boolean isRespSent=false;
+
 	@Override
-	public Request process(Request request,Channel ch) {
-		int senderClient=request.getBody().getClientMessage().getSenderUserName();
+	public Request process(Request request, Channel ch) {
+		int senderClient = request.getBody().getClientMessage()
+				.getSenderUserName();
 		boolean isClient = request.getBody().getClientMessage().getIsClient();
-		boolean isBroadcastInternal = request.getBody().getClientMessage().getBroadcastInternal();
-		if(isClient && isBroadcastInternal){
-			//broadcast to other clients
-			//ConnectionManager.broadcastToClients(request, senderClient);
-			
-			//broadcast to other servers and set broadcast to false
-			ClientMessage.Builder clientMsg  = ClientMessage.newBuilder();
-			ClientMessage reqClientMsg=request.getBody().getClientMessage();
+		boolean isBroadcastInternal = request.getBody().getClientMessage()
+				.getBroadcastInternal();
+		// logger.info("Clustr msg is>>>>>>>>>>>>>>>>>>>"+request.getBody().getClusterMessage());
+		// logger.info("Cluster Message is null");
+		if (!request.getBody().hasClusterMessage() && request.getBody().hasClientMessage()) {
+			if (isClient && isBroadcastInternal) {
+				logger.info("Cluster Message is null");
+				// broadcast to other clients
+				// ConnectionManager.broadcastToClients(request, senderClient);
+
+				// broadcast to other servers and set broadcast to false
+				ClientMessage.Builder clientMsg = ClientMessage.newBuilder();
+				ClientMessage reqClientMsg = request.getBody()
+						.getClientMessage();
+				clientMsg.setIsClient(true);
+				clientMsg.setBroadcastInternal(false);
+				clientMsg.setMsgId(reqClientMsg.getMsgId());
+				clientMsg.setMessageType(reqClientMsg.getMessageType());
+				clientMsg.setMsgImageName(reqClientMsg.getMsgImageName());
+				clientMsg.setMsgImageBits(reqClientMsg.getMsgImageBits());
+				clientMsg.setMsgText(reqClientMsg.getMsgText());
+				// add client msg to body
+				Payload.Builder payload = Payload.newBuilder();
+				payload.setClientMessage(clientMsg);
+
+				// header for request
+				Header.Builder head = Header.newBuilder();
+				head.setOriginator(1000);
+				head.setTag("Image");
+				head.setTime(System.currentTimeMillis());
+				head.setRoutingId(Header.Routing.JOBS);
+
+				// add body to request
+				Request.Builder req = Request.newBuilder();
+				req.setBody(payload);
+				req.setHeader(head);
+				ConnectionManager.broadcast(req.build());
+				String msgId = req.getBody().getClientMessage().getMsgId();
+				logger.info("JobResource, msg Id is: " + msgId);
+				RequestProcessor.reqQueue.put(msgId, req.build());
+				RaftManager.getInstance().processClientRequest(request);
+
+				return sendResponseToClient();
+			} else if (isClient && !isBroadcastInternal) {
+				// ConnectionManager.broadcastToClients(request, senderClient);
+				String msgId = request.getBody().getClientMessage().getMsgId();
+				RequestProcessor.reqQueue.put(msgId, request);
+				// If leader, send to other cluster node.
+				RaftManager.getInstance().processClientRequest(request);
+				return null;
+			}
+		}else if(request.getBody().hasClusterMessage()){
+			ClientMessage.Builder clientMsg = ClientMessage.newBuilder();
+			ClientMessage reqClientMsg = request.getBody()
+					.getClientMessage();
 			clientMsg.setIsClient(true);
 			clientMsg.setBroadcastInternal(false);
 			clientMsg.setMsgId(reqClientMsg.getMsgId());
@@ -55,55 +105,43 @@ public class JobResource implements Resource {
 			clientMsg.setMsgImageName(reqClientMsg.getMsgImageName());
 			clientMsg.setMsgImageBits(reqClientMsg.getMsgImageBits());
 			clientMsg.setMsgText(reqClientMsg.getMsgText());
-			//add client msg to body
+			// add client msg to body
 			Payload.Builder payload = Payload.newBuilder();
 			payload.setClientMessage(clientMsg);
-			
-			//header for request
+
+			// header for request
 			Header.Builder head = Header.newBuilder();
 			head.setOriginator(1000);
 			head.setTag("Image");
 			head.setTime(System.currentTimeMillis());
 			head.setRoutingId(Header.Routing.JOBS);
-			
-			//add body to request
+
+			// add body to request
 			Request.Builder req = Request.newBuilder();
 			req.setBody(payload);
 			req.setHeader(head);
 			ConnectionManager.broadcast(req.build());
-			String msgId=req.getBody().getClientMessage().getMsgId();
-			logger.info("JobResource, msg Id is: "+msgId);
-			RequestProcessor.reqQueue.put(msgId, req.build());
-			RaftManager.getInstance().processClientRequest(request);
-			
-			return sendResponseToClient();
-		}else if(isClient && !isBroadcastInternal){
-			//ConnectionManager.broadcastToClients(request, senderClient);
-			String msgId=request.getBody().getClientMessage().getMsgId();
-			RequestProcessor.reqQueue.put(msgId, request);
-			//If leader, send to other cluster node.
-			RaftManager.getInstance().processClientRequest(request);
-			return null;
 		}
 		return null;
 	}
-	private Request sendResponseToClient(){
+
+	private Request sendResponseToClient() {
 		ClientMessage.Builder clientMessage = ClientMessage.newBuilder();
 		clientMessage.setMessageType(MessageType.SUCCESS);
-		
-		//payload
+
+		// payload
 		Payload.Builder body = Payload.newBuilder();
 		body.setClientMessage(clientMessage);
-		
-		//header
-		Header.Builder header= Header.newBuilder();
+
+		// header
+		Header.Builder header = Header.newBuilder();
 		header.setOriginator(1);
-		
-		//reply
-		Request.Builder reply =Request.newBuilder();
+
+		// reply
+		Request.Builder reply = Request.newBuilder();
 		reply.setBody(body);
 		reply.setHeader(header);
-		//isRespSent=true;
+		// isRespSent=true;
 		return reply.build();
 	}
 }
