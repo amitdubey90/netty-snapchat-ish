@@ -1,6 +1,7 @@
 package poke.client.snapchat;
 
 import java.io.BufferedReader;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,6 +17,7 @@ import poke.comm.App.Header.Routing;
 import poke.comm.App.Payload;
 import poke.comm.App.Ping;
 import poke.comm.App.Request;
+import javax.activation.MimetypesFileTypeMap;
 
 import com.google.protobuf.ByteString;
 
@@ -25,11 +27,12 @@ public class SnapchatClientCommand {
 	SnapchatCommunication comm;
 	private int  clientId;
 	
-	public SnapchatClientCommand(String host, int port) {
+	public SnapchatClientCommand(String host, int port, int clientId) {
 		this.host = host;
 		this.port = port;
-		clientId=new Random().nextInt(100);
-		comm = new SnapchatCommunication(host, port);
+		this.clientId=clientId;   
+		//clientId=new Random().nextInt(100);
+		comm = new SnapchatCommunication(host, port,clientId);
 		registerClient();
 	}
 
@@ -91,24 +94,41 @@ public class SnapchatClientCommand {
 
 	}
 
-	public void sendImage(String filePath) {
+	public boolean sendImage(String filePath) {
 		File file = null;
+		boolean fileSupported=true;
+		long filesize=0;
 		System.out.println("Sending msg");
 		//create client message for payload
 		ClientMessage.Builder clientMessage = ClientMessage.newBuilder();
 		try {
 			file = new File(filePath);
-			clientMessage.setMsgImageName(file.getName());
-			clientMessage.setSenderUserName(clientId);
-			//f.setReceiverUserName("receiver");
-			clientMessage.setMsgText("hello");
-			clientMessage.setMessageType(MessageType.REQUEST);
-			clientMessage.setIsClient(true);
-			clientMessage.setBroadcastInternal(true);
-			// FileInputStream fs = new FileInputStream(file);
-			byte[] bytes = Files.readAllBytes(Paths.get(filePath));
-			//System.out.println("Sending file of length" + bytes.length);
-			clientMessage.setMsgImageBits(ByteString.copyFrom(bytes));
+			//checking the image size and whether the  file is an image
+			 filesize=file.length();
+			 MimetypesFileTypeMap mtftp = new MimetypesFileTypeMap();
+			 mtftp.addMimeTypes("image png tif jpg jpeg bmp");
+			 String mimetype=  mtftp.getContentType(file);
+			        
+			        
+		    if(mimetype.substring(0,5).equalsIgnoreCase("image")  && filesize<(15*1024*1024)){
+			  clientMessage.setMsgImageName(file.getName());
+			  clientMessage.setSenderUserName(clientId);
+			  //f.setReceiverUserName("receiver");
+			  clientMessage.setMsgText("hello");
+			  clientMessage.setMessageType(MessageType.REQUEST);
+			  clientMessage.setIsClient(true);
+			  clientMessage.setBroadcastInternal(true);
+			  // FileInputStream fs = new FileInputStream(file);
+			  byte[] bytes = Files.readAllBytes(Paths.get(filePath));
+			  //System.out.println("Sending file of length" + bytes.length);
+			  clientMessage.setMsgImageBits(ByteString.copyFrom(bytes));
+	        }
+	        else{
+	        	
+	        	//perform the operations you want to, when file is not supported
+	           System.out.println("File not supported");
+	           
+	        }
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -136,12 +156,13 @@ public class SnapchatClientCommand {
 		} catch (InterruptedException ex) {
 			ex.printStackTrace();
 		}
-
+        if(fileSupported)return true;
+        else return false;
 	}
 
 	public static void main(String[] args) {
 
-		SnapchatClientCommand sc = new SnapchatClientCommand("localhost", 5570);
+		SnapchatClientCommand sc = new SnapchatClientCommand("localhost", 5570,11);
 		int option = 0;
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -157,7 +178,9 @@ public class SnapchatClientCommand {
 					break;
 
 				case 2:
-					sc.sendImage("/Users/dhavalkolapkar/Pictures/1.jpg");
+					if(sc.sendImage("/Users/dhavalkolapkar/Pictures/1.jpg"))
+						System.out.println("file supported");
+					else System.out.println("file not supported");
 					break;
 				}
 			} catch (IOException ioe) {

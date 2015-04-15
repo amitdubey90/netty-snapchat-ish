@@ -10,15 +10,23 @@ import poke.comm.App.Header.Routing;
 import poke.comm.App.Request;
 
 import com.google.protobuf.ByteString;
-
+import java.io.File;
+import java.nio.file.Path;
 public class SnapchatClientListener implements CommListener {
 
+    private int clientId;	
+	private int counter;
 	@Override
 	public String getListenerID() {
 		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
+	public SnapchatClientListener(int clientId) {
+		this.clientId=clientId;
+	}
+	
 	@Override
 	public void onMessage(Request request) {
 		if(request.getHeader().getRoutingId()==Routing.REGISTER){
@@ -31,7 +39,11 @@ public class SnapchatClientListener implements CommListener {
 			byte[] bytes = bs.toByteArray();
 			FileOutputStream fos;
 			try {
-				StringBuilder sb = new StringBuilder("/Users/dhavalkolapkar/Pictures/SnapchatReceive/");
+				File f=new File("/Users/dhavalkolapkar/Pictures/SnapchatReceiver/"+clientId);
+				if(!f.exists()){
+					new File("/Users/dhavalkolapkar/Pictures/SnapchatReceiver/"+clientId).mkdirs();
+				};
+				StringBuilder sb = new StringBuilder("/Users/dhavalkolapkar/Pictures/SnapchatReceiver/"+clientId);
 				sb.append(request.getBody().getClientMessage().getMsgImageName());
 				fos = new FileOutputStream(sb.toString());
 				fos.write(bytes, 0, bytes.length);

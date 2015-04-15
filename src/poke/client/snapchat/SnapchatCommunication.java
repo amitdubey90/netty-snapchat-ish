@@ -18,16 +18,16 @@ public class SnapchatCommunication {
 
 	final String host;
 	final int port;
-
+    final int clientId;
 	ChannelFuture channel;
 
 	private LinkedBlockingDeque<com.google.protobuf.GeneratedMessage> outbound;
 	SnapchatOutboundWorker worker;
 
-	public SnapchatCommunication(String host, int port) {
+	public SnapchatCommunication(String host, int port,int clientId) {
 		this.host = host;
 		this.port = port;
-
+        this.clientId=clientId;
 		init();
 	}
 
@@ -48,7 +48,7 @@ public class SnapchatCommunication {
 
 			channel = b.connect(host, port).sync();
 			SnapchatClientHandler handler = channel.channel().pipeline().get(SnapchatClientHandler.class);
-			handler.addListener(new SnapchatClientListener());
+			handler.addListener(new SnapchatClientListener(clientId));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -97,8 +97,7 @@ public class SnapchatCommunication {
 			forever = true;
 			Channel ch = sc.connect();
 			if (ch == null || !ch.isOpen()) {
-				System.out
-						.println("connection missing, no outbound communication");
+				System.out.println("connection missing, no outbound communication");
 				return;
 			}
 
