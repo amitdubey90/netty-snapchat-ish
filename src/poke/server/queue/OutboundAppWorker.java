@@ -65,68 +65,75 @@ public class OutboundAppWorker extends Thread {
 					if (sq.channel != null && sq.channel.isOpen() && sq.channel.isWritable()) {
 						
 						Request req = (Request) msg;
+						int clientId = (req.getBody().getClientMessage().getSenderUserName());
 						
-						while(RegisterResource.clients.get(req.getBody().getClientMessage().getSenderUserName()).size()>0 || RegisterResource.clients.get(req.getBody().getClusterMessage().getClientMessage().getSenderUserName()).size()>0){
+						if(RegisterResource.clients.get(clientId)!=null ){
+						
+							while(RegisterResource.clients.get(clientId).size()>0 ){
+								
+								
+								Request req1 = RegisterResource.getMessage(clientId);
 							
-							if(RegisterResource.getMessage(req.getBody().getClientMessage().getSenderUserName())!=null ){
+								if(req1!=null ){
 							
-								ChannelFuture cf = sq.channel.writeAndFlush((GeneratedMessage) RegisterResource.getMessage(req.getBody().getClientMessage().getSenderUserName()));
+									ChannelFuture cf = sq.channel.writeAndFlush((GeneratedMessage) req1);
 
-								// blocks on write - use listener to be async
-								cf.awaitUninterruptibly();
-								rtn = cf.isSuccess();
-								logger.info("<<response sent!>>" + rtn);
-								if (!rtn) {
-									sq.outbound.putFirst(msg);
+									// blocks on write - use listener to be async
+									cf.awaitUninterruptibly();
+									rtn = cf.isSuccess();
+									logger.info("<<response sent!>>" + rtn);
+									if (!rtn) {
+										sq.outbound.putFirst(msg);
 
+									}
 								}
+//								else if(RegisterResource.getMessage(req.getBody().getClusterMessage().getClientMessage().getSenderUserName())!=null ){
+//
+//									ChannelFuture cf = sq.channel.writeAndFlush((GeneratedMessage) RegisterResource.getMessage(req.getBody().getClusterMessage().getClientMessage().getSenderUserName()));
+//
+//									// blocks on write - use listener to be async
+//									cf.awaitUninterruptibly();
+//									rtn = cf.isSuccess();
+//									logger.info("<<response sent!>>" + rtn);
+//									if (!rtn) {
+//										sq.outbound.putFirst(msg);
+//
+//									}
+//								}
 							}
-							else if(RegisterResource.getMessage(req.getBody().getClusterMessage().getClientMessage().getSenderUserName())!=null ){
+						
+							ChannelFuture cf = sq.channel.writeAndFlush(msg);
 
-								ChannelFuture cf = sq.channel.writeAndFlush((GeneratedMessage) RegisterResource.getMessage(req.getBody().getClusterMessage().getClientMessage().getSenderUserName()));
-
-								// blocks on write - use listener to be async
-								cf.awaitUninterruptibly();
-								rtn = cf.isSuccess();
-								logger.info("<<response sent!>>" + rtn);
-								if (!rtn) {
-									sq.outbound.putFirst(msg);
-
-								}
+							// blocks on write - use listener to be async
+							cf.awaitUninterruptibly();
+							rtn = cf.isSuccess();
+							logger.info("<<response sent!>>" + rtn);
+							if (!rtn) {
+								sq.outbound.putFirst(msg);
+							
 							}
-						}
 						
-						ChannelFuture cf = sq.channel.writeAndFlush(msg);
-
-						// blocks on write - use listener to be async
-						cf.awaitUninterruptibly();
-						rtn = cf.isSuccess();
-						logger.info("<<response sent!>>" + rtn);
-						if (!rtn) {
-							sq.outbound.putFirst(msg);
-
 						}
-						
-					}
 					
-				} else {
-					// sq.outbound.putFirst(msg);
-					try {
-						Request req = (Request) msg;
-						int clientId = -1;
-						if (req.getBody().hasClientMessage()) {
-							clientId = req.getBody().getClientMessage()
+					} else {
+						// sq.outbound.putFirst(msg);
+						try {
+							Request req = (Request) msg;
+							int clientId = -1;
+							if (req.getBody().hasClientMessage()) {
+								clientId = req.getBody().getClientMessage()
 									.getSenderUserName();
-						} else if (req.getBody().hasClusterMessage()) {
-							clientId = req.getBody().getClusterMessage()
+							} else if (req.getBody().hasClusterMessage()) {
+								clientId = req.getBody().getClusterMessage()
 									.getClientMessage().getSenderUserName();
+							}
+							if (clientId != -1)
+								RegisterResource.addMessageToQueue(clientId, req);
+						} catch (ClassCastException cce) {
+							cce.printStackTrace();
 						}
-						if (clientId != -1)
-							RegisterResource.addMessageToQueue(clientId, req);
-					} catch (ClassCastException cce) {
-						cce.printStackTrace();
-					}
 
+					}
 				}
 
 			} catch (InterruptedException ie) {
