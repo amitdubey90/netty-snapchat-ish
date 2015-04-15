@@ -137,7 +137,7 @@ public final class LogManager {
 	public static class StateMachine extends Thread {
 		public void stateMachine() {
 			if (commitIndex > lastApplied) {
-				for (int i = lastApplied; i < commitIndex + 1; i++) {
+				for (int i = lastApplied+1; i < commitIndex + 1; i++) {
 					if (getLogEntry(i) != null) {
 						logger.info("Got a leader log entry");
 						RequestProcessor.processRequest(getLogEntry(i));

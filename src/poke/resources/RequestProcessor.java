@@ -31,7 +31,7 @@ public class RequestProcessor {
 		logger.info("LogData is: "+logData);
 		Request req=checkMsgReceived(logData);
 		senderUserName=req.getBody().getClientMessage().getSenderUserName();
-		logger.info("Req to be processed is: "+req);
+		logger.info("Request to be broadcast to clients except client id: "+senderUserName);
 		//broadcast to clients
 		
 		ConnectionManager.broadcastToClients(req, senderUserName);

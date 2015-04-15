@@ -49,7 +49,7 @@ public class JobResource implements Resource {
 		// logger.info("Cluster Message is null");
 		if (!request.getBody().hasClusterMessage() && request.getBody().hasClientMessage()) {
 			if (isClient && isBroadcastInternal) {
-				logger.info("Cluster Message is null");
+				logger.info("Not a cluster message");
 				// broadcast to other clients
 				// ConnectionManager.broadcastToClients(request, senderClient);
 
@@ -57,6 +57,7 @@ public class JobResource implements Resource {
 				ClientMessage.Builder clientMsg = ClientMessage.newBuilder();
 				ClientMessage reqClientMsg = request.getBody()
 						.getClientMessage();
+				clientMsg.setSenderUserName(senderClient);
 				clientMsg.setIsClient(true);
 				clientMsg.setBroadcastInternal(false);
 				clientMsg.setMsgId(reqClientMsg.getMsgId());
@@ -81,7 +82,7 @@ public class JobResource implements Resource {
 				req.setHeader(head);
 				ConnectionManager.broadcast(req.build());
 				String msgId = req.getBody().getClientMessage().getMsgId();
-				logger.info("JobResource, msg Id is: " + msgId);
+				logger.info("Queueing req with msgId "+msgId);
 				RequestProcessor.reqQueue.put(msgId, req.build());
 				RaftManager.getInstance().processClientRequest(request);
 
@@ -89,15 +90,18 @@ public class JobResource implements Resource {
 			} else if (isClient && !isBroadcastInternal) {
 				// ConnectionManager.broadcastToClients(request, senderClient);
 				String msgId = request.getBody().getClientMessage().getMsgId();
+				logger.info("Other servers received the request with msg Id"+msgId);
 				RequestProcessor.reqQueue.put(msgId, request);
 				// If leader, send to other cluster node.
 				RaftManager.getInstance().processClientRequest(request);
 				return null;
 			}
 		}else if(request.getBody().hasClusterMessage()){
+			logger.info("Cluster Message");
 			ClientMessage.Builder clientMsg = ClientMessage.newBuilder();
 			ClientMessage reqClientMsg = request.getBody()
 					.getClientMessage();
+			clientMsg.setSenderUserName(reqClientMsg.getSenderUserName());
 			clientMsg.setIsClient(true);
 			clientMsg.setBroadcastInternal(false);
 			clientMsg.setMsgId(reqClientMsg.getMsgId());
@@ -121,6 +125,9 @@ public class JobResource implements Resource {
 			req.setBody(payload);
 			req.setHeader(head);
 			ConnectionManager.broadcast(req.build());
+			String msgId = reqClientMsg.getMsgId();
+			logger.info("Queueing req with msgId "+msgId);
+			RequestProcessor.reqQueue.put(msgId, req.build());
 		}
 		return null;
 	}

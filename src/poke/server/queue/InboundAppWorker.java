@@ -77,9 +77,16 @@ public class InboundAppWorker extends Thread {
 					Request reply = null;
 
 					if (req.hasJoinMessage()) {
+						if(req.getJoinMessage().hasFromClusterId()){
 						ConnectionManager.addConnection(req.getJoinMessage()
 								.getFromClusterId(), sq.channel,
 								ConnectionManager.connectionState.APP);
+						}else{
+							ConnectionManager.addConnection(req.getJoinMessage()
+									.getFromNodeId(), sq.channel,
+									ConnectionManager.connectionState.APP);
+							}
+						
 					} else {
 						// HEY! if you find yourself here and are tempted to add
 						// code to process state or requests then you are in the
