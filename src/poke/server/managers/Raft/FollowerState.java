@@ -52,6 +52,9 @@ public class FollowerState implements RaftState {
 			boolean success = false;
 			raftMgmt.resetTimeOut();
 			//logger.info("Got HB");
+			if(am.hasLeaderCommit())
+				LogManager.updateCommitIndex(am.getLeaderCommit());
+			
 			if (am.hasPrevLogIndex() && am.hasPrevLogTerm()) {
 				if (am.getEntriesCount() > 0) {
 					logger.info("appending " + am.getEntries(0));

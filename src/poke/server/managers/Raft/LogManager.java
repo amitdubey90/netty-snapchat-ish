@@ -103,12 +103,14 @@ public final class LogManager {
 			currentLogIndex = leaderLog.prevLogIndex;
 		}
 
-		LogManager.leaderCommitIndex = leaderCommitIndex;
-		commitIndex = Math.min(LogManager.leaderCommitIndex, currentLogIndex);
-
 		return result;
 	}
 
+	public static void updateCommitIndex(int leaderCommitIndex){
+		LogManager.leaderCommitIndex = leaderCommitIndex;
+		commitIndex = Math.min(LogManager.leaderCommitIndex, currentLogIndex);
+	}
+	
 	public static LogEntry getLog(int logIndex) {
 		return logs.get(logIndex);
 	}
