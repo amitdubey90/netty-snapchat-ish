@@ -1,15 +1,26 @@
 package poke.server.managers.Raft;
 
+import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioSocketChannel;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import poke.comm.App.JoinMessage;
 import poke.comm.App.Request;
 import poke.core.Mgmt.AppendMessage;
 import poke.core.Mgmt.Management;
@@ -17,7 +28,10 @@ import poke.core.Mgmt.MgmtHeader;
 import poke.core.Mgmt.RaftMessage;
 import poke.core.Mgmt.RaftMessage.ElectionAction;
 import poke.core.Mgmt.RequestVoteMessage;
+import poke.server.ServerInitializer;
 import poke.server.conf.ClusterConfList;
+import poke.server.conf.ClusterConfList.ClusterConf;
+import poke.server.conf.NodeDesc;
 import poke.server.conf.ServerConf;
 import poke.server.management.ManagementAdapter;
 import poke.server.managers.ConnectionManager;
@@ -27,10 +41,11 @@ public class RaftManager {
 	protected static AtomicReference<RaftManager> instance = new AtomicReference<RaftManager>();
 
 	private static ServerConf conf;
-	private static ClusterConfList clusterConfList;
 	protected static RaftState followerInstance;
 	protected static RaftState candidateInstance;
 	protected static RaftState leaderInstance;
+
+	private static ClusterConfList clusterConf;
 
 	boolean forever = true;
 	boolean isLeader = false;
@@ -52,11 +67,13 @@ public class RaftManager {
 			logger.info("Initializing RaftManager");
 
 		RaftManager.conf = conf;
-		RaftManager.clusterConfList = clusterConfList;
+		RaftManager.clusterConf = clusterConfList;
 		instance.compareAndSet(null, new RaftManager());
 		followerInstance = FollowerState.init();
 		candidateInstance = CandidateState.init();
 		leaderInstance = LeaderState.init();
+		
+		new Thread(new ClusterConnectionManager()).start();
 
 		LogManager.initManager();
 		return instance.get();
@@ -96,18 +113,18 @@ public class RaftManager {
 
 	// current state is responsible for requests
 	public void processRequest(Management mgmt) {
-		 RaftMessage rm = mgmt.getRaftMessage();
+		RaftMessage rm = mgmt.getRaftMessage();
 
 		if ((rm.hasAppendMessage() && rm.getAppendMessage().hasTerm())) {
 			if (rm.getAppendMessage().getTerm() > term) {
 				convertToFollower(rm.getAppendMessage().getTerm());
-				//return;
+				// return;
 			}
 
 		} else if ((rm.hasRequestVote() && rm.getRequestVote().hasTerm())) {
 			if (rm.getRequestVote().getTerm() > term) {
 				convertToFollower(rm.getRequestVote().getTerm());
-				//return;
+				// return;
 			}
 		}
 
@@ -293,12 +310,110 @@ public class RaftManager {
 		}
 	}
 
-	public class ClusterConnectionManager extends Thread {
-		private Map<Integer, Channel> clusterMap = new HashMap<Integer, Channel>();
+	public static class ClusterConnectionManager extends Thread {
+		private Map<Integer, Channel> connMap = new HashMap<Integer, Channel>();
+		private Map<Integer, ClusterConf> clusterMap;
+
+		public ClusterConnectionManager() {
+			clusterMap = clusterConf.getClusters();
+		}
+
+		public void registerConnection(int nodeId, Channel channel) {
+			// ConnectionManager.addConnection(nodeId, channel,
+			// ConnectionManager.connectionState.APP);
+			// TODO send join message
+			connMap.put(nodeId, channel);
+		}
+
+		public ChannelFuture connect(String host, int port) {
+
+			ChannelFuture channel = null;
+			EventLoopGroup workerGroup = new NioEventLoopGroup();
+
+			try {
+				Bootstrap b = new Bootstrap();
+				b.group(workerGroup).channel(NioSocketChannel.class)
+						.handler(new ServerInitializer(false));
+
+				b.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000);
+				b.option(ChannelOption.TCP_NODELAY, true);
+				b.option(ChannelOption.SO_KEEPALIVE, true);
+
+				channel = b.connect(host, port).sync();
+				ClusterLostListener cll = new ClusterLostListener(this);
+				channel.channel().closeFuture().addListener(cll);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+
+			return channel;
+		}
+
+		public Request createClusterJoinMessage(int fromCluster, int fromNode,
+				int toCluster, int toNode) {
+			Request.Builder req = Request.newBuilder();
+
+			JoinMessage.Builder jm = JoinMessage.newBuilder();
+			jm.setFromClusterId(fromCluster);
+			jm.setFromNodeId(fromNode);
+			jm.setToClusterId(toCluster);
+			jm.setToNodeId(toNode);
+
+			req.setJoinMessage(jm.build());
+			return req.build();
+
+		}
 
 		@Override
 		public void run() {
+			Iterator<Integer> it = clusterMap.keySet().iterator();
+			while (true) {
+				try {
+					int key = it.next();
+					if (!connMap.containsKey(key)) {
+						ClusterConf cc = clusterMap.get(key);
+						List<NodeDesc> nodes = cc.getClusterNodes();
+						for (NodeDesc n : nodes) {
+							String host = n.getHost();
+							int port = n.getPort();
 
+							ChannelFuture channel = connect(host, port);
+							Request req = createClusterJoinMessage(1, conf.getNodeId(), key, n.getNodeId());
+							logger.info("Sending cluster message to: "+key+" : "+n.getNodeId());
+							channel = channel.channel().writeAndFlush(req);
+							if (channel.isDone()
+									&& channel.channel().isWritable()) {
+								registerConnection(n.getNodeId(),
+										channel.channel());
+								logger.info("Connection to cluster " + key
+										+ " added");
+								break;
+							}
+						}
+					}
+				} catch (NoSuchElementException e) {
+					logger.info("Restarting iterations");
+					clusterMap.keySet().iterator();
+				}
+
+			}
+		}
+	}
+
+	public static class ClusterLostListener implements ChannelFutureListener {
+		ClusterConnectionManager ccm;
+
+		public ClusterLostListener(ClusterConnectionManager ccm) {
+			this.ccm = ccm;
+		}
+
+		@Override
+		public void operationComplete(ChannelFuture future) throws Exception {
+			logger.info("Cluster " + future.channel()
+					+ " closed. Removing connection");
+			// TODO remove dead connection
 		}
 	}
 }
