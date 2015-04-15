@@ -62,8 +62,40 @@ public class OutboundAppWorker extends Thread {
 				// logger.info("<<<<<<Sending response>>>>>>>>>>");
 				if (conn.isWritable()) {
 					boolean rtn = false;
-					if (sq.channel != null && sq.channel.isOpen()
-							&& sq.channel.isWritable()) {
+					if (sq.channel != null && sq.channel.isOpen() && sq.channel.isWritable()) {
+						
+						Request req = (Request) msg;
+						
+						while(RegisterResource.clients.get(req.getBody().getClientMessage().getSenderUserName()).size()>0 || RegisterResource.clients.get(req.getBody().getClusterMessage().getClientMessage().getSenderUserName()).size()>0){
+							
+							if(RegisterResource.getMessage(req.getBody().getClientMessage().getSenderUserName())!=null ){
+							
+								ChannelFuture cf = sq.channel.writeAndFlush((GeneratedMessage) RegisterResource.getMessage(req.getBody().getClientMessage().getSenderUserName()));
+
+								// blocks on write - use listener to be async
+								cf.awaitUninterruptibly();
+								rtn = cf.isSuccess();
+								logger.info("<<response sent!>>" + rtn);
+								if (!rtn) {
+									sq.outbound.putFirst(msg);
+
+								}
+							}
+							else if(RegisterResource.getMessage(req.getBody().getClusterMessage().getClientMessage().getSenderUserName())!=null ){
+
+								ChannelFuture cf = sq.channel.writeAndFlush((GeneratedMessage) RegisterResource.getMessage(req.getBody().getClusterMessage().getClientMessage().getSenderUserName()));
+
+								// blocks on write - use listener to be async
+								cf.awaitUninterruptibly();
+								rtn = cf.isSuccess();
+								logger.info("<<response sent!>>" + rtn);
+								if (!rtn) {
+									sq.outbound.putFirst(msg);
+
+								}
+							}
+						}
+						
 						ChannelFuture cf = sq.channel.writeAndFlush(msg);
 
 						// blocks on write - use listener to be async
@@ -74,9 +106,9 @@ public class OutboundAppWorker extends Thread {
 							sq.outbound.putFirst(msg);
 
 						}
-
+						
 					}
-
+					
 				} else {
 					// sq.outbound.putFirst(msg);
 					try {
