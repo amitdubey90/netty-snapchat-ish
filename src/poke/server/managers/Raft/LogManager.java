@@ -35,21 +35,12 @@ public final class LogManager {
 		// instance.compareAndSet(null, new LogManager());
 		commitIndex = 0;
 		currentLogIndex = 0;
-		// pWorker = new LogPersistence();
-		sMachine = new StateMachine();
-		// Thread t = new Thread(pWorker);
-		// t.start();
-
-		
-		logger.info("Log Manager initialization");
-		
 		pWorker = new LogPersistence();
 		sMachine = new StateMachine();
 		Thread t = new Thread(pWorker);
 		t.start();
-		Thread t2 = new Thread(sMachine);
-		t2.start();
-		// return instance.get();
+		
+		logger.info("Log Manager initialization");
 	}
 
 	public static LogManager getInstance() {
