@@ -34,6 +34,12 @@ public class RegisterResource implements Resource {
 		addClientToMap(clientId, clientQueue);
 	}
 	
+	public static Request getMessage(int clientId){
+		Queue<Request> temp = clients.get(clientId);
+		
+		return (temp.remove());
+	}
+	
 	public static void addMessageToQueue(int clientId, Request cr){
 		if(clients.get(clientId) !=null){
 			Queue<Request> temp = clients.get(clientId);
