@@ -76,9 +76,9 @@ public class InboundAppWorker extends Thread {
 					Request req = ((Request) msg);
 					Request reply = null;
 
-					if (req.hasGraph()) {
-						ConnectionManager.addConnection(req.getGraph()
-								.getFromNodeId(), sq.channel,
+					if (req.hasJoinMessage()) {
+						ConnectionManager.addConnection(req.getJoinMessage()
+								.getFromClusterId(), sq.channel,
 								ConnectionManager.connectionState.APP);
 					} else {
 						// HEY! if you find yourself here and are tempted to add

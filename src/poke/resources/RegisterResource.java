@@ -35,10 +35,18 @@ public class RegisterResource implements Resource {
 	}
 	
 	public static void addMessageToQueue(int clientId, Request cr){
+		if(clients.get(clientId) !=null){
+			Queue<Request> temp = clients.get(clientId);
+			temp.add(cr);
+			clients.put(clientId,temp);
+		}
+		else{
+			createClientQueue(clientId);
+			Queue<Request> temp = clients.get(clientId);
+			temp.add(cr);
+			clients.put(clientId,temp);
+		}
 		
-		Queue<Request> temp = clients.get(clientId);
-		temp.add(cr);
-		clients.put(clientId,temp);
 	}
 	
 	@Override

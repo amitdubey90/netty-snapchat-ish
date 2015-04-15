@@ -40,6 +40,9 @@ public final class LogManager {
 		Thread t = new Thread(pWorker);
 		t.start();
 		
+		Thread t2 = new Thread(sMachine);
+		t2.start();
+		
 		logger.info("Log Manager initialization");
 	}
 

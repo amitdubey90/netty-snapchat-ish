@@ -4,6 +4,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 @XmlRootElement(name = "adjacent")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class NodeDesc {
@@ -11,6 +13,7 @@ public class NodeDesc {
 	private String nodeName;
 	private String host;
 	private int port;
+	@JsonIgnore
 	private int mgmtPort;
 
 	public String getHost() {

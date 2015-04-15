@@ -81,27 +81,35 @@ public class RaftManager {
 	// Send request to other cluster
 	public void processClientRequest(Request request) {
 		logger.info("Raft Manager processing client request");
-		String msgId=request.getBody().getClientMessage().getMsgId();
-		int senderUserName = request.getBody().getClientMessage().getSenderUserName();
-		int receiverUserName= request.getBody().getClientMessage().getReceiverUserName();
-		String logData=System.currentTimeMillis() +","+msgId+","+senderUserName+","+receiverUserName;
-		if(isLeader){
-			LogManager.createEntry(term,logData);
+		String msgId = request.getBody().getClientMessage().getMsgId();
+		int senderUserName = request.getBody().getClientMessage()
+				.getSenderUserName();
+		int receiverUserName = request.getBody().getClientMessage()
+				.getReceiverUserName();
+		String logData = System.currentTimeMillis() + "," + msgId + ","
+				+ senderUserName + "," + receiverUserName;
+		if (isLeader) {
+			LogManager.createEntry(term, logData);
 		}
 	}
 
 	// current state is responsible for requests
 	public void processRequest(Management mgmt) {
-		// RaftMessage rm = mgmt.getRaftMessage();
-		/*
-		 * if ((rm.hasAppendMessage() && rm.getAppendMessage().hasTerm())) { if
-		 * (rm.getAppendMessage().getTerm() > term) {
-		 * convertToFollower(rm.getAppendMessage().getTerm()); return; }
-		 * 
-		 * } else if ((rm.hasRequestVote() && rm.getRequestVote().hasTerm())) {
-		 * if (rm.getRequestVote().getTerm() > term) {
-		 * convertToFollower(rm.getRequestVote().getTerm()); return; } }
-		 */
+		 RaftMessage rm = mgmt.getRaftMessage();
+
+		if ((rm.hasAppendMessage() && rm.getAppendMessage().hasTerm())) {
+			if (rm.getAppendMessage().getTerm() > term) {
+				convertToFollower(rm.getAppendMessage().getTerm());
+				//return;
+			}
+
+		} else if ((rm.hasRequestVote() && rm.getRequestVote().hasTerm())) {
+			if (rm.getRequestVote().getTerm() > term) {
+				convertToFollower(rm.getRequestVote().getTerm());
+				//return;
+			}
+		}
+
 		currentState.processRequest(mgmt);
 	}
 
@@ -269,7 +277,7 @@ public class RaftManager {
 					} else {
 						if (now - lastKnownBeat > electionTimeOut / 4) {
 							// TODO remove createLogEntry() when done testing
-							//createLogEntry();
+							// createLogEntry();
 							((LeaderState) currentState).sendAppendNotice();
 
 							lastKnownBeat = System.currentTimeMillis();
@@ -288,7 +296,7 @@ public class RaftManager {
 
 		@Override
 		public void run() {
-			
+
 		}
 	}
 }

@@ -225,7 +225,7 @@ public class HeartMonitor {
 				logger.error("Channel to node " + toNodeId + " not writable!");
 			}
 
-			logger.info("HeartMonitor sending join message to " + toNodeId);
+			logger.info("HeartMonitor sending join message to " + toNodeId +" "+ isMgmt);
 
 			if (isMgmt) {
 				Network.Builder n = Network.newBuilder();
@@ -252,7 +252,7 @@ public class HeartMonitor {
 				ch.writeAndFlush(m.build());
 				rtn = true;
 			} else {
-				logger.info("Sending app join ");
+				//logger.info("Sending app join ");
 
 				Header.Builder header = Header.newBuilder();
 				// header.setRoutingId(Routing.REGISTER);
@@ -264,7 +264,7 @@ public class HeartMonitor {
 				request.setHeader(header);
 				request.setBody(body);
 
-				poke.comm.App.Network.Builder n = poke.comm.App.Network
+				poke.comm.App.JoinMessage.Builder n = poke.comm.App.JoinMessage
 						.newBuilder();
 
 				// 'N' allows us to track the connection restarts and to provide
@@ -272,7 +272,7 @@ public class HeartMonitor {
 				n.setFromNodeId(iamNode);
 				n.setToNodeId(toNodeId);
 
-				request.setGraph(n.build());
+				request.setJoinMessage(n.build());
 				ch.writeAndFlush(request.build());
 				rtn = true;
 			}
@@ -329,7 +329,8 @@ public class HeartMonitor {
 
 		@Override
 		public void operationComplete(ChannelFuture future) throws Exception {
-			monitor.release();
+			if(monitor != null) 
+				monitor.release();
 		}
 	}
 }

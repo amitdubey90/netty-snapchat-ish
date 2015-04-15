@@ -227,14 +227,16 @@ message Payload {
 }
 
 message Request {
-    required Header header = 1;
-    required Payload body = 2;
-    optional Network  graph = 3;
+    optional Header header = 1;
+    optional Payload body = 2;
+    optional JoinMessage join_message = 3;
 }
 
-message Network {
-    required int32 from_node_id = 1;
-    required int32 to_node_id = 2;
+message JoinMessage {
+    optional int32 from_node_id = 1;
+    optional int32 to_node_id = 2;
+    optional int32 from_cluster_id = 3;
+    optional int32 to_cluster_id = 4;
 }
 
 message ClientMessage{
