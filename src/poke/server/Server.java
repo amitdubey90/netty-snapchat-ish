@@ -415,15 +415,15 @@ public class Server {
 			System.exit(2);
 		}
 
-//		File clusterCfg = new File(args[1]);
-//		if (!clusterCfg.exists()) {
-//			Server.logger.error("cluster configuration file does not exist: "
-//					+ cfg);
-//			System.exit(2);
-//		}
+		File clusterCfg = new File(args[1]);
+		if (!clusterCfg.exists()) {
+			Server.logger.error("cluster configuration file does not exist: "
+					+ cfg);
+			System.exit(2);
+		}
 
-		//Server svr = new Server(cfg, clusterCfg);
-		Server svr = new Server(cfg);
+		Server svr = new Server(cfg, clusterCfg);
+		// Server svr = new Server(cfg);
 		svr.run();
 	}
 }
