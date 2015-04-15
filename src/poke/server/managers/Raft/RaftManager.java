@@ -133,7 +133,7 @@ public class RaftManager {
 
 	// I always root for myself when I am a candidate
 	public void voteForSelf() {
-		voteCount = 1;
+		receiveVote();
 		votedForTerm = term;
 		votedForCandidateID = conf.getNodeId();
 	}
@@ -156,6 +156,7 @@ public class RaftManager {
 	}
 
 	public void convertToCandidate(RaftMessage msg) {
+		voteCount = 0;
 		currentState = candidateInstance;
 		isLeader = false;
 		resetTimeOut();
