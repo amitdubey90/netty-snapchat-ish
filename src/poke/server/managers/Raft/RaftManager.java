@@ -20,6 +20,7 @@ import poke.core.Mgmt.RequestVoteMessage;
 import poke.server.conf.ClusterConfList;
 import poke.server.conf.ServerConf;
 import poke.server.management.ManagementAdapter;
+import poke.server.managers.ConnectionManager;
 
 public class RaftManager {
 	protected static Logger logger = LoggerFactory.getLogger("raftManager");
@@ -124,7 +125,7 @@ public class RaftManager {
 	// Yay! Got a vote..
 	public void receiveVote() {
 		// logger.info("Vote received");
-		if (++voteCount > ((conf.getAdjacent().getAdjacentNodes().size() + 1) / 2)) {
+		if (++voteCount > ((ConnectionManager.getActiveMgmtConnetion() + 1) / 2)) {
 			converToLeader();
 			sendLeaderNotice();
 		}

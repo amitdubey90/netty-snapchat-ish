@@ -46,126 +46,135 @@ public class ConnectionManager {
 	private static HashMap<Integer, Channel> connections = new HashMap<Integer, Channel>();
 	private static HashMap<Integer, Channel> mgmtConnections = new HashMap<Integer, Channel>();
 	private static HashMap<Integer, Channel> clientConnections = new HashMap<Integer, Channel>();
-	public static enum connectionState {APP, MGMT, CLIENT};
-	
+
+	public static enum connectionState {
+		APP, MGMT, CLIENT
+	};
+
 	public synchronized static void sendToNode(Management mgmt,
 			Integer destination) {
 		if (mgmt == null)
 			return;
-		if (mgmtConnections.get(destination) != null){
+		if (mgmtConnections.get(destination) != null) {
 			mgmtConnections.get(destination).writeAndFlush(mgmt);
 		} else
 			System.out.println("No destination found");
-		
+
 	}
-	
-	
+
+	public static int getActiveMgmtConnetion() {
+		int result = 0;
+
+		for (Channel channel : mgmtConnections.values()) {
+			if (channel.isWritable())
+				result += 1;
+		}
+
+		return result;
+	}
+
 	public static void addConnection(Integer nodeId, Channel channel,
 			connectionState connState) {
 		logger.info("ConnectionManager adding connection to " + nodeId);
 
-/*		if (isMgmt)
-			mgmtConnections.put(nodeId, channel);
-		else
-			connections.put(nodeId, channel);
-*/	
+		/*
+		 * if (isMgmt) mgmtConnections.put(nodeId, channel); else
+		 * connections.put(nodeId, channel);
+		 */
 
 		switch (connState) {
 		case MGMT:
 			logger.info("Adding mgmt node");
 			mgmtConnections.put(nodeId, channel);
 			break;
-		
+
 		case APP:
 			connections.put(nodeId, channel);
 			break;
-		
+
 		case CLIENT:
 			clientConnections.put(nodeId, channel);
 			break;
-	
-			
+
 		default:
 			break;
 		}
-	
+
 	}
 
-	public static Channel getConnection(Integer nodeId, connectionState connState) {
+	public static Channel getConnection(Integer nodeId,
+			connectionState connState) {
 
-		/*if (isMgmt)
-			return mgmtConnections.get(nodeId);
-		else
-			return connections.get(nodeId);*/
+		/*
+		 * if (isMgmt) return mgmtConnections.get(nodeId); else return
+		 * connections.get(nodeId);
+		 */
 		switch (connState) {
 		case MGMT:
 			return mgmtConnections.get(nodeId);
-			
-		
+
 		case APP:
 			return connections.get(nodeId);
-			
+
 		case CLIENT:
 			return clientConnections.get(nodeId);
-			
-			
+
 		default:
 			return null;
 		}
-		
+
 	}
-	
-	public static Collection<Channel> getClientConnections(){
+
+	public static Collection<Channel> getClientConnections() {
 		return clientConnections.values();
 	}
-	
-	public static Collection<Channel> getMgmtConnections(){
+
+	public static Collection<Channel> getMgmtConnections() {
 		return mgmtConnections.values();
 	}
-	
-	public static Collection<Channel> getConnections(){
+
+	public static Collection<Channel> getConnections() {
 		return connections.values();
 	}
-	
-	public static Set<Integer> getConnectionsKeySet(){
+
+	public static Set<Integer> getConnectionsKeySet() {
 		return connections.keySet();
 	}
 
-	public static Set<Integer> getClientConnectionsKeySet(){
+	public static Set<Integer> getClientConnectionsKeySet() {
 		return clientConnections.keySet();
 	}
-	
-	public static Set<Integer> getClientConnectedNodes(){
+
+	public static Set<Integer> getClientConnectedNodes() {
 		return clientConnections.keySet();
 	}
-	
-	public static Set<Integer> getConnectedNodes(){
+
+	public static Set<Integer> getConnectedNodes() {
 		return mgmtConnections.keySet();
 	}
-	
-	
+
 	public synchronized static void removeConnection(Integer nodeId,
 			connectionState connState) {
-		/*if (isMgmt)
-			mgmtConnections.remove(nodeId);
-		else
-			connections.remove(nodeId);*/
+		/*
+		 * if (isMgmt) mgmtConnections.remove(nodeId); else
+		 * connections.remove(nodeId);
+		 */
 		switch (connState) {
 		case MGMT:
 			mgmtConnections.remove(nodeId);
-			break;	
-		
+			break;
+
 		case APP:
 			connections.remove(nodeId);
 			break;
 		case CLIENT:
 			clientConnections.remove(nodeId);
 			break;
-			
+
 		default:
 			break;
 		}
-			
+
 	}
 
 	public synchronized static void removeConnection(Channel channel,
@@ -199,18 +208,19 @@ public class ConnectionManager {
 	public synchronized static void broadcast(Request req) {
 		if (req == null)
 			return;
-		
+
 		for (Channel ch : connections.values())
 			ch.writeAndFlush(req);
-		
+
 	}
 
-	public synchronized static void broadcastToClients(Request req, int fromClient){
+	public synchronized static void broadcastToClients(Request req,
+			int fromClient) {
 		if (req == null)
 			return;
 
 		for (Integer clientID : clientConnections.keySet())
-			if(clientID != fromClient)
+			if (clientID != fromClient)
 				clientConnections.get(clientID).writeAndFlush(req);
 	}
 
