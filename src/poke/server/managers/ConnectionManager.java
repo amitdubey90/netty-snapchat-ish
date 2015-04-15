@@ -16,6 +16,8 @@
 package poke.server.managers;
 
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -81,6 +83,8 @@ public class ConnectionManager {
 		 * if (isMgmt) mgmtConnections.put(nodeId, channel); else
 		 * connections.put(nodeId, channel);
 		 */
+		channel.closeFuture().addListener(new ClosedConnectionListener(nodeId, connState));
+		//channel.
 
 		switch (connState) {
 		case MGMT:
@@ -242,5 +246,41 @@ public class ConnectionManager {
 
 	public static int getNumMgmtConnections() {
 		return mgmtConnections.size();
+	}
+	
+	public static class ClosedConnectionListener implements ChannelFutureListener {
+		int id;
+		connectionState state;
+		
+		public ClosedConnectionListener(Integer nodeId,
+				connectionState connState) {
+			this.id = nodeId;
+			this.state = connState;
+		}
+
+		@Override
+		public void operationComplete(ChannelFuture future) throws Exception {
+			
+			if (state == connectionState.CLIENT){
+				logger.info("id " + future.channel()
+						+ " closed. Removing connection");
+				clientConnections.remove(id);
+			}
+		}
+	}
+	
+	public static class OpenConnectionListener implements ChannelFutureListener {
+		int id;
+
+		public OpenConnectionListener(int id) {
+			this.id = id;
+		}
+
+		@Override
+		public void operationComplete(ChannelFuture future) throws Exception {
+			logger.info("id " + future.channel()
+					+ " opened. Adding connection");
+			// TODO remove dead connection
+		}
 	}
 }
