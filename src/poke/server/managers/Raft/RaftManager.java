@@ -48,7 +48,7 @@ public class RaftManager {
 	private static ClusterConfList clusterConf;
 
 	boolean forever = true;
-	boolean isLeader = false;
+	static boolean isLeader = false;
 
 	protected RaftState currentState;
 	protected long lastKnownBeat;
@@ -72,9 +72,9 @@ public class RaftManager {
 		followerInstance = FollowerState.init();
 		candidateInstance = CandidateState.init();
 		leaderInstance = LeaderState.init();
-		
-		new Thread(new ClusterConnectionManager()).start();
 
+		new Thread(new ClusterConnectionManager()).start();
+		
 		LogManager.initManager();
 		return instance.get();
 	}
@@ -82,6 +82,7 @@ public class RaftManager {
 	public static RaftManager getInstance() {
 		return instance.get();
 	}
+	
 
 	public void initRaftManager() {
 		currentState = followerInstance;
@@ -339,12 +340,13 @@ public class RaftManager {
 				b.option(ChannelOption.TCP_NODELAY, true);
 				b.option(ChannelOption.SO_KEEPALIVE, true);
 
-				channel = b.connect(host, port).sync();
+				channel = b.connect(host, port).syncUninterruptibly();
 				ClusterLostListener cll = new ClusterLostListener(this);
 				channel.channel().closeFuture().addListener(cll);
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				//e.printStackTrace();
+				logger.info("Cound not connect!!!!!!!!!!!!!!!!!!!!!!!!!");
 				return null;
 			}
 
@@ -370,34 +372,49 @@ public class RaftManager {
 		public void run() {
 			Iterator<Integer> it = clusterMap.keySet().iterator();
 			while (true) {
-				try {
-					int key = it.next();
-					if (!connMap.containsKey(key)) {
-						ClusterConf cc = clusterMap.get(key);
-						List<NodeDesc> nodes = cc.getClusterNodes();
-						for (NodeDesc n : nodes) {
-							String host = n.getHost();
-							int port = n.getPort();
+				//logger.info(""+isLeader);
+				if(isLeader){
+					
+					try {
+						int key = it.next();
+						if (!connMap.containsKey(key)) {
+							ClusterConf cc = clusterMap.get(key);
+							List<NodeDesc> nodes = cc.getClusterNodes();
+							logger.info("For cluster "+ key +" nodes "+ nodes.size());
+							for (NodeDesc n : nodes) {
+								String host = n.getHost();
+								int port = n.getPort();
 
-							ChannelFuture channel = connect(host, port);
-							Request req = createClusterJoinMessage(1, conf.getNodeId(), key, n.getNodeId());
-							logger.info("Sending cluster message to: "+key+" : "+n.getNodeId());
-							channel = channel.channel().writeAndFlush(req);
-							if (channel.isDone()
-									&& channel.channel().isWritable()) {
-								registerConnection(n.getNodeId(),
-										channel.channel());
-								logger.info("Connection to cluster " + key
-										+ " added");
-								break;
+								ChannelFuture channel = connect(host, port);
+								Request req = createClusterJoinMessage(1,
+										conf.getNodeId(), key, n.getNodeId());
+								logger.info("Sending cluster message to: " + key
+										+ " : " + n.getNodeId());
+								if (channel != null) {
+									channel = channel.channel().writeAndFlush(req);
+									if (channel.isDone()
+											&& channel.channel().isWritable()) {
+										registerConnection(n.getNodeId(),
+												channel.channel());
+										logger.info("Connection to cluster " + key
+												+ " added");
+										break;
+									}
+								}
 							}
 						}
+					} catch (NoSuchElementException e) {
+						//logger.info("Restarting iterations");
+						it = clusterMap.keySet().iterator();
 					}
-				} catch (NoSuchElementException e) {
-					logger.info("Restarting iterations");
-					clusterMap.keySet().iterator();
+				} else {
+					try {
+						Thread.sleep(3000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
-
 			}
 		}
 	}
