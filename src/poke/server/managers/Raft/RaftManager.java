@@ -332,7 +332,7 @@ public class RaftManager {
 			EventLoopGroup workerGroup = new NioEventLoopGroup();
 
 			try {
-				logger.info("Attempting to  connect to : "+host+" : "+port);
+				//logger.info("Attempting to  connect to : "+host+" : "+port);
 				Bootstrap b = new Bootstrap();
 				b.group(workerGroup).channel(NioSocketChannel.class)
 						.handler(new ServerInitializer(false));
@@ -347,7 +347,7 @@ public class RaftManager {
 
 			} catch (Exception e) {
 				//e.printStackTrace();
-				logger.info("Cound not connect!!!!!!!!!!!!!!!!!!!!!!!!!");
+				//logger.info("Cound not connect!!!!!!!!!!!!!!!!!!!!!!!!!");
 				return null;
 			}
 
@@ -382,12 +382,12 @@ public class RaftManager {
 						if (!connMap.containsKey(key)) {
 							ClusterConf cc = clusterMap.get(key);
 							List<NodeDesc> nodes = cc.getClusterNodes();
-							logger.info("For cluster "+ key +" nodes "+ nodes.size());
+							//logger.info("For cluster "+ key +" nodes "+ nodes.size());
 							for (NodeDesc n : nodes) {
 								String host = n.getHost();
 								int port = n.getPort();
 
-								ChannelFuture channel = connect("localhost", port);
+								ChannelFuture channel = connect(host, port);
 								Request req = createClusterJoinMessage(1,
 										conf.getNodeId(), key, n.getNodeId());
 								if (channel != null) {
