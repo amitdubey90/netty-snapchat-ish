@@ -139,14 +139,14 @@ public final class LogManager {
 			if (commitIndex > lastApplied) {
 				for (int i = lastApplied+1; i < commitIndex + 1; i++) {
 					if (getLogEntry(i) != null) {
-						logger.info("Got a leader log entry");
+						//logger.info("Got a leader log entry");
 						RequestProcessor.processRequest(getLogEntry(i));
 					}else{
-						logger.info("No leader log entry");
+						//logger.info("No leader log entry");
 					}
 				}
 				lastApplied = Math.min(currentLogIndex, commitIndex);
-				logger.info("Applying " + lastApplied + " to state");
+				//logger.info("Applying " + lastApplied + " to state");
 			}
 		}
 
@@ -156,8 +156,8 @@ public final class LogManager {
 			while (true) {
 				try {
 					stateMachine();
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
+					Thread.sleep(100);
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}

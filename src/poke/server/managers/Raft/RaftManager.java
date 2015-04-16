@@ -356,7 +356,7 @@ public class RaftManager {
 
 		public Request createClusterJoinMessage(int fromCluster, int fromNode,
 				int toCluster, int toNode) {
-			logger.info("Creating join message");
+			//logger.info("Creating join message");
 			Request.Builder req = Request.newBuilder();
 
 			JoinMessage.Builder jm = JoinMessage.newBuilder();
@@ -388,7 +388,7 @@ public class RaftManager {
 								int port = n.getPort();
 
 								ChannelFuture channel = connect(host, port);
-								Request req = createClusterJoinMessage(1,
+								Request req = createClusterJoinMessage(35325,
 										conf.getNodeId(), key, n.getNodeId());
 								if (channel != null) {
 									channel = channel.channel().writeAndFlush(req);

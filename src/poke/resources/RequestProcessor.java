@@ -30,9 +30,11 @@ public class RequestProcessor {
 		String logData = logEntry.getLogData();
 		logger.info("LogData is: "+logData);
 		Request req=checkMsgReceived(logData);
-		senderUserName=req.getBody().getClientMessage().getSenderUserName();
-		logger.info("Request to be broadcast to clients except client id: "+senderUserName);
-		//broadcast to clients
+		if(req != null){
+			senderUserName=req.getBody().getClientMessage().getSenderUserName();
+			logger.info("Request to be broadcast to clients except client id: "+senderUserName);
+		}
+				//broadcast to clients
 		
 		ConnectionManager.broadcastToClients(req, senderUserName);
 	}

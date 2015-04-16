@@ -63,13 +63,13 @@ public class OutboundMgmtWorker extends Thread {
 					}
 
 				} else {
-					logger.info("channel to node " + msg.req.getHeader().getToNode() + " is not writable");
+					//logger.info("channel to node " + msg.req.getHeader().getToNode() + " is not writable");
 					ManagementQueue.outbound.putFirst(msg);
 				}
 			} catch (InterruptedException ie) {
 				break;
 			} catch (Exception e) {
-				logger.error("Unexpected management communcation failure", e);
+				//logger.error("Unexpected management communcation failure", e);
 				break;
 			}
 		}

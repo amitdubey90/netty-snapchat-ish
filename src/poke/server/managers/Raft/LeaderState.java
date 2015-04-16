@@ -104,7 +104,7 @@ public class LeaderState implements RaftState {
 					} // else
 					if (mIdx != null) {
 						matchIndex.put(sourceNode, mIdx + 1);
-						//if (logger.isDebugEnabled())
+						if (logger.isDebugEnabled())
 							logger.debug("Match index for " + sourceNode
 									+ " is " + (mIdx + 1));
 					}// else
@@ -143,7 +143,7 @@ public class LeaderState implements RaftState {
 					count += 1 ;
 					if (count > ((matchIndex.keySet().size() +1)/ 2)){
 						LogManager.commitIndex = commitIndex;
-						logger.info("Updating commit index");
+						//logger.info("Updating commit index");
 					}
 				}
 				
