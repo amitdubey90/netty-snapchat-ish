@@ -97,10 +97,9 @@ public class JobResource implements Resource {
 				return null;
 			}
 		}else if(request.getBody().hasClusterMessage()){
-			logger.info("Cluster Message");
+			logger.info("Cluster Message received >>>>>>>");
 			ClientMessage.Builder clientMsg = ClientMessage.newBuilder();
-			ClientMessage reqClientMsg = request.getBody()
-					.getClientMessage();
+			ClientMessage reqClientMsg = request.getBody().getClusterMessage().getClientMessage();
 			clientMsg.setSenderUserName(reqClientMsg.getSenderUserName());
 			clientMsg.setIsClient(true);
 			clientMsg.setBroadcastInternal(false);
