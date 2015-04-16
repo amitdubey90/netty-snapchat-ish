@@ -332,6 +332,7 @@ public class RaftManager {
 			EventLoopGroup workerGroup = new NioEventLoopGroup();
 
 			try {
+				logger.info("Attempting to  connect to : "+host+" : "+port);
 				Bootstrap b = new Bootstrap();
 				b.group(workerGroup).channel(NioSocketChannel.class)
 						.handler(new ServerInitializer(false));
@@ -341,8 +342,8 @@ public class RaftManager {
 				b.option(ChannelOption.SO_KEEPALIVE, true);
 
 				channel = b.connect(host, port).syncUninterruptibly();
-				ClusterLostListener cll = new ClusterLostListener(this);
-				channel.channel().closeFuture().addListener(cll);
+				//ClusterLostListener cll = new ClusterLostListener(this);
+				//channel.channel().closeFuture().addListener(cll);
 
 			} catch (Exception e) {
 				//e.printStackTrace();
@@ -355,6 +356,7 @@ public class RaftManager {
 
 		public Request createClusterJoinMessage(int fromCluster, int fromNode,
 				int toCluster, int toNode) {
+			logger.info("Creating join message");
 			Request.Builder req = Request.newBuilder();
 
 			JoinMessage.Builder jm = JoinMessage.newBuilder();
@@ -385,16 +387,15 @@ public class RaftManager {
 								String host = n.getHost();
 								int port = n.getPort();
 
-								ChannelFuture channel = connect(host, port);
+								ChannelFuture channel = connect("localhost", port);
 								Request req = createClusterJoinMessage(1,
 										conf.getNodeId(), key, n.getNodeId());
-								logger.info("Sending cluster message to: " + key
-										+ " : " + n.getNodeId());
 								if (channel != null) {
 									channel = channel.channel().writeAndFlush(req);
-									if (channel.isDone()
-											&& channel.channel().isWritable()) {
-										registerConnection(n.getNodeId(),
+//									logger.info("Message flushed"+channel.isDone()+ " "+
+//											 channel.channel().isWritable());
+									if (channel.channel().isWritable()) {
+										registerConnection(key,
 												channel.channel());
 										logger.info("Connection to cluster " + key
 												+ " added");
@@ -406,6 +407,12 @@ public class RaftManager {
 					} catch (NoSuchElementException e) {
 						//logger.info("Restarting iterations");
 						it = clusterMap.keySet().iterator();
+						try {
+							Thread.sleep(3000);
+						} catch (InterruptedException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 					}
 				} else {
 					try {
