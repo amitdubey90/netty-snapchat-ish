@@ -246,7 +246,7 @@ message ClientMessage{
   optional string msgText = 4;
   optional string msgImageName = 5;
   optional bytes msgImageBits = 6;
-  optional MessageType messageType = 7 [default = SUCCESS];
+  optional MessageType messageType = 7;
   optional bool isClient = 8 [default = false];
   optional bool broadcastInternal = 9 [default = false];
   enum MessageType
