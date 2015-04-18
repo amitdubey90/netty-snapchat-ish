@@ -327,17 +327,14 @@ public class RaftManager {
 	}
 
 	public static class ClusterConnectionManager extends Thread {
-		private Map<Integer, Channel> connMap = new HashMap<Integer, Channel>();
-		private Map<Integer, ClusterConf> clusterMap;
+		private static Map<Integer, Channel> connMap = new HashMap<Integer, Channel>();
+		private static Map<Integer, ClusterConf> clusterMap;
 
 		public ClusterConnectionManager() {
 			clusterMap = clusterConf.getClusters();
 		}
 
 		public void registerConnection(int nodeId, Channel channel) {
-			// ConnectionManager.addConnection(nodeId, channel,
-			// ConnectionManager.connectionState.APP);
-			// TODO send join message
 			connMap.put(nodeId, channel);
 		}
 
@@ -347,7 +344,7 @@ public class RaftManager {
 			EventLoopGroup workerGroup = new NioEventLoopGroup();
 
 			try {
-				// logger.info("Attempting to  connect to : "+host+" : "+port);
+				//logger.info("Attempting to  connect to : "+host+" : "+port);
 				Bootstrap b = new Bootstrap();
 				b.group(workerGroup).channel(NioSocketChannel.class)
 						.handler(new ServerInitializer(false));
@@ -442,20 +439,26 @@ public class RaftManager {
 				}
 			}
 		}
+		public static class ClusterLostListener implements ChannelFutureListener {
+			ClusterConnectionManager ccm;
+
+			public ClusterLostListener(ClusterConnectionManager ccm) {
+				this.ccm = ccm;
+			}
+
+			@Override
+			public void operationComplete(ChannelFuture future) throws Exception {
+				logger.info("Cluster " + future.channel()
+						+ " closed. Removing connection");
+				
+				for( Integer clusterId: connMap.keySet()) {
+					if(connMap.get(clusterId).equals(future.channel())){
+						connMap.remove(clusterId);
+					}
+				}
+			}
+		}
 	}
 
-	public static class ClusterLostListener implements ChannelFutureListener {
-		ClusterConnectionManager ccm;
-
-		public ClusterLostListener(ClusterConnectionManager ccm) {
-			this.ccm = ccm;
-		}
-
-		@Override
-		public void operationComplete(ChannelFuture future) throws Exception {
-			logger.info("Cluster " + future.channel()
-					+ " closed. Removing connection");
-			// TODO remove dead connection
-		}
-	}
+	
 }
