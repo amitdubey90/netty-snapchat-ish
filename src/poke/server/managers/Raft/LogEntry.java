@@ -5,10 +5,10 @@ public class LogEntry {
 	int logIndex;
 	int prevLogTerm;
 	int prevLogIndex;
-	String logData;
+	poke.core.Mgmt.ClientMessage logData;
 
 	public LogEntry(int term, int logIndex, int prevLogTerm, int prevLogIndex,
-			String logData) {
+			poke.core.Mgmt.ClientMessage logData) {
 		super();
 		this.term = term;
 		this.logIndex = logIndex;
@@ -33,11 +33,11 @@ public class LogEntry {
 		this.logIndex = logIndex;
 	}
 
-	public String getLogData() {
+	public poke.core.Mgmt.ClientMessage getLogData() {
 		return logData;
 	}
 
-	public void setLogData(String logData) {
+	public void setLogData(poke.core.Mgmt.ClientMessage logData) {
 		this.logData = logData;
 	}
 

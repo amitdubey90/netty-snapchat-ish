@@ -74,7 +74,7 @@ public class RaftManager {
 		leaderInstance = LeaderState.init();
 
 		new Thread(new ClusterConnectionManager()).start();
-		
+
 		LogManager.initManager();
 		return instance.get();
 	}
@@ -82,7 +82,6 @@ public class RaftManager {
 	public static RaftManager getInstance() {
 		return instance.get();
 	}
-	
 
 	public void initRaftManager() {
 		currentState = followerInstance;
@@ -98,18 +97,37 @@ public class RaftManager {
 	}
 
 	// Send request to other cluster
-	public void processClientRequest(Request request) {
+	public boolean processClientRequest(poke.comm.App.ClientMessage clientMsg, boolean isClient) {
 		logger.info("Raft Manager processing client request");
-		String msgId = request.getBody().getClientMessage().getMsgId();
-		int senderUserName = request.getBody().getClientMessage()
-				.getSenderUserName();
-		int receiverUserName = request.getBody().getClientMessage()
-				.getReceiverUserName();
-		String logData = System.currentTimeMillis() + "," + msgId + ","
-				+ senderUserName + "," + receiverUserName;
-		if (isLeader) {
-			LogManager.createEntry(term, logData);
+		if (clientMsg != null) {
+			//converting app.clientmessage to mgmt.clientmessage
+			poke.core.Mgmt.ClientMessage.Builder logData = poke.core.Mgmt.ClientMessage
+					.newBuilder();
+
+			logData.setSenderUserName(clientMsg.getSenderUserName());
+			logData.setReceiverUserName(clientMsg.getReceiverUserName());
+
+			logData.setIsClient(isClient);
+			// logData.setBroadcastInternal(false);
+
+			logData.setMsgId(clientMsg.getMsgId());
+			logData.setMsgImageName(clientMsg.getMsgImageName());
+			logData.setMsgImageBits(clientMsg.getMsgImageBits());
+			logData.setMsgText(clientMsg.getMsgText());
+			
+			if (isLeader) {
+				logger.info("I am the leader. Creating entry");
+				LogManager.createEntry(term, logData.build());
+				return true;
+			} else {
+				logger.info("I am a follower. Forwarding to leader:"+ leaderID);
+				Management.Builder mgmt = buildMgmtMessage(ElectionAction.FORWARD);
+				mgmt.setClientMessage(logData.build());
+				ManagementAdapter.sendToNode(mgmt.build(), leaderID);
+				return true;
+			}
 		}
+		return false;
 	}
 
 	// current state is responsible for requests
@@ -156,10 +174,6 @@ public class RaftManager {
 		votedForCandidateID = conf.getNodeId();
 	}
 
-	public void createLogEntry() {
-		LogManager.createEntry(term, System.currentTimeMillis() + " - data");
-	}
-
 	public void resetTimeOut() {
 		lastKnownBeat = System.currentTimeMillis();
 	}
@@ -169,7 +183,7 @@ public class RaftManager {
 		currentState = leaderInstance;
 		((LeaderState) currentState).reInitializeLeader();
 		leaderID = conf.getNodeId();
-		logger.info("I am the leader " + conf.getNodeId());
+		logger.info("I am the leader " + leaderID);
 		isLeader = true;
 	}
 
@@ -189,6 +203,7 @@ public class RaftManager {
 
 	// tell everyone that I am the leader
 	public void sendLeaderNotice() {
+		logger.info("Sending leader notice for "+ leaderID);
 		RaftMessage.Builder rlf = RaftMessage.newBuilder();
 		rlf.setAction(ElectionAction.APPEND);
 
@@ -332,7 +347,7 @@ public class RaftManager {
 			EventLoopGroup workerGroup = new NioEventLoopGroup();
 
 			try {
-				//logger.info("Attempting to  connect to : "+host+" : "+port);
+				// logger.info("Attempting to  connect to : "+host+" : "+port);
 				Bootstrap b = new Bootstrap();
 				b.group(workerGroup).channel(NioSocketChannel.class)
 						.handler(new ServerInitializer(false));
@@ -342,12 +357,12 @@ public class RaftManager {
 				b.option(ChannelOption.SO_KEEPALIVE, true);
 
 				channel = b.connect(host, port).syncUninterruptibly();
-				//ClusterLostListener cll = new ClusterLostListener(this);
-				//channel.channel().closeFuture().addListener(cll);
+				// ClusterLostListener cll = new ClusterLostListener(this);
+				// channel.channel().closeFuture().addListener(cll);
 
 			} catch (Exception e) {
-				//e.printStackTrace();
-				//logger.info("Cound not connect!!!!!!!!!!!!!!!!!!!!!!!!!");
+				// e.printStackTrace();
+				// logger.info("Cound not connect!!!!!!!!!!!!!!!!!!!!!!!!!");
 				return null;
 			}
 
@@ -356,7 +371,7 @@ public class RaftManager {
 
 		public Request createClusterJoinMessage(int fromCluster, int fromNode,
 				int toCluster, int toNode) {
-			//logger.info("Creating join message");
+			// logger.info("Creating join message");
 			Request.Builder req = Request.newBuilder();
 
 			JoinMessage.Builder jm = JoinMessage.newBuilder();
@@ -374,15 +389,16 @@ public class RaftManager {
 		public void run() {
 			Iterator<Integer> it = clusterMap.keySet().iterator();
 			while (true) {
-				//logger.info(""+isLeader);
-				if(isLeader){
-					
+				// logger.info(""+isLeader);
+				if (isLeader) {
+
 					try {
 						int key = it.next();
 						if (!connMap.containsKey(key)) {
 							ClusterConf cc = clusterMap.get(key);
 							List<NodeDesc> nodes = cc.getClusterNodes();
-							//logger.info("For cluster "+ key +" nodes "+ nodes.size());
+							// logger.info("For cluster "+ key +" nodes "+
+							// nodes.size());
 							for (NodeDesc n : nodes) {
 								String host = n.getHost();
 								int port = n.getPort();
@@ -391,21 +407,23 @@ public class RaftManager {
 								Request req = createClusterJoinMessage(35325,
 										conf.getNodeId(), key, n.getNodeId());
 								if (channel != null) {
-									channel = channel.channel().writeAndFlush(req);
-//									logger.info("Message flushed"+channel.isDone()+ " "+
-//											 channel.channel().isWritable());
+									channel = channel.channel().writeAndFlush(
+											req);
+									// logger.info("Message flushed"+channel.isDone()+
+									// " "+
+									// channel.channel().isWritable());
 									if (channel.channel().isWritable()) {
 										registerConnection(key,
 												channel.channel());
-										logger.info("Connection to cluster " + key
-												+ " added");
+										logger.info("Connection to cluster "
+												+ key + " added");
 										break;
 									}
 								}
 							}
 						}
 					} catch (NoSuchElementException e) {
-						//logger.info("Restarting iterations");
+						// logger.info("Restarting iterations");
 						it = clusterMap.keySet().iterator();
 						try {
 							Thread.sleep(3000);

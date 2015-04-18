@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import poke.resources.RequestProcessor;
+import poke.resources.RequestProcessorQueue;
 
 public final class LogManager {
 
@@ -55,11 +55,12 @@ public final class LogManager {
 	}
 
 	public static void setCurrentLogIndex(int currentLogIndex) {
+		
 		LogManager.currentLogIndex = currentLogIndex;
 	}
 
 	// called by leader.
-	public static LogEntry createEntry(int term, String logData) {
+	public static LogEntry createEntry(int term, poke.core.Mgmt.ClientMessage logData) {
 		prevIndex = currentLogIndex;
 		prevTerm = currentLogTerm;
 		currentLogTerm = term;
@@ -80,8 +81,8 @@ public final class LogManager {
 	public static boolean appendLogs(LogEntry leaderLog, int leaderCommitIndex) {
 
 		boolean result = false;
-		logger.info("logger : " + leaderLog.toString() + " commit:"
-				+ leaderCommitIndex);
+//		logger.info("logger : " + leaderLog.toString() + " commit:"
+//				+ leaderCommitIndex);
 		// Consistency Check.
 		if (leaderLog.prevLogTerm == currentLogTerm
 				&& leaderLog.prevLogIndex == currentLogIndex) {
@@ -101,6 +102,7 @@ public final class LogManager {
 	}
 
 	public static void updateCommitIndex(int leaderCommitIndex){
+		//logger.info("Updating commit index to "+currentLogIndex);
 		LogManager.leaderCommitIndex = leaderCommitIndex;
 		commitIndex = Math.min(LogManager.leaderCommitIndex, currentLogIndex);
 	}
@@ -139,8 +141,8 @@ public final class LogManager {
 			if (commitIndex > lastApplied) {
 				for (int i = lastApplied+1; i < commitIndex + 1; i++) {
 					if (getLogEntry(i) != null) {
-						//logger.info("Got a leader log entry");
-						RequestProcessor.processRequest(getLogEntry(i));
+						logger.info("Got a leader log entry");
+						RequestProcessorQueue.enqueRequest(getLogEntry(i));
 					}else{
 						//logger.info("No leader log entry");
 					}

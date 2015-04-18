@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import poke.core.Mgmt.AppendMessage;
+import poke.core.Mgmt.ClientMessage;
 import poke.core.Mgmt.LogEntries;
 import poke.core.Mgmt.Management;
 import poke.core.Mgmt.RaftMessage;
@@ -46,21 +47,22 @@ public class LeaderState implements RaftState {
 			//logger.info("Sending data for" + nextIndex.get(node));
 			AppendMessage.Builder am = AppendMessage.newBuilder();
 
+			am.setLeaderId(raftMgmt.leaderID);
+			am.setLeaderCommit(LogManager.commitIndex);
+			am.setTerm(raftMgmt.term);
+			
 			LogEntries.Builder log = LogEntries.newBuilder();
+			
 			if (entry != null) {
 				am.setPrevLogIndex(entry.getPrevLogIndex());
 				am.setPrevLogTerm(entry.getPrevLogTerm());
 				am.setLogIndex(entry.logIndex);
-				am.setLeaderCommit(LogManager.commitIndex);
-				am.setLeaderId(raftMgmt.leaderID);
-				am.setTerm(raftMgmt.term);
 				log.setLogIndex(entry.getLogIndex());
 				log.setLogData(entry.getLogData());
-			} else {
-					am.setLeaderCommit(LogManager.commitIndex);
 			}
 			am.addEntries(log);
 			m.getRaftMessageBuilder().setAppendMessage(am.build());
+			//logger.info("Sending append");
 			ConnectionManager.sendToNode(m.build(), node);
 		}
 	}
@@ -117,6 +119,11 @@ public class LeaderState implements RaftState {
 			break;
 		case REQUESTVOTE:
 			break;
+		case FORWARD:
+			logger.info("Foward message received!!!");
+			ClientMessage logData = mgmt.getClientMessage();
+			LogManager.createEntry(raftMgmt.term, logData);
+			break;
 		default:
 
 		}
@@ -130,30 +137,30 @@ public class LeaderState implements RaftState {
 
 		@Override
 		public void run() {
-			
-			while(true){
-				if (raftMgmt.isLeader) {
-					//logger.info("<<<Leader match index checker running>>>>");
+
+			while (true) {
+				if (RaftManager.isLeader) {
+					// logger.info("<<<Leader match index checker running>>>>");
 					int count = 0;
 					commitIndex = LogManager.commitIndex + 1;
 					for (Integer i : matchIndex.values()) {
 						if (i >= commitIndex)
 							count += 1;
 					}
-					count += 1 ;
-					if (count > ((matchIndex.keySet().size() +1)/ 2)){
+					count += 1;
+					if (count > ((matchIndex.keySet().size() + 1) / 2)) {
 						LogManager.commitIndex = commitIndex;
-						//logger.info("Updating commit index");
+						// logger.info("Updating commit index");
 					}
 				}
-				
+
 				try {
 					Thread.sleep(2000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
-			
+
 		}
 	}
 

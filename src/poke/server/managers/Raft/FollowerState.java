@@ -52,15 +52,16 @@ public class FollowerState implements RaftState {
 			boolean success = false;
 			raftMgmt.resetTimeOut();
 			//logger.info("Got HB");
+			//logger.info("appending for leader " + am.getLeaderId());
 			if(am.hasLeaderCommit())
 				LogManager.updateCommitIndex(am.getLeaderCommit());
 			
 			if (am.hasPrevLogIndex() && am.hasPrevLogTerm()) {
+				
 				if (am.getEntriesCount() > 0) {
-					logger.info("appending " + am.getEntries(0));
 					int term = am.getTerm();
 					int logIndex = am.getLogIndex();
-					String logData = null;
+					poke.core.Mgmt.ClientMessage logData = null;
 					int prevLogTerm = am.getPrevLogTerm();
 					int prevLogIndex = am.getPrevLogIndex();
 
@@ -82,7 +83,6 @@ public class FollowerState implements RaftState {
 							amResponse.build());
 
 					// logger.info("Response: " + response.build().toString());
-					// TODO send rsponse
 					ConnectionManager.sendToNode(response.build(), am.getLeaderId());
 				}
 			} else {
