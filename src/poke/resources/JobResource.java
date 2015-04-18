@@ -15,8 +15,6 @@
  */
 package poke.resources;
 
-import java.util.ArrayList;
-
 import io.netty.channel.Channel;
 
 import org.slf4j.Logger;
@@ -24,12 +22,9 @@ import org.slf4j.LoggerFactory;
 
 import poke.comm.App.ClientMessage;
 import poke.comm.App.ClientMessage.MessageType;
-import poke.comm.App.ClusterMessage;
 import poke.comm.App.Header;
 import poke.comm.App.Payload;
 import poke.comm.App.Request;
-import poke.server.managers.ConnectionManager;
-import poke.server.managers.Raft.LogManager;
 import poke.server.managers.Raft.RaftManager;
 import poke.server.resources.Resource;
 
@@ -38,7 +33,7 @@ public class JobResource implements Resource {
 
 	// private boolean isRespSent=false;
 
-	@Override
+	/*@Override
 	public Request process(Request request, Channel ch) {
 		int senderClient = request.getBody().getClientMessage()
 				.getSenderUserName();
@@ -47,7 +42,8 @@ public class JobResource implements Resource {
 				.getBroadcastInternal();
 		// logger.info("Clustr msg is>>>>>>>>>>>>>>>>>>>"+request.getBody().getClusterMessage());
 		// logger.info("Cluster Message is null");
-		if (!request.getBody().hasClusterMessage() && request.getBody().hasClientMessage()) {
+		if (!request.getBody().hasClusterMessage()
+				&& request.getBody().hasClientMessage()) {
 			if (isClient && isBroadcastInternal) {
 				logger.info("Not a cluster message");
 				// broadcast to other clients
@@ -82,24 +78,26 @@ public class JobResource implements Resource {
 				req.setHeader(head);
 				ConnectionManager.broadcast(req.build());
 				String msgId = req.getBody().getClientMessage().getMsgId();
-				logger.info("Queueing req with msgId "+msgId);
+				logger.info("Queueing req with msgId " + msgId);
 				RequestProcessor.reqQueue.put(msgId, req.build());
 				RaftManager.getInstance().processClientRequest(request);
 
-				return sendResponseToClient();
+				return buildClientResponse(true);
 			} else if (isClient && !isBroadcastInternal) {
 				// ConnectionManager.broadcastToClients(request, senderClient);
 				String msgId = request.getBody().getClientMessage().getMsgId();
-				logger.info("Other servers received the request with msg Id"+msgId);
+				logger.info("Other servers received the request with msg Id"
+						+ msgId);
 				RequestProcessor.reqQueue.put(msgId, request);
 				// If leader, send to other cluster node.
 				RaftManager.getInstance().processClientRequest(request);
 				return null;
 			}
-		}else if(request.getBody().hasClusterMessage()){
+		} else if (request.getBody().hasClusterMessage()) {
 			logger.info("Cluster Message received >>>>>>>");
 			ClientMessage.Builder clientMsg = ClientMessage.newBuilder();
-			ClientMessage reqClientMsg = request.getBody().getClusterMessage().getClientMessage();
+			ClientMessage reqClientMsg = request.getBody().getClusterMessage()
+					.getClientMessage();
 			clientMsg.setSenderUserName(reqClientMsg.getSenderUserName());
 			clientMsg.setIsClient(true);
 			clientMsg.setBroadcastInternal(false);
@@ -125,15 +123,31 @@ public class JobResource implements Resource {
 			req.setHeader(head);
 			ConnectionManager.broadcast(req.build());
 			String msgId = reqClientMsg.getMsgId();
-			logger.info("Queueing req with msgId "+msgId);
+			logger.info("Queueing req with msgId " + msgId);
 			RequestProcessor.reqQueue.put(msgId, req.build());
 		}
 		return null;
+	}*/
+
+	@Override
+	public Request process(Request request, Channel ch) {
+		if (request.getBody().hasClientMessage()) {
+			poke.comm.App.ClientMessage clientMsg = request.getBody()
+					.getClientMessage();
+			RaftManager.getInstance().processClientRequest(clientMsg, true);
+		} else if (request.getBody().hasClusterMessage()) {
+			poke.comm.App.ClientMessage clientMsg = request.getBody()
+					.getClusterMessage().getClientMessage();
+			RaftManager.getInstance().processClientRequest(clientMsg, false);
+		}
+
+		return buildClientResponse(true);
 	}
 
-	private Request sendResponseToClient() {
+	private Request buildClientResponse(boolean success) {
 		ClientMessage.Builder clientMessage = ClientMessage.newBuilder();
-		clientMessage.setMessageType(MessageType.SUCCESS);
+		if (success)
+			clientMessage.setMessageType(MessageType.SUCCESS);
 
 		// payload
 		Payload.Builder body = Payload.newBuilder();

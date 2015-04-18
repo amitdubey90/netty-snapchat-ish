@@ -34,6 +34,7 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import poke.resources.RequestProcessorQueue;
 import poke.server.conf.ClusterConfList;
 import poke.server.conf.JsonUtil;
 import poke.server.conf.NodeDesc;
@@ -395,6 +396,8 @@ public class Server {
 		Thread cthread = new Thread(comm);
 		cthread.start();
 
+		RequestProcessorQueue.init();
+		
 		raftMgr.initRaftManager();
 	}
 
