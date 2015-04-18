@@ -67,8 +67,8 @@ public class HeartbeatPusher extends Thread {
 		HeartMonitor hm = new HeartMonitor(iamNode, node.getHost(), node.getMgmtport(), node.getNodeId(), true);
 		monitors.add(hm);
 		
-		HeartMonitor appHm = new HeartMonitor(iamNode, node.getHost(), node.getPort(), node.getNodeId(), false);
-		monitors.add(appHm);
+		//HeartMonitor appHm = new HeartMonitor(iamNode, node.getHost(), node.getPort(), node.getNodeId(), false);
+		//monitors.add(appHm);
 
 		// artifact of the client-side listener - processing is done in the
 		// inbound mgmt worker
